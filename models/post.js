@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-const PostSchema = mongoose.SchemaType({
-    id:
-    {
-        type: int,
-        required: true
-    },
+const PostSchema = mongoose.Schema({
     title:
     {
         type: String,
@@ -18,12 +13,7 @@ const PostSchema = mongoose.SchemaType({
     //store id's of post comments
     post_comments:
     {
-        type: [int],
-        required: true
-    },
-    event_comments:
-    {
-        type: [int],
+        type: [Number],
         required: true
     },
     date_created:

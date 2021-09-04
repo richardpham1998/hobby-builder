@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-const EventCommentSchema = mongoose.SchemaType({
-    id:
-    {
-        type: int,
-        required: true
-    },
+const EventCommentSchema = mongoose.Schema({
     content:
     {
         type: String,
@@ -13,12 +8,12 @@ const EventCommentSchema = mongoose.SchemaType({
     //collect id's
     user:
     {
-        type: int,
+        type: String,
         required: true
     },
     event:
     {
-        type: int,
+        type: String,
         required: true
     },
     date_created:
@@ -32,4 +27,4 @@ const EventCommentSchema = mongoose.SchemaType({
     }
 });
 
-EventComment = modules.export = mongoose.model('EventComment', EventCommentSchema);
+EventComment = module.exports = mongoose.model('EventComment', EventCommentSchema);

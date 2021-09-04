@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-const PostCommentSchema = mongoose.SchemaType({
-    id:
-    {
-        type: int,
-        required: true
-    },
+const PostCommentSchema = mongoose.Schema({
     content:
     {
         type: String,
@@ -13,12 +8,12 @@ const PostCommentSchema = mongoose.SchemaType({
     //collect id's
     user:
     {
-        type: int,
+        type: String,
         required: true
     },
     post:
     {
-        type: int,
+        type: String,
         required: true
     },
     date_created:
@@ -32,4 +27,4 @@ const PostCommentSchema = mongoose.SchemaType({
     }
 });
 
-PostComment = modules.export = mongoose.model('PostComment', PostCommentSchema);
+PostComment = module.exports = mongoose.model('PostComment', PostCommentSchema);

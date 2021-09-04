@@ -6,6 +6,12 @@ var path = require('path');
 
 var app = express();
 const route = require('./routes/route');
+const postRoute = require('./routes/post');
+const userRoute = require('./routes/user');
+const eventRoute = require('./routes/event');
+const eventCommentRoute = require('./routes/event_comment');
+const postCommentRoute = require('./routes/post_comment');
+
 
 mongoose.connect('mongodb://localhost:27017/hobby-builder');
 mongoose.connection.on('connected', () =>
@@ -24,7 +30,13 @@ mongoose.connection.on('error', (err=>
     app.use(cors());
     app.use(bodyparser.json());
     app.use(express.static(path.join(__dirname, 'public')));
+
     app.use('/api', route);
+    app.use('/api', postRoute);
+    app.use('/api', userRoute);
+    app.use('/api', eventRoute);
+    app.use('/api', eventCommentRoute);
+    app.use('/api', postCommentRoute);
 
     app.listen(port,()=>
     {

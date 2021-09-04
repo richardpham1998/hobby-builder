@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-const EventSchema = mongoose.SchemaType({
-    id:
-    {
-        type: int,
-        required: true
-    },
+const EventSchema = mongoose.Schema({
     title:
     {
         type: String,
@@ -23,17 +18,17 @@ const EventSchema = mongoose.SchemaType({
     //collect id's
     attendees:
     {
-        type: [id],
+        type: [String],
         required: true
     },
     hosts:
     {
-        type: [id],
+        type: [String],
         required: true
     },
     comments:
     {
-        type: [id],
+        type: [String],
         required: true
     },
     date_created:
@@ -47,8 +42,8 @@ const EventSchema = mongoose.SchemaType({
     },
     image:
     {
-        type: Image
+        type: String
     }
 });
 
-Event = modules.export = mongoose.model('Event', EventSchema);
+Event = module.exports = mongoose.model('Event', EventSchema);
