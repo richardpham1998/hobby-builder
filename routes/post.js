@@ -21,7 +21,7 @@ router.post('/post',(req,res,next)=>
             description: req.body.description,
             post_comments: req.body.post_comments,
             date_created: Date.now(),
-            date_modified: Date.now()
+            date_modified: null
         }
     )
 
@@ -29,11 +29,11 @@ router.post('/post',(req,res,next)=>
     {
         if(err)
         {
-            res.json({msg: 'Cannot add Post'});
+            res.json(err);
         }
         else
         {
-            res.json({msg: 'Success: added Post'});
+            res.json({msg: 'Success: added Post', status: 200, post: post});
         }
     })
 });
@@ -57,25 +57,30 @@ router.get('/post/:id', (req,res,next)=>
 router.patch('/post/:id',(req,res,next)=>
 {
 
-    Post.updateOne({_id: req.params.id},
-        {
-            "title": req.body.title,
-            "description": req.body.description, 
-            "post_comments": req.body.post_comments,
-            "date_modified": Date.now()
-        }, 
-        function(err, result)
-        {
-            if(err)
+        Post.updateOne({_id: req.params.id},
             {
-                res.json(err);
+                "title": req.body.title,
+                "description": req.body.description, 
+                "post_comments": req.body.post_comments,
+                "date_modified": Date.now()
+            }, 
+            function(err, result)
+            {
+                if(err)
+                {
+                    res.json(err);
+                }
+                else if(req.body.title == null || req.body.description == null || req.body.post_comments == null)
+                {
+                    res.json({msg: 'Unable to patch Post. Data is invalid', status: 404});
+                }
+                else{
+                    res.json(result);
+                }
+                
             }
-            else{
-                res.json(result);
-            }
-            
-        }
-    );
+        );
+    
 });
 
 //delete post

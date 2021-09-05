@@ -3,46 +3,55 @@ const EventSchema = mongoose.Schema({
     title:
     {
         type: String,
-        required: true
+        required: true,
+        null: false
     },
     description:
     {
         type: String,
-        required: true
+        required: true,
+        null: false
     },
     location:
     {
         type: String,
-        required: true
+        required: true,
+        null: false
     },
     //collect id's
     attendees:
     {
         type: [String],
-        required: true
+        required: true,
+        null: false
     },
     hosts:
     {
         type: [String],
-        required: true
+        required: true,
+        null: false
     },
     comments:
     {
         type: [String],
-        required: true
+        required: true,
+        null: false
     },
     date_created:
     {
         type: Date,
-        required: true
+        required: true,
+        null: false
     },
     date_modified:
     {
-        type: Date
+        type: Date,
+        default: null
     },
     image:
     {
-        type: String
+        type: String,
+        default: null
     }
 });
 

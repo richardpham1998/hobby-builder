@@ -1,23 +1,27 @@
 const mongoose = require('mongoose');
-const PostSchema = mongoose.Schema({
-    title:
+const CommentSchema = mongoose.Schema({
+    content:
     {
         type: String,
         required: true,
         null: false
     },
-    description:
+    //collect id's
+    user:
     {
         type: String,
         required: true,
         null: false
     },
-    //store id's of post comments
-    post_comments:
+    event:
     {
-        type: Array,
-        required: true,
-        null: false
+        type: String,
+        default: null
+    },
+    post:
+    {
+        type: String,
+        default: null
     },
     date_created:
     {
@@ -30,7 +34,6 @@ const PostSchema = mongoose.Schema({
         type: Date,
         default: null
     }
-
 });
-    
-const Post = module.exports = mongoose.model('Post', PostSchema);
+
+Comment = module.exports = mongoose.model('Comment', CommentSchema);

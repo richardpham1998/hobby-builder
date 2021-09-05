@@ -31,10 +31,10 @@ router.post('/event', (req,res,next)=>
     {
         if(err)
         {
-            res.json({msg: 'Cannot add Event'});
+            res.json(err);
         }
         else{
-            res.json({msg: 'Success: added Event'});
+            res.json({msg: 'Success: added Event', status: 200, event: event});
         }
     })
 })
@@ -59,6 +59,7 @@ router.get('/event/:id', (req,res,user)=>
 //modify event
 router.patch('/event/:id', (req,res,user)=>
 {
+
     Event.updateOne({_id: req.params.id}, 
         {
         "title": req.body.title,
@@ -75,10 +76,15 @@ router.patch('/event/:id', (req,res,user)=>
         {
             res.json(err);
         }
+        else if(req.body.title == null || req.body.description == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
+        {
+            res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
+        }
         else{
             res.json(result);
         }
-    })
+    });
+    
 })
 
 //delete event

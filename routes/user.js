@@ -33,11 +33,11 @@ router.post('/user',(req,res,next)=>
     {
         if(err)
         {
-            res.json({msg: 'Cannot add User'});
+            res.json(err);
         }
         else
         {
-            res.json({msg: 'Success: added User'});
+            res.json({msg: 'Success: added User',status: 200, user: user});
         }
     })
 });
@@ -61,28 +61,34 @@ router.get('/user/:id', (req,res,next)=>
 router.patch('/user/:id',(req,res,next)=>
 {
 
-    User.updateOne({_id: req.params.id},
-        {   "user_name": req.body.user_name,
-            "post_comments": req.body.post_comments,
-            "event_comments": req.body.event_comments,
-            "events_created": req.body.events_created,
-            "events_hosting": req.body.events_hosting,
-            "events_attending": req.body.events_attending,
-            "posts": req.body.posts,
-            "hobbies": req.body.hobbies
-        }, 
-        function(err, result)
-        {
-            if(err)
+
+        User.updateOne({_id: req.params.id},
+            {   "user_name": req.body.user_name,
+                "post_comments": req.body.post_comments,
+                "event_comments": req.body.event_comments,
+                "events_created": req.body.events_created,
+                "events_hosting": req.body.events_hosting,
+                "events_attending": req.body.events_attending,
+                "posts": req.body.posts,
+                "hobbies": req.body.hobbies
+            }, 
+            function(err, result)
             {
-                res.json(err);
+                if(err)
+                {
+                    res.json(err);
+                }
+                else if(req.body.user_name == null || req.body.post_comments == null || req.body.event_comments == null || req.body.events_created == null || req.body.events_hosting == null || req.body.events_attending == null || req.body.posts == null || req.body.hobbies == null)
+                {
+                    res.json({msg: 'Unable to patch User. Data is invalid', status: 404});
+                }
+                else{
+                    res.json(result);
+                }
+                
             }
-            else{
-                res.json(result);
-            }
-            
-        }
-    );
+        );
+    
 });
 
 //delete user
