@@ -56,31 +56,50 @@ router.get('/post/:id', (req,res,next)=>
 //modify post
 router.patch('/post/:id',(req,res,next)=>
 {
+    var resultObject = null;
 
-        Post.updateOne({_id: req.params.id},
+    Post.findById(req.params.id, function(err, result)
+    {
+        if(err)
+        {
+            res.json(err);
+        }
+        else{
+            resultObject = result;
+            if(req.body.title != null)
             {
-                "title": req.body.title,
-                "description": req.body.description, 
-                "post_comments": req.body.post_comments,
-                "date_modified": Date.now()
-            }, 
-            function(err, result)
-            {
-                if(err)
-                {
-                    res.json(err);
-                }
-                else if(req.body.title == null || req.body.description == null || req.body.post_comments == null)
-                {
-                    res.json({msg: 'Unable to patch Post. Data is invalid', status: 404});
-                }
-                else{
-                    res.json(result);
-                }
-                
+                resultObject.title = req.body.title;
             }
-        );
-    
+            if(req.body.description != null)
+            {
+                resultObject.description = req.body.description;
+            }
+            if(req.body.post_comments != null)
+            {
+                resultObject.post_comments = req.body.post_comments;
+            }
+        
+            Post.updateOne({_id: req.params.id},
+                {
+                    "title": resultObject.title,
+                    "description": resultObject.description, 
+                    "post_comments": resultObject.post_comments,
+                    "date_modified": Date.now()
+                }, 
+                function(err, result1)
+                {
+                    if(err)
+                    {
+                        res.json(err);
+                    }
+                    else{
+                        res.json(result1);
+                    }
+                    
+                }
+            );
+        }
+    });
 });
 
 //delete post

@@ -199,7 +199,6 @@ chai.use(chaiHttp);
             }
             )
         post.save((err, post) => {
-            console.log("POST ID IS "+ post.id);
               chai.request(server)
               .patch('/api/post/' + post.id)
               .send(
@@ -215,7 +214,6 @@ chai.use(chaiHttp);
                 chai.request(server)
                 .get('/api/post/' + id)
                 .end((err, res) => {
-                    console.log(res.body);
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     res.body.should.have.property('post_comments').eql(["dhui23h9h93", "ap12"]);
@@ -306,7 +304,7 @@ chai.use(chaiHttp);
             )
         post.save((err, post) => {
               chai.request(server)
-              .patch('/post/' + post.id)
+              .patch('/api/post/' + post.id)
               .send(
                 {
                     "title": null,
@@ -314,7 +312,15 @@ chai.use(chaiHttp);
                     "post_comments": ["122231"]
                 })
                 .end((err, res) => {
-                    res.should.have.status(404);
+                });
+
+                 const id = post.id;
+                 chai.request(server)
+                 .get('/api/post/' + id)
+                 .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('title').eql("Board Game Ideas");
                     done();
                 });
         });
@@ -332,7 +338,7 @@ chai.use(chaiHttp);
             )
         post.save((err, post) => {
               chai.request(server)
-              .patch('/post/' + post.id)
+              .patch('/api/post/' + post.id)
               .send(
                 {
                     "title": "Board Game Ideas",
@@ -340,7 +346,15 @@ chai.use(chaiHttp);
                     "post_comments": ["122231"]
                 })
                 .end((err, res) => {
-                    res.should.have.status(404);
+                });
+
+                 const id = post.id;
+                 chai.request(server)
+                 .get('/api/post/' + id)
+                 .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('description').eql('123');
                     done();
                 });
         });

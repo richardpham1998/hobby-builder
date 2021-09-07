@@ -19,8 +19,7 @@ router.post('/user',(req,res,next)=>
     let newUser = new User(
         {
             user_name: req.body.user_name,
-            post_comments: req.body.post_comments,
-            event_comments: req.body.event_comments,
+            comments: req.body.comments,
             events_created: req.body.events_created,
             events_hosting: req.body.events_hosting,
             events_attending: req.body.events_attending,
@@ -61,33 +60,67 @@ router.get('/user/:id', (req,res,next)=>
 router.patch('/user/:id',(req,res,next)=>
 {
 
+    User.findById(req.params.id, function(err, result)
+    {
+        if(err)
+        {
+            res.json(err);
+        }
+        else{
+            resultObject = result;
+            if(req.body.user_name != null)
+            {
+                resultObject.user_name = req.body.user_name;
+            }
+            if(req.body.comments != null)
+            {
+                resultObject.comments = req.body.comments;
+            }
+            if(req.body.events_created != null)
+            {
+                resultObject.events_created = req.body.events_created;
+            }
+            if(req.body.events_hosting != null)
+            {
+                resultObject.events_hosting = req.body.events_hosting;
+            }
+            if(req.body.events_attending != null)
+            {
+                resultObject.events_attending = req.body.events_attending;
+            }
+            if(req.body.posts != null)
+            {
+                resultObject.posts = req.body.posts;
+            }
+            if(req.body.hobbies != null)
+            {
+                resultObject.hobbies = req.body.hobbies;
+            }
 
+            
         User.updateOne({_id: req.params.id},
-            {   "user_name": req.body.user_name,
-                "post_comments": req.body.post_comments,
-                "event_comments": req.body.event_comments,
-                "events_created": req.body.events_created,
-                "events_hosting": req.body.events_hosting,
-                "events_attending": req.body.events_attending,
-                "posts": req.body.posts,
-                "hobbies": req.body.hobbies
+            {   "user_name": resultObject.user_name,
+                "comments": resultObject.comments,
+                "events_created": resultObject.events_created,
+                "events_hosting": resultObject.events_hosting,
+                "events_attending": resultObject.events_attending,
+                "posts": resultObject.posts,
+                "hobbies": resultObject.hobbies
             }, 
-            function(err, result)
+            function(err, result1)
             {
                 if(err)
                 {
                     res.json(err);
                 }
-                else if(req.body.user_name == null || req.body.post_comments == null || req.body.event_comments == null || req.body.events_created == null || req.body.events_hosting == null || req.body.events_attending == null || req.body.posts == null || req.body.hobbies == null)
-                {
-                    res.json({msg: 'Unable to patch User. Data is invalid', status: 404});
-                }
                 else{
-                    res.json(result);
+                    res.json(result1);
                 }
                 
             }
-        );
+        )};
+        
+    });
     
 });
 

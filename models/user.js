@@ -8,13 +8,7 @@ const UserSchema = mongoose.Schema({
         null: false
     },
     //store id's of comments
-    post_comments:
-    {
-        type:[String],
-        required: true,
-        null: false
-    },
-    event_comments:
+    comments:
     {
         type:[String],
         required: true,

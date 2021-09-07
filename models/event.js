@@ -37,6 +37,12 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    date_event:
+    {
+        type: Date,
+        required: true,
+        null: false
+    },
     date_created:
     {
         type: Date,

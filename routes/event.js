@@ -15,7 +15,6 @@ router.get('/events', (req,res,next)=>
 //create new event
 router.post('/event', (req,res,next)=>
 {
-
     let newEvent = new Event({
         title: req.body.title,
         description: req.body.description,
@@ -23,6 +22,7 @@ router.post('/event', (req,res,next)=>
         attendees: req.body.attendees,
         hosts: req.body.hosts,
         comments: req.body.comments,
+        date_event: req.body.date_event,
         date_created: Date.now(),
         image: req.body.image
     })
@@ -60,30 +60,80 @@ router.get('/event/:id', (req,res,user)=>
 router.patch('/event/:id', (req,res,user)=>
 {
 
-    Event.updateOne({_id: req.params.id}, 
-        {
-        "title": req.body.title,
-        "description": req.body.description,
-        "location": req.body.location,
-        "attendees": req.body.attendees,
-        "hosts": req.body.hosts,
-        "comments": req.body.comments,
-        "date_modified": Date.now(),
-        "image": req.body.image
-    }, function(err, result)
+    var resultObject = null;
+
+    Event.findById(req.params.id, function(err, result)
     {
         if(err)
         {
             res.json(err);
         }
-        else if(req.body.title == null || req.body.description == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
-        {
-            res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
-        }
         else{
-            res.json(result);
-        }
-    });
+            resultObject = result;
+            if(req.body.title != null)
+            {
+                resultObject.title = req.body.title;
+            }
+            if(req.body.description != null)
+            {
+                resultObject.description = req.body.description;
+            }
+            if(req.body.location != null)
+            {
+                resultObject.location = req.body.location;
+            }
+            if(req.body.attendees != null)
+            {
+                resultObject.attendees = req.body.attendees;
+            }
+            if(req.body.hosts != null)
+            {
+                resultObject.hosts = req.body.hosts;
+            }
+            if(req.body.comments != null)
+            {
+                resultObject.comments = req.body.comments;
+            }
+            if(req.body.date_event != null)
+            {
+                resultObject.date_event = req.body.date_event;
+            }
+
+            if((resultObject.title == null || resultObject.description == null || resultObject.location == null || resultObject.attendees == null || resultObject.host == null || resultObject.comments == null))
+                {
+                    resultObject.date_modified = Date.now();
+                }
+                else
+                {
+                    resultObject.date_modified = null;
+                }
+
+            Event.updateOne({_id: req.params.id}, 
+                {
+                "title": resultObject.title,
+                "description": resultObject.description,
+                "location": resultObject.location,
+                "attendees": resultObject.attendees,
+                "hosts": resultObject.hosts,
+                "comments": resultObject.comments,
+                "date_event": resultObject.date_event,
+                "date_modified": resultObject.date_modified,
+                "image": resultObject.image
+            }, function(err, result1)
+            {
+                if(err)
+                {
+                    res.json(err);
+                }
+                else if(req.body.title == null || req.body.description == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
+                {
+                    res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
+                }
+                else{
+                    res.json(result1);
+                }
+            })};
+        });
     
 })
 
