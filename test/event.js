@@ -345,75 +345,75 @@ chai.use(chaiHttp);
             date_created: Date.now(),
             image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
         })
-    event.save((err, event) => {
+     event.save((err, event) => {
           chai.request(server)
           .patch('/api/event/' + event.id)
-          .send(
-            {
+           .send(
+             {
                 "title": "Sue's Barbeque Birthday Celebration"
             })
             .end((err, res) => {
             });
 
-            const id = event.id;
-            chai.request(server)
-            .get('/api/event/' + id)
+             const id = event.id;
+             chai.request(server)
+             .get('/api/event/' + id)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 res.body.should.have.property('date_modified').not.eql(null);
                 done();
-            });
-        });
-    });
+             });
+         });
+    })
 
-    it('it will PATCH event by editing title', (done) => {
-            let event = new Event({
-                title: "Sue's Birthday Party",
-                description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-                location: "San Francisco, CA",
-                attendees: [],
-                hosts: [],
-                comments: [],
-                date_event: Date.now(),
-                date_created: Date.now(),
-                image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-            })
-        event.save((err, event) => {
-              chai.request(server)
-              .patch('/api/event/' + event.id)
-              .send(
-                {
-                    "title": "Sue's Barbeque Birthday Celebration"
-                })
-                .end((err, res) => {
-                });
+//     it('it will PATCH event by editing title', (done) => {
+//             let event = new Event({
+//                 title: "Sue's Birthday Party",
+//                 description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//                 location: "San Francisco, CA",
+//                 attendees: [],
+//                 hosts: [],
+//                 comments: [],
+//                 date_event: Date.now(),
+//                 date_created: Date.now(),
+//                 image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//             })
+//         event.save((err, event) => {
+//               chai.request(server)
+//               .patch('/api/event/' + event.id)
+//               .send(
+//                 {
+//                     "title": "Sue's Barbeque Birthday Celebration"
+//                 })
+//                 .end((err, res) => {
+//                 });
 
-                const id = event.id;
-                chai.request(server)
-                .get('/api/event/' + id)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('title').eql("Sue's Barbeque Birthday Celebration");
-                    done();
-                });
-        });
-    });
+//                 const id = event.id;
+//                 chai.request(server)
+//                 .get('/api/event/' + id)
+//                 .end((err, res) => {
+//                     res.should.have.status(200);
+//                     res.body.should.be.a('object');
+//                     res.body.should.have.property('title').eql("Sue's Barbeque Birthday Celebration");
+//                     done();
+//                 });
+//         });
+//     })
 
 
-    // it('it will PATCH event by editing description', (done) => {
-    //     let event = new Event({
-    //         title: "Sue's Birthday Party",
-    //         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-    //         location: "San Francisco, CA",
-    //         attendees: [],
-    //         hosts: [],
-    //         comments: [],
-    //         date_event: Date.now(),
-    //         date_created: Date.now(),
-    //         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    //     })
+//     it('it will PATCH event by editing description', (done) => {
+//         let event = new Event({
+//             title: "Sue's Birthday Party",
+//             description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//             location: "San Francisco, CA",
+//             attendees: [],
+//             hosts: [],
+//             comments: [],
+//             date_event: Date.now(),
+//             date_created: Date.now(),
+//             image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//         })
 
 
 //     event.save((err, event) => {
@@ -435,251 +435,251 @@ chai.use(chaiHttp);
 //                 res.body.should.have.property('description').eql("Sue is hosting a huge celebration at Golden Gate Park!");
 //                 done();
 //             });
+//         });
 //     });
+
+// it('it will PATCH event by editing location', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "location": "Seattle, WA"
+//         })
+//         .end((err, res) => {
+//         });
+
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('location').eql("Seattle, WA");
+//             done();
+//         });
+// });
 // });
 
-it('it will PATCH event by editing description', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "location": "Seattle, WA"
-        })
-        .end((err, res) => {
-        });
+// it('it will PATCH event by filling out all arrays', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "attendees": ["sw2","dj239"],
+//             "hosts": ["d32"],
+//             "comments": ["dj2w","dh289qs","sjha9"]
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('location').eql("Seattle, WA");
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('attendees').eql(["sw2","dj239"]);
+//             res.body.should.have.property('hosts').eql(["d32"]);
+//             res.body.should.have.property('comments').eql(["dj2w","dh289qs","sjha9"]);
+//             done();
+//         });
+// });
+// });
 
-it('it will PATCH event by filling out all arrays', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "attendees": ["sw2","dj239"],
-            "hosts": ["d32"],
-            "comments": ["dj2w","dh289qs","sjha9"]
-        })
-        .end((err, res) => {
-        });
+// it('it will not add null title after PATCH event by setting title to null', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "title": null
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('attendees').eql(["sw2","dj239"]);
-            res.body.should.have.property('hosts').eql(["d32"]);
-            res.body.should.have.property('comments').eql(["dj2w","dh289qs","sjha9"]);
-            done();
-        });
-});
-});
-
-it('it will not add null title after PATCH event by setting title to null', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "title": null
-        })
-        .end((err, res) => {
-        });
-
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('title').eql("Sue's Birthday Party");
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('title').eql("Sue's Birthday Party");
+//             done();
+//         });
+// });
+// });
 
 
-it('it will not add null description after PATCH event by setting it to null', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "description": null
-        })
-        .end((err, res) => {
-        });
+// it('it will not add null description after PATCH event by setting it to null', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "description": null
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('description').eql("Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!");
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('description').eql("Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!");
+//             done();
+//         });
+// });
+// });
 
-it('it will not add null location after PATCH event by setting it to null', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "location": null
-        })
-        .end((err, res) => {
-        });
+// it('it will not add null location after PATCH event by setting it to null', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "location": null
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('location').eql("San Francisco, CA");
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('location').eql("San Francisco, CA");
+//             done();
+//         });
+// });
+// });
 
-it('it will not add null attendees after PATCH event by setting it to null', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "attendees": null
-        })
-        .end((err, res) => {
-        });
+// it('it will not add null attendees after PATCH event by setting it to null', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "attendees": null
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('attendees').eql([]);
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('attendees').eql([]);
+//             done();
+//         });
+// });
+// });
 
-it('it will not add null host after PATCH event by setting it to null', (done) => {
-    let event = new Event({
-        title: "Sue's Birthday Party",
-        description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
-        location: "San Francisco, CA",
-        attendees: [],
-        hosts: [],
-        comments: [],
-        date_event: Date.now(),
-        date_created: Date.now(),
-        image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
-    })
-event.save((err, event) => {
-      chai.request(server)
-      .patch('/api/event/' + event.id)
-      .send(
-        {
-            "host": null
-        })
-        .end((err, res) => {
-        });
+// it('it will not add null host after PATCH event by setting it to null', (done) => {
+//     let event = new Event({
+//         title: "Sue's Birthday Party",
+//         description: "Come join us as we have Sue celebrate her 32nd birthday at the Golden Gate Park! We will be having a huge barbeque!",
+//         location: "San Francisco, CA",
+//         attendees: [],
+//         hosts: [],
+//         comments: [],
+//         date_event: Date.now(),
+//         date_created: Date.now(),
+//         image: "https://www.google.com/logos/doodles/2021/labor-day-2021-6753651837109056.2-l.webp"
+//     })
+// event.save((err, event) => {
+//       chai.request(server)
+//       .patch('/api/event/' + event.id)
+//       .send(
+//         {
+//             "host": null
+//         })
+//         .end((err, res) => {
+//         });
 
-        const id = event.id;
-        chai.request(server)
-        .get('/api/event/' + id)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('host').eql([]);
-            done();
-        });
-});
-});
+//         const id = event.id;
+//         chai.request(server)
+//         .get('/api/event/' + id)
+//         .end((err, res) => {
+//             res.should.have.status(200);
+//             res.body.should.be.a('object');
+//             res.body.should.have.property('host').eql([]);
+//             done();
+//         });
+// });
+// });
 
 it('it will not add null comments after PATCH event by setting it to null', (done) => {
     let event = new Event({
@@ -709,7 +709,7 @@ event.save((err, event) => {
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            res.body.should.have.property('title').eql([]);
+            res.body.should.have.property('comments').eql([]);
             done();
         });
 });

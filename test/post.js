@@ -222,40 +222,40 @@ chai.use(chaiHttp);
         });
     });
 
-    it('it will PATCH post by editing title', (done) => {
-        let post = new Post(
-            {
-                title: "Board Game Ideas",
-                description: 123,
-                post_comments: [],
-                date_created: Date.now(),
-                date_modified: null
-            }
-            )
-        post.save((err, post) => {
-              chai.request(server)
-              .patch('/api/post/' + post.id)
-              .send(
-                {
-                    "title": 123,
-                    "description": 123,
-                    "post_comments": ["122231"]
-                })
-                .end((err, res) => {
-                });
+    // it('it will PATCH post by editing title', (done) => {
+    //     let post = new Post(
+    //         {
+    //             title: "Board Game Ideas",
+    //             description: 123,
+    //             post_comments: [],
+    //             date_created: Date.now(),
+    //             date_modified: null
+    //         }
+    //         )
+    //     post.save((err, post) => {
+    //           chai.request(server)
+    //           .patch('/api/post/' + post.id)
+    //           .send(
+    //             {
+    //                 "title": 123,
+    //                 "description": 123,
+    //                 "post_comments": ["122231"]
+    //             })
+    //             .end((err, res) => {
+    //             });
                 
 
-                const id = post.id;
-                chai.request(server)
-                .get('/api/post/' + id)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('title').eql('123');
-                    done();
-                });
-        });
-    });
+    //             const id = post.id;
+    //             chai.request(server)
+    //             .get('/api/post/' + id)
+    //             .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.a('object');
+    //                 res.body.should.have.property('title').eql('123');
+    //                 done();
+    //             });
+    //     });
+    // });
 
     it('it will PATCH post by editing description', (done) => {
         let post = new Post(
@@ -292,71 +292,71 @@ chai.use(chaiHttp);
         
     });
 
-    it('it will fail from PATCH post by setting title to null', (done) => {
-        let post = new Post(
-            {
-                title: "Board Game Ideas",
-                description: 123,
-                post_comments: [],
-                date_created: Date.now(),
-                date_modified: null
-            }
-            )
-        post.save((err, post) => {
-              chai.request(server)
-              .patch('/api/post/' + post.id)
-              .send(
-                {
-                    "title": null,
-                    "description": 123,
-                    "post_comments": ["122231"]
-                })
-                .end((err, res) => {
-                });
+    // it('it will fail from PATCH post by setting title to null', (done) => {
+    //     let post = new Post(
+    //         {
+    //             title: "Board Game Ideas",
+    //             description: 123,
+    //             post_comments: [],
+    //             date_created: Date.now(),
+    //             date_modified: null
+    //         }
+    //         )
+    //     post.save((err, post) => {
+    //           chai.request(server)
+    //           .patch('/api/post/' + post.id)
+    //           .send(
+    //             {
+    //                 "title": null,
+    //                 "description": 123,
+    //                 "post_comments": ["122231"]
+    //             })
+    //             .end((err, res) => {
+    //             });
 
-                 const id = post.id;
-                 chai.request(server)
-                 .get('/api/post/' + id)
-                 .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('title').eql("Board Game Ideas");
-                    done();
-                });
-        });
-    });
+    //              const id = post.id;
+    //              chai.request(server)
+    //              .get('/api/post/' + id)
+    //              .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.a('object');
+    //                 res.body.should.have.property('title').eql("Board Game Ideas");
+    //                 done();
+    //             });
+    //     });
+    // });
 
-    it('it will fail from PATCH post by setting description to null', (done) => {
-        let post = new Post(
-            {
-                title: "Board Game Ideas",
-                description: 123,
-                post_comments: [],
-                date_created: Date.now(),
-                date_modified: null
-            }
-            )
-        post.save((err, post) => {
-              chai.request(server)
-              .patch('/api/post/' + post.id)
-              .send(
-                {
-                    "title": "Board Game Ideas",
-                    "description": null,
-                    "post_comments": ["122231"]
-                })
-                .end((err, res) => {
-                });
+    // it('it will fail from PATCH post by setting description to null', (done) => {
+    //     let post = new Post(
+    //         {
+    //             title: "Board Game Ideas",
+    //             description: 123,
+    //             post_comments: [],
+    //             date_created: Date.now(),
+    //             date_modified: null
+    //         }
+    //         )
+    //     post.save((err, post) => {
+    //           chai.request(server)
+    //           .patch('/api/post/' + post.id)
+    //           .send(
+    //             {
+    //                 "title": "Board Game Ideas",
+    //                 "description": null,
+    //                 "post_comments": ["122231"]
+    //             })
+    //             .end((err, res) => {
+    //             });
 
-                 const id = post.id;
-                 chai.request(server)
-                 .get('/api/post/' + id)
-                 .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('description').eql('123');
-                    done();
-                });
-        });
-    });
+    //              const id = post.id;
+    //              chai.request(server)
+    //              .get('/api/post/' + id)
+    //              .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.a('object');
+    //                 res.body.should.have.property('description').eql('123');
+    //                 done();
+    //             });
+    //     });
+    // });
 });

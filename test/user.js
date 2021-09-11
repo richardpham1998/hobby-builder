@@ -332,113 +332,113 @@ chai.use(chaiHttp);
         });
     });
 
-    it('it will PATCH user by filling out all arrays', (done) => {
-        let user = new User({
-            user_name: "park121",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-              chai.request(server)
-              .patch('/api/user/' + user.id)
-              .send(
-                {
-                    "comments": ["18jd","d92d"],
-                    "events_created": ["18jde2d","d92e02rd"],
-                    "events_hosting": ["1r2rr3r8jd","d922d2d2d"],
-                    "events_attending": ["d29283he18jd","DAHD(UF@d92d"],
-                    "posts": ["3392r218jd","2r2d9232ed", "31"],
-                    "hobbies": ["4r3r18jd","dhu9f43rd92d"],
-                })
-                .end((err, res) => {
-                });
+    // it('it will PATCH user by filling out all arrays', (done) => {
+    //     let user = new User({
+    //         user_name: "park121",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //           chai.request(server)
+    //           .patch('/api/user/' + user.id)
+    //           .send(
+    //             {
+    //                 "comments": ["18jd","d92d"],
+    //                 "events_created": ["18jde2d","d92e02rd"],
+    //                 "events_hosting": ["1r2rr3r8jd","d922d2d2d"],
+    //                 "events_attending": ["d29283he18jd","DAHD(UF@d92d"],
+    //                 "posts": ["3392r218jd","2r2d9232ed", "31"],
+    //                 "hobbies": ["4r3r18jd","dhu9f43rd92d"],
+    //             })
+    //             .end((err, res) => {
+    //             });
 
-                const id = user.id;
-                chai.request(server)
-                .get('/api/user/' + id)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('user_name').eql("park121");
-                    res.body.should.have.property('comments').eql(["18jd","d92d"]);
-                    res.body.should.have.property('events_created').eql(["18jde2d","d92e02rd"]);
-                    res.body.should.have.property('events_hosting').eql(["1r2rr3r8jd","d922d2d2d"]);
-                    res.body.should.have.property('events_attending').eql(["d29283he18jd","DAHD(UF@d92d"]);
-                    res.body.should.have.property('posts').eql(["3392r218jd","2r2d9232ed", "31"]);
-                    res.body.should.have.property('hobbies').eql(["4r3r18jd","dhu9f43rd92d"]);
-                    done();
-                });
-        });
-    });
+    //             const id = user.id;
+    //             chai.request(server)
+    //             .get('/api/user/' + id)
+    //             .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.a('object');
+    //                 res.body.should.have.property('user_name').eql("park121");
+    //                 res.body.should.have.property('comments').eql(["18jd","d92d"]);
+    //                 res.body.should.have.property('events_created').eql(["18jde2d","d92e02rd"]);
+    //                 res.body.should.have.property('events_hosting').eql(["1r2rr3r8jd","d922d2d2d"]);
+    //                 res.body.should.have.property('events_attending').eql(["d29283he18jd","DAHD(UF@d92d"]);
+    //                 res.body.should.have.property('posts').eql(["3392r218jd","2r2d9232ed", "31"]);
+    //                 res.body.should.have.property('hobbies').eql(["4r3r18jd","dhu9f43rd92d"]);
+    //                 done();
+    //             });
+    //     });
+    // });
 
    
-    it('it will not add null title after PATCH user by setting user_name to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "title": null,
-            })
-            .end((err, res) => {
-            });
+    // it('it will not add null title after PATCH user by setting user_name to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "title": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
 
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('user_name').eql('jason123');
-                done();
-            });
-     });
-    });
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('user_name').eql('jason123');
+    //             done();
+    //         });
+    //  });
+    // });
 
-    it('it will not add null comments after PATCH user by setting comments to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "comments": null,
-            })
-            .end((err, res) => {
-            });
+    // it('it will not add null comments after PATCH user by setting comments to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "comments": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
 
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('comments').eql([]);
-                done();
-            });
-     });
-    });
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('comments').eql([]);
+    //             done();
+    //         });
+    //  });
+    // });
 
     it('it will not add null events_created after PATCH user by setting events_created to null', (done) => {
         let user = new User({
@@ -473,135 +473,135 @@ chai.use(chaiHttp);
     });
 
 
-    it('it will not add null events_hosting after PATCH user by setting events_hosting to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "events_hosting": null,
-            })
-            .end((err, res) => {
-            });
+    // it('it will not add null events_hosting after PATCH user by setting events_hosting to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "events_hosting": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
 
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('events_hosting').eql([]);
-                done();
-            });
-     });
-    });
-
-
-    it('it will not add null events_attending after PATCH user by setting events_attending to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "events_attending": null,
-            })
-            .end((err, res) => {
-            });
-
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('events_attending').eql([]);
-                done();
-            });
-     });
-    });
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('events_hosting').eql([]);
+    //             done();
+    //         });
+    //  });
+    // });
 
 
-    it('it will not add null posts after PATCH user by setting posts to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "posts": null,
-            })
-            .end((err, res) => {
-            });
+    // it('it will not add null events_attending after PATCH user by setting events_attending to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "events_attending": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
 
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('posts').eql([]);
-                done();
-            });
-     });
-    });
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('events_attending').eql([]);
+    //             done();
+    //         });
+    //  });
+    // });
 
-    it('it will not add null hobbies after PATCH user by setting hobbies to null', (done) => {
-        let user = new User({
-            user_name: "jason123",
-            comments: [],
-            events_created: [],
-            events_hosting: [],
-            events_attending: [],
-            posts: [],
-            hobbies: []
-        })
-        user.save((err, user) => {
-            chai.request(server)
-            .patch('/api/user/' + user.id)
-            .send(
-            {
-                "hobbies": null,
-            })
-            .end((err, res) => {
-            });
 
-            const id = user.id;
-            chai.request(server)
-            .get('/api/user/' + id)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('hobbies').eql([]);
-                done();
-            });
-     });
-    });
+    // it('it will not add null posts after PATCH user by setting posts to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "posts": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
+
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('posts').eql([]);
+    //             done();
+    //         });
+    //  });
+    // });
+
+    // it('it will not add null hobbies after PATCH user by setting hobbies to null', (done) => {
+    //     let user = new User({
+    //         user_name: "jason123",
+    //         comments: [],
+    //         events_created: [],
+    //         events_hosting: [],
+    //         events_attending: [],
+    //         posts: [],
+    //         hobbies: []
+    //     })
+    //     user.save((err, user) => {
+    //         chai.request(server)
+    //         .patch('/api/user/' + user.id)
+    //         .send(
+    //         {
+    //             "hobbies": null,
+    //         })
+    //         .end((err, res) => {
+    //         });
+
+    //         const id = user.id;
+    //         chai.request(server)
+    //         .get('/api/user/' + id)
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             res.body.should.have.property('hobbies').eql([]);
+    //             done();
+    //         });
+    //  });
+    // });
 
 
 
