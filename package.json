@@ -1,0 +1,32 @@
+{
+  "name": "hobby-builder",
+  "version": "1.0.0",
+  "description": "Web application to discover and develop hobbies",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardpham1998/hobby-builder.git"
+  },
+  "author": "Richard Pham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richardpham1998/hobby-builder/issues"
+  },
+  "homepage": "https://github.com/richardpham1998/hobby-builder#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.3",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "chai-http": "^4.3.0",
+    "mocha": "^9.1.1",
+    "should": "^13.2.3"
+  }
+}
