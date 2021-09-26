@@ -5,3 +5,8 @@
 <app-logout-button
 *ngIf="(auth.isAuthenticated$ | async)"
 ></app-logout-button>
+
+<input type="button" routerLink="/post" value="Posts" class="btn btn-success"/>
+<input type="button" routerLink="/add-post" value="Add Post" class="btn btn-success"/>
+
+

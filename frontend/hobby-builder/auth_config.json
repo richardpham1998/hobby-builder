@@ -1,4 +1,6 @@
 {
     "domain": "dev-5pgt2zze.us.auth0.com",
-    "clientId": "n2BxOkMvjfVR2gl4AdVn9IBZKG9MT9Mn"
+    "clientId": "n2BxOkMvjfVR2gl4AdVn9IBZKG9MT9Mn",
+    "audience": "https://express.sample",
+    "serverUrl": "http://localhost:6060"
 }

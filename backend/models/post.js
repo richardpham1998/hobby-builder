@@ -12,6 +12,12 @@ const PostSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    user:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
     //store id's of post comments
     post_comments:
     {

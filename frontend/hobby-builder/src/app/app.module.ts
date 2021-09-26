@@ -9,13 +9,23 @@ import { environment as env } from '../environments/environment';
 import { LoginButtonComponent } from './components/login-button/login-button.component';
 import { LogoutButtonComponent } from './components/logout-button/logout-button.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
+import { PostComponent } from './components/post/post.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { AddPostComponent } from './components/add-post/add-post.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginButtonComponent,
     LogoutButtonComponent,
-    NavBarComponent
+    NavBarComponent,
+    ProfileComponent,
+    HomeComponent,
+    PostComponent,
+    AddPostComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +33,9 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     AuthModule.forRoot
     ({
         ... env.auth,
-    })
+    }),
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

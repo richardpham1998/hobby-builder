@@ -1,0 +1,13 @@
+<div>
+    <h1> Welcome </h1>
+</div>
+<div *ngIf="auth.user$ | async as user">
+    <div>
+        <img [src] = "user.picture" alt="User's profile picture"/>
+        <p> {{user.email}} </p>
+    </div>
+
+    <div *ngIf="profileJson">
+        {{profileJson}}
+    </div>
+</div>

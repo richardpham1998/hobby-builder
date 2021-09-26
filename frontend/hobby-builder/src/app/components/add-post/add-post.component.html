@@ -1,0 +1,19 @@
+<div *ngIf="auth.user$ | async as user">
+    <h2>Add Post</h2>
+    <form (submit)="addPost()">
+        <div>
+            <label>
+                Title
+            </label>
+            <input type="text" [(ngModel)]="title" name="title">
+        </div>
+        <div>
+            <label>
+                Description
+            </label>
+            <input type="text" [(ngModel)]="description" name="description">
+        </div>
+        <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
+        <input type="submit" class="btn btn-success" value="Add">
+    </form>
+</div>

@@ -13,6 +13,7 @@ export class LogoutButtonComponent implements OnInit {
   constructor(public auth: AuthService, @Inject(DOCUMENT) private doc) { }
 
   ngOnInit(): void {
+    console.log(this.auth)
   }
 
   logout(): void{

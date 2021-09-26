@@ -12,6 +12,7 @@ export class LoginButtonComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
+    console.log(this.auth)
   }
 
   loginWithRedirect(): void{
