@@ -32,13 +32,16 @@ export class AddPostComponent implements OnInit {
   {
     this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
 
-    if(this.title==null || this.description==null)
+    this.title.trim;
+    this.description.trim;
+
+    if(this.title==null || this.title== ""|| this.description==null || this.description=="")
     {
-      if(this.title==null)
+      if(this.title==null  || this.title== "")
       {
         alert("Title is blank");
       }
-      if(this.description==null)
+      if(this.description==null || this.description=="")
       {
         alert("Description is blank");
     }

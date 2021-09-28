@@ -37,9 +37,7 @@ export class PostComponent implements OnInit {
     this.postService.deletePost(id)
     .subscribe(data=>
      {
-       //if(data.n==1)
-       if(1==1)
-     {
+
        for(var i = 0; i < posts.length; i++)
        {
          if(posts[i]._id == id)
@@ -47,8 +45,21 @@ export class PostComponent implements OnInit {
            posts.splice(i,1);
          }
        }
-     }
+     
      });
+  }
+
+  cancelUpdate()
+  {
+    this.editPostId=null;
+    this.title = null;
+    this.userId= null;
+    this.description= '';
+    this.post_comments= [];
+    this.date_created= null;
+    this.date_modified= null;
+    this.editPostId = null;
+    this.postService.getPosts().subscribe(posts=>this.posts=posts);
   }
 
   editOption(id:String)
@@ -58,17 +69,18 @@ export class PostComponent implements OnInit {
 
     console.log(this.editPostId);
 
-    this.postService.getPost(id).subscribe(post=>this.postToEdit=post);
-
-    if(this.postToEdit != null)
-    {
-    this.title = this.postToEdit.title;
-    this.description= this.postToEdit.description;
-    this.userId = this.postToEdit.user;
-    this.post_comments= this.postToEdit.post_comments;
-    this.date_created=  this.postToEdit.date_created;
-    this.date_modified = this.postToEdit.date_modified;
-    }
+    this.postService.getPost(this.editPostId).subscribe(post=>{
+      this.postToEdit=post;
+      if(this.postToEdit != null)
+      {
+      this.title = this.postToEdit.title;
+      this.description= this.postToEdit.description;
+      this.userId = this.postToEdit.user;
+      this.post_comments= this.postToEdit.post_comments;
+      this.date_created=  this.postToEdit.date_created;
+      this.date_modified = this.postToEdit.date_modified;
+      }
+    })
 
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
 
@@ -77,14 +89,16 @@ export class PostComponent implements OnInit {
 
   updatePost(id: String)
   {
+    this.title.trim;
+    this.description.trim;
 
-    if(this.title==null || this.description==null)
+    if(this.title==null || this.title== ""|| this.description==null || this.description=="")
     {
-      if(this.title==null)
+      if(this.title==null  || this.title== "")
       {
         alert("Title is blank");
       }
-      if(this.description==null)
+      if(this.description==null || this.description=="")
       {
         alert("Description is blank");
     }
@@ -109,22 +123,18 @@ export class PostComponent implements OnInit {
         }
       }
 
-      this.postService.patchPost(id, newPost).subscribe(post=>this.posts[index]=post);
+      this.postService.patchPost(id, newPost).subscribe(post=>{
+          this.posts[index]=post;
+          this.postService.getPosts().subscribe(posts=>this.posts=posts);
+        });
 
-      this.title = null;
-      this.userId= null;
-      this.description= '';
-      this.post_comments= [];
-      this.date_created= null;
-      this.date_modified= null;
-      this.editPostId = null;
-
-      this.postService.getPosts().subscribe(posts=>this.posts=posts);
-
-      
+        this.title = null;
+        this.userId= null;
+        this.description= '';
+        this.post_comments= [];
+        this.date_created= null;
+        this.date_modified= null;
+        this.editPostId = null;      
     }
-
   }
-
-
 }

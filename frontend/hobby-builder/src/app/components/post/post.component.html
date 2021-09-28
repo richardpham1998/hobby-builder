@@ -1,48 +1,52 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
-    <div *ngFor= "let post of posts">
+    
+    <div *ngIf="posts.length ==0">
+        <a>No posts to show.</a>
+    </div>
 
-        <div *ngIf= "editPost != post._id">
-            <div class = "col-md-3">
-                {{ post.title }}
-            </div>
-            <div class = "col-md-3">
-                {{ post.description }}
-            </div>
-            <div *ngIf= "post.date_modified == null" class = "col-md-3">
-                Created: {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-            </div>
-            <div *ngIf= "post.date_modified != null" class = "col-md-3">
-                Edited: {{ post.date_modified | date:"MM/dd/yyyy 'at' h:mma" }}
-            </div>
-            <div class = "col-md-3">
-                <input type="button" (click)="deletePost(post._id)" value="Delete" class="btn btn-danger">
-                <br>
-            </div>
-            <div class = "col-md-3">
-                <input type="button" (click)="editOption(post._id)" value="Edit" class="btn btn-success">
-                <br>
-            </div>
-        </div>
+    <div *ngIf="posts.length>0">
+        <div *ngFor= "let post of posts">
 
-        <div *ngIf= "editPostId == post._id && editPostId != null">
-            <form (submit)="updatePost(post._id)">
-                <div>
-                    <label>
-                        Title
-                    </label>
-                    <input type="text" [(ngModel)]="title" name="title" placeholder="Title">
+            <div *ngIf= "editPostId != post._id">
+                <div class = "col-md-3">
+                    {{ post.title }}
                 </div>
-                <div>
-                    <label>
-                        Description
-                    </label>
-                    <input type="text" [(ngModel)]="description" name="description">
+                <div class = "col-md-3">
+                    {{ post.description }}
                 </div>
-                <input type="hidden" [(ngModel)]="userId" name="userId">
-                <input type="submit" class="btn btn-success" value="Update">
-        
-            </form>
-        </div>
+                <div *ngIf= "post.date_modified == null" class = "col-md-3">
+                    Created: {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                </div>
+                <div *ngIf= "post.date_modified != null" class = "col-md-3">
+                    Edited: {{ post.date_modified | date:"MM/dd/yyyy 'at' h:mma" }}
+                </div>
+                <div class = "col-md-3">
+                    <input type="button" (click)="deletePost(post._id)" value="Delete" class="btn btn-danger">
+                    <br>
+                </div>
+                <div class = "col-md-3">
+                    <input type="button" (click)="editOption(post._id)" value="Edit" class="btn btn-success">
+                    <br>
+                </div>
+            </div>
 
+            <div *ngIf= "editPostId == post._id && editPostId != null">
+                <form (submit)="updatePost(post._id)">
+            <div>
+                <label>Title</label>
+                <input type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea type="text" [(ngModel)]="description" name="description" placeholder="Add Description here"></textarea>
+            </div>
+                    <input type="hidden" [(ngModel)]="userId" name="userId">
+                    <input type="button" (click)='cancelUpdate()' class="btn btn-success" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Update">
+            
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>

@@ -2,16 +2,12 @@
     <h2>Add Post</h2>
     <form (submit)="addPost()">
         <div>
-            <label>
-                Title
-            </label>
-            <input type="text" [(ngModel)]="title" name="title">
+            <label>Title</label>
+            <input type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">
         </div>
         <div>
-            <label>
-                Description
-            </label>
-            <input type="text" [(ngModel)]="description" name="description">
+            <label>Description</label>
+            <textarea type="text" [(ngModel)]="description" name="description" placeholder="Add Description here"></textarea>
         </div>
         <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
         <input type="submit" class="btn btn-success" value="Add">
