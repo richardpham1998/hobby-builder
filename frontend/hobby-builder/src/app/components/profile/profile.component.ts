@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { User } from '../../models/user';
+import {UserService} from '../../services/user.service'
 
 @Component({
   selector: 'app-profile',
@@ -10,12 +13,23 @@ export class ProfileComponent implements OnInit {
 
   profileJson: String = null;
 
-  constructor(public auth: AuthService) {
+  id: String;
+
+  profile: User = null;
+  email: String = null;
+
+  constructor(public auth: AuthService, private route: ActivatedRoute, private userService: UserService) {
 
    }
 
   ngOnInit(): void {
-    this.auth.user$.subscribe((profile)=>(this.profileJson = JSON.stringify(profile,null,2)))
+    this.id = this.route.snapshot.paramMap.get("id");
+
+    this.userService.getUser(this.id).subscribe(
+      user=>{
+        this.profile=user;
+      });
+
   }
 
 }

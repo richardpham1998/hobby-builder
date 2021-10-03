@@ -13,6 +13,12 @@ const CommentSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    name:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
     event:
     {
         type: String,

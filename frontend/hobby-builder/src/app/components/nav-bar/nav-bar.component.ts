@@ -9,9 +9,12 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class NavBarComponent implements OnInit {
 
+  profileJson: String = null;
+
   constructor(public auth : AuthService) { }
 
   ngOnInit(): void {
+    this.auth.user$.subscribe((profile)=>(this.profileJson = JSON.stringify(profile,null,2)))
   }
 
 }

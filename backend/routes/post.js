@@ -20,6 +20,7 @@ router.post('/post',(req,res,next)=>
             title: req.body.title,
             description: req.body.description,
             user: req.body.user,
+            name: req.body.name,
             post_comments: req.body.post_comments,
             date_created: Date.now(),
             date_modified: null

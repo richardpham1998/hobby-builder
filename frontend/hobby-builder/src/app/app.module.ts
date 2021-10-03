@@ -15,6 +15,8 @@ import { PostComponent } from './components/post/post.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AddPostComponent } from './components/add-post/add-post.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { AddPostComponent } from './components/add-post/add-post.component';
     ProfileComponent,
     HomeComponent,
     PostComponent,
-    AddPostComponent
+    AddPostComponent,
+    AddCommentComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

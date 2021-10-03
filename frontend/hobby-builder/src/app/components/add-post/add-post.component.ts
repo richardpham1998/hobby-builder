@@ -13,12 +13,16 @@ export class AddPostComponent implements OnInit {
   posts: Post[] = [];
   title: String = null;
   userId: String = null;
+  name: String = null;
   description: String = '';
   post_comments: String[] = [];
   date_created: Date = null;
   date_modified: Date = null;
 
   profileObject: any = null;
+
+  blankTitle: boolean = false;
+  blankDescription: boolean = false;
 
 
   constructor(private postService : PostService, public auth: AuthService) { }
@@ -32,19 +36,32 @@ export class AddPostComponent implements OnInit {
   {
     this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
 
-    this.title.trim;
-    this.description.trim;
+    if(this.title != null)
+    {
+      this.title.trim;
+    }
+    
+    if(this.description != null)
+    {
+      this.description.trim;
+    }
 
     if(this.title==null || this.title== ""|| this.description==null || this.description=="")
     {
       if(this.title==null  || this.title== "")
       {
-        alert("Title is blank");
+        this.blankTitle=true;
+      }
+      else{
+        this.blankTitle=false;
       }
       if(this.description==null || this.description=="")
       {
-        alert("Description is blank");
-    }
+        this.blankDescription=true;
+      }
+      else{
+        this.blankDescription = false;
+      }
     }
     else{
       const newPost =
@@ -52,6 +69,7 @@ export class AddPostComponent implements OnInit {
         title: this.title,
         description: this.description,
         user: this.userId,
+        name: this.profileObject.name,
         post_comments: [],
         date_created: new Date,
         date_modified: null
@@ -65,10 +83,14 @@ export class AddPostComponent implements OnInit {
 
       this.postService.addPost(newPost).subscribe(post=>this.posts.push(post));
 
+      this.blankTitle=false;
+      this.blankDescription=false;
       alert("Successfully added");
 
       
     }
+
+    this.postService.getPosts().subscribe(posts=>this.posts=posts);
 
   }
 }

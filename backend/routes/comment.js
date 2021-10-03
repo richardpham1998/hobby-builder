@@ -19,6 +19,7 @@ router.post('/comment', (req,res,next)=>
     let newComment = new Comment({
         content: req.body.content,
         user: req.body.user,
+        name: req.body.name,
         event: req.body.event,
         post: req.body.post,
         date_created: Date.now(),

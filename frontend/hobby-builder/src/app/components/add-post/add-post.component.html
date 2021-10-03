@@ -1,15 +1,19 @@
-<div *ngIf="auth.user$ | async as user">
-    <h2>Add Post</h2>
-    <form (submit)="addPost()">
-        <div>
-            <label>Title</label>
-            <input type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">
-        </div>
-        <div>
-            <label>Description</label>
-            <textarea type="text" [(ngModel)]="description" name="description" placeholder="Add Description here"></textarea>
-        </div>
-        <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
-        <input type="submit" class="btn btn-success" value="Add">
-    </form>
+<div class="col-md-16">
+    <div *ngIf="auth.user$ | async as user" class="card" style="width: 50%;">
+        <h2>Add Post</h2>
+        <form (submit)="addPost()" class="card-body">
+            <div>
+                <h5 class="card-title" >Title</h5>
+                <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">
+                <div class="alert alert-danger" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
+            </div>
+            <div>
+                <h5 class="card-title">Description</h5>
+                <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description" placeholder="Add Description here"></textarea>
+                <div class="alert alert-danger" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
+            </div>
+            <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
+            <input type="submit" class="btn btn-success" value="Add">
+        </form>
+    </div>
 </div>
