@@ -45,6 +45,7 @@ chai.use(chaiHttp);
                 title: "Board Game Ideas",
                 description: "Hey everyone! I just wanted to know if anyone had any recommendations for board games!",
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: []
             }
         chai.request(server)
@@ -65,6 +66,7 @@ chai.use(chaiHttp);
                 title: null,
                 description: "Hey everyone! I just wanted to know if anyone had any recommendations for board games!",
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: []
             }
         chai.request(server)
@@ -83,6 +85,7 @@ chai.use(chaiHttp);
                 title: "Board Game Ideas",
                 description: null,
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: []
             }
         chai.request(server)
@@ -100,6 +103,7 @@ chai.use(chaiHttp);
                 title: "Board Game Ideas",
                 description: "Hey everyone! I just wanted to know if anyone had any recommendations for board games!",
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: ["122231"]
             }
           chai.request(server)
@@ -121,6 +125,7 @@ chai.use(chaiHttp);
                 title: 123,
                 description: "Hey everyone! I just wanted to know if anyone had any recommendations for board games!",
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: ["122231"]
             }
           chai.request(server)
@@ -142,6 +147,7 @@ chai.use(chaiHttp);
                 title: "Board Game Ideas",
                 description: 123,
                 user: "sde3h82",
+                name:"Michael",
                 post_comments: ["122231"]
             }
           chai.request(server)
@@ -173,6 +179,7 @@ chai.use(chaiHttp);
                 description: 123,
                 post_comments: ["1234"],
                 user: "sde3h82",
+                name:"Michael",
                 date_created: Date.now(),
                 date_modified: null
             }
@@ -202,6 +209,7 @@ chai.use(chaiHttp);
                 description: 123,
                 post_comments: ['ss'],
                 user: "sde3h82",
+                name:"Michael",
                 date_created: Date.now(),
                 date_modified: null
             }
@@ -237,6 +245,7 @@ chai.use(chaiHttp);
     //             description: 123,
     //             post_comments: [],
     //              user: "sde3h82",
+    //              name:"Michael",
     //             date_created: Date.now(),
     //             date_modified: null
     //         }
@@ -273,6 +282,7 @@ chai.use(chaiHttp);
                 description: 123,
                 post_comments: [],
                 user: "sde3h82",
+                name:"Michael",
                 date_created: Date.now(),
                 date_modified: null
             }
@@ -310,6 +320,7 @@ chai.use(chaiHttp);
     //             description: 123,
     //             post_comments: [],
    //              user: "sde3h82",
+   //              name:"Michael",
     //             date_created: Date.now(),
     //             date_modified: null
     //         }
@@ -346,6 +357,7 @@ chai.use(chaiHttp);
     //             description: 123,
     //             post_comments: [],
     //              user: "sde3h82",
+    //              name:"Michael",
     //             date_created: Date.now(),
     //             date_modified: null
     //         }

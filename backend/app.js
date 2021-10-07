@@ -9,6 +9,7 @@ const postRoute = require('./routes/post');
 const userRoute = require('./routes/user');
 const eventRoute = require('./routes/event');
 const commentRoute = require('./routes/comment');
+const tagRoute = require('./routes/tag');
 
 mongoose.connect('mongodb://localhost:27017/hobby-builder');
 
@@ -33,6 +34,7 @@ mongoose.connection.on('error', (err=>
     app.use('/api', userRoute);
     app.use('/api', eventRoute);
     app.use('/api', commentRoute);
+    app.use('/api', tagRoute);
 
     app.listen(port,()=>
     {

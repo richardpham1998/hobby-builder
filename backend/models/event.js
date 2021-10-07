@@ -25,6 +25,12 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    name:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
     hosts:
     {
         type: [String],

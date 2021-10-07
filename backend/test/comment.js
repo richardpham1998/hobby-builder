@@ -44,6 +44,7 @@ chai.use(chaiHttp);
              let comment = new Comment({
                  content: "This is a great idea!",
                  user:"sj12",
+                 name:"Michael",
                   date_created: Date.now()
              })
          chai.request(server)
@@ -62,6 +63,7 @@ chai.use(chaiHttp);
              let comment = new Comment({
                  content: null,
                  user:"sj12",
+                 name:"Michael",
                  date_created: Date.now()
              })
          chai.request(server)
@@ -79,6 +81,7 @@ chai.use(chaiHttp);
                 content: "This is a great idea!",
                 user:"sj12",
                 post:"dj892",
+                name:"Michael",
                 date_created: Date.now()
             })
         chai.request(server)
@@ -98,6 +101,7 @@ chai.use(chaiHttp);
                 content: "This is a great idea!",
                 user:"sj12",
                 event:"dj892",
+                name:"Michael",
                 date_created: Date.now()
             })
         chai.request(server)
@@ -122,6 +126,7 @@ chai.use(chaiHttp);
         let comment = new Comment({
             content: "I agree!",
             user: "dj923",
+            name:"Michael",
             date_created: Date.now()
         })
 
@@ -150,6 +155,7 @@ chai.use(chaiHttp);
                     content: "This is a great idea!",
                     user:"sj12",
                     event: "jf8943",
+                    name:"Michael",
                     date_created: Date.now()
                 })
         comment.save((err, user) => {
@@ -180,6 +186,7 @@ chai.use(chaiHttp);
                     content: "This is a great idea!",
                     user:"sj12",
                     event: "jf8943",
+                    name:"Michael",
                     date_created: Date.now()
                 })
         comment.save((err, user) => {
@@ -213,6 +220,7 @@ chai.use(chaiHttp);
     //                     content: "This is a great idea!",
     //                     user:"sj12",
     //                     event: "jf8943",
+    //                     name:"Michael",
     //                     date_created: Date.now()
     //                 })
     //         comment.save((err, user) => {
