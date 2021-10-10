@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { UserService } from 'src/app/services/user.service';
+import {User} from '../../models/user';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,12 +11,17 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class NavBarComponent implements OnInit {
 
-  profileJson: String = null;
+  profileObject: any;
+  userId: String;
 
-  constructor(public auth : AuthService) { }
+  constructor(public auth : AuthService, private userService : UserService) { }
 
   ngOnInit(): void {
-    this.auth.user$.subscribe((profile)=>(this.profileJson = JSON.stringify(profile,null,2)))
+
+    this.auth.user$.subscribe((profile)=>{
+      this.profileObject = profile;
+      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
+    });
   }
 
 }

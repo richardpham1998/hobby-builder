@@ -20,7 +20,8 @@ router.post('/post',(req,res,next)=>
             title: req.body.title,
             description: req.body.description,
             user: req.body.user,
-            name: req.body.name,
+            author: req.body.author,
+            tags: req.body.tags,
             post_comments: req.body.post_comments,
             date_created: Date.now(),
             date_modified: null
@@ -80,12 +81,17 @@ router.patch('/post/:id',(req,res,next)=>
             {
                 resultObject.post_comments = req.body.post_comments;
             }
+            if(req.body.tags != null)
+            {
+                resultObject.tags = req.body.tags;
+            }
         
             Post.updateOne({_id: req.params.id},
                 {
                     "title": resultObject.title,
                     "description": resultObject.description, 
                     "post_comments": resultObject.post_comments,
+                    "tags": resultObject.tags,
                     "date_modified": Date.now()
                 }, 
                 function(err, result1)

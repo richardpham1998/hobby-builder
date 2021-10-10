@@ -13,7 +13,8 @@ export class AddPostComponent implements OnInit {
   posts: Post[] = [];
   title: String = null;
   userId: String = null;
-  name: String = null;
+  author: String = null;
+  tags: String [] = [];
   description: String = '';
   post_comments: String[] = [];
   date_created: Date = null;
@@ -69,14 +70,16 @@ export class AddPostComponent implements OnInit {
         title: this.title,
         description: this.description,
         user: this.userId,
-        name: this.profileObject.name,
+        author: this.profileObject.name,
         post_comments: [],
+        tags: [],
         date_created: new Date,
         date_modified: null
       }
       this.title = null;
       this.userId= null;
       this.description= '';
+      this.tags = [];
       this.post_comments= [];
       this.date_created= null;
       this.date_modified= null;

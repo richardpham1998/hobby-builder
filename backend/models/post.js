@@ -18,7 +18,7 @@ const PostSchema = mongoose.Schema({
         required: true,
         null: false
     },
-    name:
+    author:
     {
         type: String,
         required: true,
@@ -28,6 +28,12 @@ const PostSchema = mongoose.Schema({
     post_comments:
     {
         type: Array,
+        required: true,
+        null: false
+    },
+    tags:
+    {
+        type: [String],
         required: true,
         null: false
     },

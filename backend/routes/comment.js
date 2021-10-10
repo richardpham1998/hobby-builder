@@ -19,7 +19,7 @@ router.post('/comment', (req,res,next)=>
     let newComment = new Comment({
         content: req.body.content,
         user: req.body.user,
-        name: req.body.name,
+        author: req.body.author,
         event: req.body.event,
         post: req.body.post,
         date_created: Date.now(),
@@ -63,7 +63,7 @@ router.patch('/comment/:id', (req,res,user)=>
         "content": req.body.content,
         "user": req.body.user,
         "event": req.body.event,
-        "name": req.body.name,
+        "author": req.body.author,
         "post": req.body.post,
         "date_modified": Date.now(),
     }, function(err, result)
@@ -72,7 +72,7 @@ router.patch('/comment/:id', (req,res,user)=>
         {
             res.json(err);
         }
-        else if(req.body.content == null || req.body.user == null || req.body.name == null)
+        else if(req.body.content == null || req.body.user == null || req.body.author == null)
         {
             res.json({msg: 'Unable to patch Comment. Data is invalid', status: 404});
         }

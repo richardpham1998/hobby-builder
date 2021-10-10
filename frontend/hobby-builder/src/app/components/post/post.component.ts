@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Post} from '../../models/post';
 import {Comment} from '../../models/comment';
+import {Tag} from '../../models/tag';
 import {PostService} from '../../services/post.service'
 import { AuthService } from '@auth0/auth0-angular';
 import { CommentService } from 'src/app/services/comment.service';
+import { ActivatedRoute } from '@angular/router';
+import { TagService } from 'src/app/services/tag.service';
 
 @Component({
   selector: 'app-post',
@@ -13,46 +16,89 @@ import { CommentService } from 'src/app/services/comment.service';
 })
 export class PostComponent implements OnInit {
 
+
+  post: Post = null;
+  id: String = null;
+  
   //post components
   posts: Post[] = [];
   comments: Comment[] = [];
   title: String = null;
   userId: String = null;
-  name: String = null;
+  author: String = null;
   description: String = '';
   post_comments: String[] = [];
+  tags : String[] = [];
   date_created: Date = null;
   date_modified: Date = null;
 
   profileObject: any = null;
-  editPostId: String = null;
-  postToEdit: Post = null;
-
   blankTitle: boolean = false;
   blankDescription: boolean = false;
+  editPost: boolean = false;
 
   //comment components
   comment_content: String = '';
-  comment_name: String = '';
+  comment_author: String = '';
   comment_event: String = null;
   comment_post: String = null;
   comment_date_created: Date = null;
   comment_date_modified: Date = null;
   comment_blankContent: boolean = false;
-  idToCommentOn: String = '';
   editCommentId: String= null;
   commentToEdit: Comment = null;
   addCommentOption : Boolean = false;
+  commentList : Comment[] = [];
 
+  //tag components
+  tagOptions: Tag[]= [];
+  tagId: String = null;
+  hobbyNames: String[] = [];
+  hobbyObject: Tag;
 
-  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService) { }
+  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService) { }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get("id");
+
+    this.postService.getPost(this.id).subscribe(post=>
+      {
+        this.post=post;
+        if(this.post["name"]=="CastError")
+        {
+          this.post = null;
+        }
+        else{
+          this.tags = this.post.tags;
+          this.tagService.getTags().subscribe(tags=>{
+            this.tagOptions=tags;
+            this.tagOptions.sort((a,b)=>this.sortTags(a,b));
+            this.loadHobbyNames();
+          });
+
+          this.commentService.getComments().subscribe(comments=>
+            {
+              this.comments=comments;
+              for(let i = 0; i < comments.length;i++)
+              {
+                if(comments[i].user===this.post.user)
+                {
+                  this.commentList.push(comments[i]);
+                }
+              }
+            });
+        }
+
+      }
+    );
+
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
-    this.commentService.getComments().subscribe(comments=>this.comments=comments);
+    
     this.auth.user$.subscribe((profile)=>(this.profileObject = profile))
   }
 
+  
+  //delete post
   deletePost(id:any)
   {
     var posts = this.posts;
@@ -76,51 +122,53 @@ export class PostComponent implements OnInit {
            this.comments.splice(i,1);
          }
        }
+
+       this.postService.getPost(this.id).subscribe(post=>
+        {
+          this.post=post;
+          if(this.post["name"]=="CastError")
+          {
+            this.post = null;
+          }
+        }
+      );
      
      });
   }
 
+  //cancel edit option for post
   cancelUpdate()
   {
-    this.editPostId=null;
+    this.editPost = false;
+    
     this.title = null;
     this.userId= null;
     this.description= '';
     this.post_comments= [];
     this.date_created= null;
     this.date_modified= null;
-    this.editPostId = null;
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
   }
 
+  //launches edit window for post
   editOption(id:String)
   {
 
-    this.editPostId = id;
+    this.editPost = true;
+    this.title = this.post.title;
+    this.description= this.post.description;
+    this.date_created= this.post.date_created;
+    this.date_modified= this.post.date_modified;
 
-    console.log(this.editPostId);
-
-    this.postService.getPost(this.editPostId).subscribe(post=>{
-      this.postToEdit=post;
-      if(this.postToEdit != null)
-      {
-      this.title = this.postToEdit.title;
-      this.description= this.postToEdit.description;
-      this.userId = this.postToEdit.user;
-      this.name = this.profileObject.name,
-      this.post_comments= this.postToEdit.post_comments;
-      this.date_created=  this.postToEdit.date_created;
-      this.date_modified = this.postToEdit.date_modified;
-      }
-    })
-
-    this.postService.getPosts().subscribe(posts=>this.posts=posts);
+   this.postService.getPosts().subscribe(posts=>this.posts=posts);
 
 
   }
 
+  //updates post
   updatePost(id: String)
   {
+    this.editPost = false;
 
     if(this.title != null)
     {
@@ -150,12 +198,14 @@ export class PostComponent implements OnInit {
       }
     }
     else{
+      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
       const newPost =
       {
         title: this.title,
         description: this.description,
         user: this.userId,
-        name: this.name,
+        author: this.author,
+        tags: this.tags,
         post_comments: this.post_comments,
         date_created: this.date_created,
         date_modified: new Date
@@ -173,29 +223,37 @@ export class PostComponent implements OnInit {
       this.postService.patchPost(id, newPost).subscribe(post=>{
           this.posts[index]=post;
           this.postService.getPosts().subscribe(posts=>this.posts=posts);
+          this.postService.getPost(this.id).subscribe(post=>
+            {
+              this.post=post;
+              if(this.post["name"]=="CastError")
+              {
+                this.post = null;
+              }
+            }
+          );
         });
 
         this.title = null;
         this.userId= null;
-        this.name = null;
+        this.author = null;
         this.description= '';
         this.post_comments= [];
         this.date_created= null;
-        this.date_modified= null;
-        this.editPostId = null;      
+        this.date_modified= null;  
     }
   }
 
   //Comment functionalities
 
-  selectComment(id: String)
+  selectComment()
   {
-    this.addCommentOption = true;
     this.cancelComment();
-    this.idToCommentOn= id;
+    this.addCommentOption = true;
     this.commentService.getComments().subscribe(comments=>this.comments=comments);
   }
 
+  //adds comment
   addComment(postOrEvent : Boolean, postEventId : String)
   {
 
@@ -229,7 +287,7 @@ export class PostComponent implements OnInit {
       {
         content: this.comment_content,
         user: this.userId,
-        name: this.profileObject.name,
+        author: this.profileObject.name,
         post: postId,
         event: eventId,
         date_created: new Date,
@@ -238,25 +296,26 @@ export class PostComponent implements OnInit {
 
       this.commentService.addComment(newComment).subscribe(comment=>{
         this.comments.push(comment);
+        this.commentList.push(comment);
         this.commentService.getComments().subscribe(comments=>this.comments=comments);
       });
 
       this.comment_content = '';
       this.userId= null;
-      this.comment_name = null;
+      this.comment_author = null;
       this.comment_event= null;
       this.comment_post= null;
       this.comment_date_created= null;
       this.comment_date_modified= null;
 
-
-
       this.comment_blankContent=false;
 
-      this.idToCommentOn = '';
+      this.cancelComment();
+      this.addCommentOption = false;
     }
   }
 
+  //removes comment
   deleteComment(id:any)
   {
     var comments = this.comments;
@@ -272,18 +331,26 @@ export class PostComponent implements OnInit {
          }
        }
 
+       for(var i = 0; i < this.commentList.length; i++)
+       {
+         if(this.commentList[i]._id == id)
+         {
+           this.commentList.splice(i,1);
+         }
+       }
+
        this.commentService.getComments().subscribe(comments=>this.comments=comments);
      
      });
   }
 
+  //opens edit window for comment
   editComment(id:String)
   {
 
     this.addCommentOption = false;
     this.editCommentId = id;
 
-    console.log(this.editPostId);
 
     this.commentService.getComment(this.editCommentId).subscribe(comment=>{
       this.commentToEdit=comment;
@@ -292,6 +359,7 @@ export class PostComponent implements OnInit {
         this.comment_content = this.commentToEdit.content;
         this.comment_event = this.commentToEdit.event;
         this.comment_post = this.commentToEdit.post;
+        this.comment_author = this.commentToEdit.author;
         this.comment_date_created = this.commentToEdit.date_created;
         this.comment_date_modified = this.commentToEdit.date_modified;
       }
@@ -302,17 +370,23 @@ export class PostComponent implements OnInit {
 
   }
 
+  //cancels edit option fo comment
   cancelComment()
   {
+    this.editCommentId='';
+    this.addCommentOption=false;
+
     this.comment_content = '';
     this.comment_event = null;
     this.comment_post = null;
+    this.comment_author = null;
     this.comment_date_created = null;
     this.comment_date_modified = null;
     this.editCommentId = null;
     this.commentService.getComments().subscribe(comments=>this.comments=comments);
   }
 
+  //edits comment
   updateComment(id: String)
   {
 
@@ -330,7 +404,7 @@ export class PostComponent implements OnInit {
       {
         content: this.comment_content,
         user: this.userId,
-        name: this.comment_name,
+        author: this.comment_author,
         post: this.comment_post,
         event: this.comment_event,
         date_created: new Date,
@@ -352,7 +426,7 @@ export class PostComponent implements OnInit {
 
           this.comment_content = '';
           this.userId= null;
-          this.comment_name = null;
+          this.comment_author = null;
           this.comment_event= null;
           this.comment_post= null;
           this.comment_date_created= null;
@@ -364,10 +438,98 @@ export class PostComponent implements OnInit {
 
           this.editCommentId = '';
           
-    });
+      });
 
 
 
       }
+  }
+
+  //tag methods
+
+  sortTags(a : Tag, b: Tag)
+  {
+      if(a.name>b.name)
+      {
+        return 1;
+      }
+      else if(a.name<b.name)
+      {
+        return -1;
+      }
+      else{
+        return 0;
+      }
+  }
+
+  loadHobbyNames()
+  {
+    for(let i = 0; i < this.tags.length;i++)
+    {
+      this.tagService.getTag(this.tags[i]).subscribe(hobby=>
+        {
+          this.hobbyObject = hobby;
+          if(this.hobbyObject==null)
+          {
+            this.hobbyNames[i]=null;
+          }
+          else{
+            this.hobbyNames[i]=this.hobbyObject.name;
+          }
+          
+        });
+      
+    }
+    this.hobbyObject=null;
+  }
+
+  addHobby()
+  {
+    if(this.tags.includes(this.tagId))
+    {
+      alert("Hobby already exists in your post")
+    }
+    else{
+      this.tags.push(this.tagId);
+
+      this.postService.patchPost(this.id,this.post).subscribe(post=>
+        { 
+          this.postService.getPost(this.id).subscribe(post=>{
+              this.post=post;
+              this.tags = this.post.tags;
+            }
+          );
+          this.loadHobbyNames();
+        }
+      );
+
+      this.tagId = null;
+      this.userId = null;
+
+    }
+  }
+
+  deleteHobby(hobby: String)
+  {
+    for(var i = 0; i < this.tags.length; i++)
+    {
+      if(this.tags[i] == hobby)
+      {
+        this.tags.splice(i,1);
+        this.hobbyNames.splice(i,1);
+      }
+    }
+
+    this.postService.patchPost(this.id,this.post).subscribe(post=>
+      { 
+        this.postService.getPost(this.id).subscribe(post=>{
+            this.post=post;
+            this.tags = this.post.tags;
+          }
+        );
+        this.loadHobbyNames();
+      }
+    );
+    
   }
 }

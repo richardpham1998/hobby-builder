@@ -1,0 +1,22 @@
+<div class = "container" *ngIf="auth.user$ | async as user">
+    <div *ngIf="!userObject.isAdmin">
+        The Tags page is only available to Admins of this website.
+    </div>
+    <div *ngIf="userObject.isAdmin">
+        <form (submit)="addTag()" class="card-body">
+            <div>
+                <h5 class="card-title">Tag</h5>
+                <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="name" name="name" placeholder="Add Tag here">
+            </div>
+            <input type="submit" class="btn btn-success" value="Add">
+            <div class="alert alert-danger" role="alert" *ngIf="blankName==true">Tag is blank.</div>
+        </form>
+        
+        <div *ngFor= "let tag of tags">
+                <div>
+                    <h5 class="card-title">{{tag.name}} <input type="button" (click)="deleteTag(tag._id)" value="Delete" class="btn btn-danger"></h5>
+                </div>
+        </div> 
+    </div>
+</div>
+

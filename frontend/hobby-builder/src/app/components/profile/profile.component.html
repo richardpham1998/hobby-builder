@@ -1,11 +1,43 @@
-<div>
-    <h1> Welcome </h1>
-</div>
-<div *ngIf="auth.user$ | async as user">
-    <div>
-        <img [src] = "user.picture" alt="User's profile picture"/>
-        <p> {{profile.email}} </p>
-        <p>You have {{profile.hobbies.length}} hobbies listed</p>
+<div *ngIf="(auth.user$ | async) as user">
+    <div *ngIf="profile == null">
+        <a>Profile does not exist</a>
     </div>
+    <div *ngIf="profile != null">
+        <div>
+            <img [src] = "user.picture" alt="User's profile picture"/>
+            <p *ngIf="profile != null"> {{profile.email}} </p>
+            
+            <p>
+                <a *ngIf="userId !== id">This user has</a>
+                <a *ngIf="userId === id">You have</a> 
+                {{hobbies.length}} hobbies listed
+            </p>
+            
+            <div *ngFor= "let hbby of hobbyNames, index as i">
+                <a *ngIf="hbby != null">
+                    {{hbby}}
+                </a>
+                <a *ngIf="hbby == null">
+                    Invalid tag. Please remove this tag.
+                </a>
+                <input (click)="deleteHobby(hobbies[i])" type="button" class="btn btn-danger" value="Delete">
 
+            </div>
+
+
+            <form (submit)="addHobby()" class="card-body">
+                <div>
+                    <h5 class="card-title" >Hobby</h5>
+
+                    <select name="tags" id="tags" [(ngModel)]="tagId" name="tagId">
+
+                        <option selected="true" value="" disabled="disabled">Select Hobby</option>
+                        <option *ngFor= "let tag of tags" value="{{tag._id}}">{{tag.name}}</option>
+                        
+                    </select> 
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

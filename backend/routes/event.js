@@ -21,7 +21,8 @@ router.post('/event', (req,res,next)=>
         location: req.body.location,
         attendees: req.body.attendees,
         hosts: req.body.hosts,
-        name: req.body.name,
+        tags: req.body.tags,
+        author: req.body.author,
         comments: req.body.comments,
         date_event: req.body.date_event,
         date_created: Date.now(),
@@ -87,9 +88,9 @@ router.patch('/event/:id', (req,res,user)=>
             {
                 resultObject.attendees = req.body.attendees;
             }
-            if(req.body.name != null)
+            if(req.body.author != null)
             {
-                resultObject.name = req.body.name;
+                resultObject.author = req.body.author;
             }
             if(req.body.hosts != null)
             {
@@ -103,8 +104,12 @@ router.patch('/event/:id', (req,res,user)=>
             {
                 resultObject.date_event = req.body.date_event;
             }
+            if(req.body.tags != null)
+            {
+                resultObject.tags = req.body.tags;
+            }
 
-            if((resultObject.title == null || resultObject.description == null || resultObject.name == null || resultObject.location == null || resultObject.attendees == null || resultObject.host == null || resultObject.comments == null))
+            if((resultObject.title == null || resultObject.description == null || resultObject.author == null || resultObject.location == null || resultObject.attendees == null || resultObject.host == null || resultObject.comments == null))
                 {
                     resultObject.date_modified = Date.now();
                 }
@@ -119,9 +124,10 @@ router.patch('/event/:id', (req,res,user)=>
                 "description": resultObject.description,
                 "location": resultObject.location,
                 "attendees": resultObject.attendees,
-                "names": resultObject.names,
+                "author": resultObject.author,
                 "hosts": resultObject.hosts,
                 "comments": resultObject.comments,
+                "tags": resultObject.tags,
                 "date_event": resultObject.date_event,
                 "date_modified": resultObject.date_modified,
                 "image": resultObject.image
@@ -131,7 +137,7 @@ router.patch('/event/:id', (req,res,user)=>
                 {
                     res.json(err);
                 }
-                else if(req.body.title == null || req.body.description == null || req.body.name == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
+                else if(req.body.title == null || req.body.description == null || req.body.author == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
                 {
                     res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
                 }

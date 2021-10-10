@@ -25,7 +25,7 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
-    name:
+    author:
     {
         type: String,
         required: true,
@@ -38,6 +38,12 @@ const EventSchema = mongoose.Schema({
         null: false
     },
     comments:
+    {
+        type: [String],
+        required: true,
+        null: false
+    },
+    tags:
     {
         type: [String],
         required: true,

@@ -17,6 +17,8 @@ import { FormsModule } from '@angular/forms';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { TagComponent } from './components/tag/tag.component';
+import { PostsComponent } from './components/posts/posts.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { CommentComponent } from './components/comment/comment.component';
     PostComponent,
     AddPostComponent,
     AddCommentComponent,
-    CommentComponent
+    CommentComponent,
+    TagComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,

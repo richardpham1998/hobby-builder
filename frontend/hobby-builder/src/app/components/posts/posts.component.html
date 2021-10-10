@@ -1,0 +1,28 @@
+<div class = "container" *ngIf="auth.user$ | async as user">
+    
+    <div *ngIf="posts.length ==0">
+        <a>No posts to show.</a>
+    </div>
+
+    <div *ngIf="posts.length>0">
+        <div *ngFor= "let post of posts">
+
+            <div *ngIf= "editPostId != post._id" class="card">
+                <div class="card-body">
+                    <div>
+                        <h1><a routerLink="/post/{{post._id}}">{{ post.title }}</a></h1> 
+                    </div>
+                    <div *ngIf= "post.date_modified == null">
+                        Created by <a routerLink="/profile/{{post.user}}">{{post.author}}</a> {{ post.date_created | date:"MM/dd/yyyy ',' h:mma" }}
+                    </div>
+                    <div *ngIf= "post.date_modified != null">
+                        Edited by <a routerLink="/profile/{{post.user}}">{{post.author}}</a> {{ post.date_modified | date:"MM/dd/yyyy ',' h:mma" }}
+                    </div>
+                    <div>
+                        <p> <a routerLink="/post/{{post._id}}">{{post.post_comments.length}} comment<a *ngIf="post.post_comments.length != 1">s</a></a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
