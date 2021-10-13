@@ -1,7 +1,23 @@
 <div class="col-md-16">
     <div *ngIf="auth.user$ | async as user" class="card" style="width: 50%;">
+
+        <ng-template #content let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-post">Post Added</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <a>Post added Successfully</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Ok</button>
+            </div>
+          </ng-template>
+
         <h2>Add Post</h2>
-        <form (submit)="addPost()" class="card-body">
+        <form (submit)="open(content)" class="card-body">
             <div>
                 <h5 class="card-title" >Title</h5>
                 <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">

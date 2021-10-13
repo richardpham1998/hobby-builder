@@ -19,6 +19,7 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
 import { CommentComponent } from './components/comment/comment.component';
 import { TagComponent } from './components/tag/tag.component';
 import { PostsComponent } from './components/posts/posts.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PostsComponent } from './components/posts/posts.component';
         ... env.auth,
     }),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

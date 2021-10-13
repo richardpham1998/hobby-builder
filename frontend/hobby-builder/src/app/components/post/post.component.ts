@@ -7,6 +7,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { CommentService } from 'src/app/services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { TagService } from 'src/app/services/tag.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-post',
@@ -56,7 +57,12 @@ export class PostComponent implements OnInit {
   hobbyNames: String[] = [];
   hobbyObject: Tag;
 
-  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService) { }
+  //modal components
+  closeResult = '';
+  postToDelete : String = null;
+  commentToDelete : String = null;
+
+  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get("id");
@@ -81,7 +87,7 @@ export class PostComponent implements OnInit {
               this.comments=comments;
               for(let i = 0; i < comments.length;i++)
               {
-                if(comments[i].user===this.post.user)
+                if(comments[i].post===this.post._id)
                 {
                   this.commentList.push(comments[i]);
                 }
@@ -101,6 +107,7 @@ export class PostComponent implements OnInit {
   //delete post
   deletePost(id:any)
   {
+    
     var posts = this.posts;
     this.postService.deletePost(id)
     .subscribe(data=>
@@ -531,5 +538,45 @@ export class PostComponent implements OnInit {
       }
     );
     
+  }
+
+  //modal code
+  openPost(content, id:String) {
+    this.postToDelete=id;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-post'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if(this.postToDelete != null)
+      {
+        this.deletePost(this.postToDelete);
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openComment(content, id:String) {
+    this.commentToDelete=id;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-comment'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      if(this.commentToDelete != null)
+      {
+        this.deleteComment(this.commentToDelete);
+      }
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    this.postToDelete=null;
+    this.commentToDelete=null;
+
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

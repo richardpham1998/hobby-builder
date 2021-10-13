@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-add-post',
@@ -25,8 +27,11 @@ export class AddPostComponent implements OnInit {
   blankTitle: boolean = false;
   blankDescription: boolean = false;
 
+  //modal code
+  closeResult = '';
 
-  constructor(private postService : PostService, public auth: AuthService) { }
+
+  constructor(private postService : PostService, public auth: AuthService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
@@ -88,7 +93,6 @@ export class AddPostComponent implements OnInit {
 
       this.blankTitle=false;
       this.blankDescription=false;
-      alert("Successfully added");
 
       
     }
@@ -96,4 +100,25 @@ export class AddPostComponent implements OnInit {
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
 
   }
+
+  //modal code
+  open(content) {
+    this.addPost();
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
 }
