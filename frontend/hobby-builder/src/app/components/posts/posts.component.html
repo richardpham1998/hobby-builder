@@ -7,22 +7,22 @@
     <div *ngIf="posts.length>0">
         <div *ngFor= "let post of posts">
 
-            <div *ngIf= "editPostId != post._id" class="card">
-                <div class="card-body">
-                    <div>
-                        <h1><a routerLink="/post/{{post._id}}">{{ post.title }}</a></h1> 
-                    </div>
-                    <div *ngIf= "post.date_modified == null">
-                        Created by <a routerLink="/profile/{{post.user}}">{{post.author}}</a> {{ post.date_created | date:"MM/dd/yyyy ',' h:mma" }}
-                    </div>
-                    <div *ngIf= "post.date_modified != null">
-                        Edited by <a routerLink="/profile/{{post.user}}">{{post.author}}</a> {{ post.date_modified | date:"MM/dd/yyyy ',' h:mma" }}
-                    </div>
-                    <div>
-                        <p> <a routerLink="/post/{{post._id}}">{{post.post_comments.length}} comment<a *ngIf="post.post_comments.length != 1">s</a></a> </p>
+            <button class="btn"> 
+                <div *ngIf= "editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
+                    <div class="card-body">
+                        <div>
+                            <h1>{{ post.title }}</h1> 
+                        </div>
+                        <div>
+                            by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                            <a *ngIf= "post.date_modified != null">
+                                (Edited)
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
-            </div>
+            </button>
         </div>
     </div>
 </div>

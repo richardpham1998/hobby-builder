@@ -33,6 +33,7 @@ export class ProfileComponent implements OnInit {
   tagId: String = null;
 
   hobbyObject: Tag;
+  hobbyExists:Boolean = false;
 
   constructor(public auth: AuthService, private route: ActivatedRoute, private userService: UserService, private tagService: TagService) {
 
@@ -107,11 +108,16 @@ export class ProfileComponent implements OnInit {
 
   addHobby()
   {
+    if(this.tagId==null)
+    {
+      this.hobbyExists = false;
+    }
     if(this.hobbies.includes(this.tagId))
     {
-      alert("Hobby already exists in your profile")
+      this.hobbyExists = true;
     }
     else{
+      this.hobbyExists = false;
       this.hobbies.push(this.tagId);
 
       this.userService.patchUser(this.userId,this.profile).subscribe(user=>

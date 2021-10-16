@@ -10,8 +10,7 @@ import { TagComponent } from './components/tag/tag.component';
 const routes: Routes = [
   {
     path:'',
-    component: HomeComponent,
-    canActivate: [AuthGuard]
+    component: HomeComponent
   },
   {
     path:'profile/:id',

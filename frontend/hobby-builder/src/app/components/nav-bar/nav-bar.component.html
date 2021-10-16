@@ -1,18 +1,28 @@
-<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-        <input type="button" routerLink="/posts" value="Posts" class="btn btn-primary"/>
-        <input type="button" routerLink="/add-post" value="Add Post" class="btn btn-primary"/>
-        <input type="button" routerLink="/tag" value="Tags" class="btn btn-primary"/>
-        <input type="button" *ngIf="(auth.isAuthenticated$ | async)" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-primary"/>
+<div class="bg-primary" height="200vh">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"> 
+        <div class="btn-group">
+            <button type="button" routerLink="/" class="btn btn-outline-light"><a class="font-weight-bold">HobbyBuilder</a></button>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+            <button class="btn btn-outline-light" ngbDropdownToggle>Post</button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <button routerLink="/add-post" ngbDropdownItem>Add Post</button>
+                <button routerLink="/posts" ngbDropdownItem>View Posts</button>
+            </div>
+            </div>
+            <button type="button" routerLink="/tag" class="btn btn-outline-light">Tags</button>
 
-        <a *ngIf="auth.user$ | async as user" >Logged in as {{user.nickname}}</a>
-        <app-login-button
-        *ngIf="(auth.isAuthenticated$ | async) == false"
-        ></app-login-button>
-    
-        <app-logout-button
-        *ngIf="(auth.isAuthenticated$ | async)"
-        ></app-logout-button>
+            <a *ngIf="auth.user$ | async as user" >Logged in as {{user.nickname}}</a>
+            <app-login-button
+            *ngIf="(auth.isAuthenticated$ | async) == false" class="float-right"
+            ></app-login-button>
+        
+
+            <input type="button" *ngIf="(auth.isAuthenticated$ | async)" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-outline-light"/>
+
+            <app-logout-button
+            *ngIf="(auth.isAuthenticated$ | async)"
+            ></app-logout-button>
+        </div>
     </div>
-  </div>
+</div>
 

@@ -27,8 +27,7 @@ export class AddPostComponent implements OnInit {
   blankTitle: boolean = false;
   blankDescription: boolean = false;
 
-  //modal code
-  closeResult = '';
+  added : boolean = false;
 
 
   constructor(private postService : PostService, public auth: AuthService, private modalService: NgbModal) { }
@@ -68,6 +67,8 @@ export class AddPostComponent implements OnInit {
       else{
         this.blankDescription = false;
       }
+
+      this.added = false;
     }
     else{
       const newPost =
@@ -89,7 +90,10 @@ export class AddPostComponent implements OnInit {
       this.date_created= null;
       this.date_modified= null;
 
-      this.postService.addPost(newPost).subscribe(post=>this.posts.push(post));
+      this.postService.addPost(newPost).subscribe(post=>{
+        this.posts.push(post);
+        this.added = true;
+      });
 
       this.blankTitle=false;
       this.blankDescription=false;
@@ -101,24 +105,5 @@ export class AddPostComponent implements OnInit {
 
   }
 
-  //modal code
-  open(content) {
-    this.addPost();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
 }

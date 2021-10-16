@@ -3,19 +3,29 @@
         The Tags page is only available to Admins of this website.
     </div>
     <div *ngIf="userObject.isAdmin">
-        <form (submit)="addTag()" class="card-body">
+
+        <form class="card-body">
             <div>
                 <h5 class="card-title">Tag</h5>
                 <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="name" name="name" placeholder="Add Tag here">
             </div>
-            <input type="submit" class="btn btn-success" value="Add">
+            <button (click)="addTag()" type="button" class="btn btn-success btn-sm" value="Add">
+                <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
+            </button>
             <div class="alert alert-danger" role="alert" *ngIf="blankName==true">Tag is blank.</div>
         </form>
         
         <div *ngFor= "let tag of tags">
-                <div>
-                    <h5 class="card-title">{{tag.name}} <input type="button" (click)="deleteTag(tag._id)" value="Delete" class="btn btn-danger"></h5>
-                </div>
+
+            <span class="badge badge-secondary">
+                <a *ngIf="tag != null">
+                    {{tag.name}}
+                </a>
+                <a *ngIf="tag == null">
+                    Invalid tag. Please remove this tag.
+                </a> <span (click)="deleteTag(tag._id)" class="badge badge-secondary">X</span>
+            </span>
+
         </div> 
     </div>
 </div>

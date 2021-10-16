@@ -8,6 +8,8 @@ import { CommentService } from 'src/app/services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { TagService } from 'src/app/services/tag.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-post',
@@ -38,6 +40,8 @@ export class PostComponent implements OnInit {
   blankDescription: boolean = false;
   editPost: boolean = false;
 
+  hobbyExists: boolean = false;
+
   //comment components
   comment_content: String = '';
   comment_author: String = '';
@@ -62,11 +66,14 @@ export class PostComponent implements OnInit {
   postToDelete : String = null;
   commentToDelete : String = null;
 
+  //user component
+  userObject: User;
+
   constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get("id");
-
+    
     this.postService.getPost(this.id).subscribe(post=>
       {
         this.post=post;
@@ -85,14 +92,15 @@ export class PostComponent implements OnInit {
           this.commentService.getComments().subscribe(comments=>
             {
               this.comments=comments;
-              for(let i = 0; i < comments.length;i++)
+              for(let i = comments.length-1;i>=0;i--)
               {
                 if(comments[i].post===this.post._id)
                 {
                   this.commentList.push(comments[i]);
                 }
               }
-            });
+            }
+          );
         }
 
       }
@@ -121,7 +129,7 @@ export class PostComponent implements OnInit {
          }
        }
 
-       for(var i = 0; i < this.comments.length; i++)
+       for(var i = this.comments.length-1; i >=0; i--)
        {
          if(this.comments[i].post == id)
          {
@@ -303,8 +311,20 @@ export class PostComponent implements OnInit {
 
       this.commentService.addComment(newComment).subscribe(comment=>{
         this.comments.push(comment);
-        this.commentList.push(comment);
-        this.commentService.getComments().subscribe(comments=>this.comments=comments);
+        this.commentList= [];
+        this.commentService.getComments().subscribe(comments=>
+          {
+            this.commentList = [];
+            this.comments=comments;
+            for(let i = comments.length-1;i>=0;i--)
+            {
+              if(comments[i].post===this.post._id)
+              {
+                this.commentList.push(comments[i]);
+              }
+            }
+          }
+        );
       });
 
       this.comment_content = '';
@@ -429,7 +449,7 @@ export class PostComponent implements OnInit {
 
       this.commentService.patchComment(id, newComment).subscribe(comment=>{
           this.comments[index]=comment;
-          this.commentService.getComments().subscribe(comments=>this.comments=comments);
+          this.commentList[index]=comment;
 
           this.comment_content = '';
           this.userId= null;
@@ -444,10 +464,23 @@ export class PostComponent implements OnInit {
           this.comment_blankContent=false;
 
           this.editCommentId = '';
+
+          this.commentService.getComments().subscribe(comments=>
+            {
+              this.commentList = [];
+              this.comments=comments;
+              for(let i = comments.length-1;i>=0;i--)
+              {
+                if(comments[i].post===this.post._id)
+                {
+                  this.commentList.push(comments[i]);
+                }
+              }
+            }
+          );
+
           
       });
-
-
 
       }
   }
@@ -492,11 +525,16 @@ export class PostComponent implements OnInit {
 
   addHobby()
   {
-    if(this.tags.includes(this.tagId))
+    if(this.tagId==null)
     {
-      alert("Hobby already exists in your post")
+      this.hobbyExists=false;
+    }
+    else if(this.tags.includes(this.tagId))
+    {
+      this.hobbyExists=true;
     }
     else{
+      this.hobbyExists=false;
       this.tags.push(this.tagId);
 
       this.postService.patchPost(this.id,this.post).subscribe(post=>
