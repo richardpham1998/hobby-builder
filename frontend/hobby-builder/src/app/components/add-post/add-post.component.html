@@ -1,7 +1,7 @@
-<div class="col-md-16">
-    <div *ngIf="auth.user$ | async as user" class="card" style="width: 50%;">
-
-        <h2>Add Post</h2>
+<div class = "container" *ngIf="auth.user$ | async as user" >
+    <br>
+    <div class="card">
+        <h1>Add Post</h1>
         <form (submit)="addPost()" class="card-body">
             <div>
                 <h5 class="card-title" >Title</h5>
@@ -15,7 +15,7 @@
             </div>
             <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
             <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
-            <input type="submit" class="btn btn-success" value="Add">
+            <input type="submit" class="btn btn-primary btn-sm" value="Add">
         </form>
     </div>
 </div>

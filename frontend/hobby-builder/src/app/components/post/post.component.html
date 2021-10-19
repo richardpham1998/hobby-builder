@@ -1,5 +1,7 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
 
+    <br>
+    
     <div *ngIf = "post==null">
         Post does not exist
     </div>
@@ -45,7 +47,7 @@
                             <h1>
                                 {{ post.title }}                         
                                 <a *ngIf="user.sub.substring(6,user.sub.length) === post.user">
-                                    <button type="button" (click)="openPost(postContent,post._id)" value="Delete" class="btn btn-secondary btn-sm float-right">
+                                    <button type="button" (click)="openPost(postContent,post._id)" value="Delete" class="btn btn-danger btn-sm float-right">
                                         <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
                                     </button>
                                     
@@ -58,7 +60,7 @@
                         </div>
                         <div>
                             Created {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a routerLink="/profile/{{post.user}}">{{post.author}}</a> 
-                            <a *ngIf= "post.date_modified != null">
+                            <a *ngIf= "post.date_modified != null" class="font-weight-bold">
                                 (Edited)
                             </a> 
                         </div>
@@ -69,7 +71,7 @@
                         </div>
 
                         <br>
-                        <a class="card-title" >
+                        <div class="card-title" >
                             Tags:                      
                             <a *ngIf="user.sub.substring(6,user.sub.length) === post.user">
                                 <select name="tags" id="tags" [(ngModel)]="tagId" name="tagId">
@@ -81,11 +83,9 @@
                                 <button (click)="addHobby()" type="button" class="btn btn-primary btn-sm" value="Add">
                                     <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
                                 </button>
-
-                                <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your post</div>
                             </a>  
-                        </a>
-                        <br>
+                        </div>
+                        <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your post</div>
                         <a *ngFor= "let hbby of hobbyNames, index as i">
                             <span class="badge badge-secondary">
                                 <a *ngIf="hbby != null">
@@ -143,30 +143,8 @@
                         <div *ngIf = "commentList.length>0">
                             <div *ngFor= "let comment of commentList, index as i">
                                 <hr>
-        
-                                <!-- <div *ngIf = "editCommentId !== comment._id"> -->
-                                    <div>
-                                    {{comment.content}}
-                                    <div>
-                                        <a>
-                                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a routerLink="/profile/{{comment.user}}">{{comment.author}}</a> 
-                                        </a>
-                                        <a *ngIf= "comment.date_modified != null">
-                                            (Edited)
-                                        </a>
-                                        <a *ngIf="user.sub.substring(6,user.sub.length) === post.user">
-                                            <button type="button" (click)="openComment(commentContent,comment._id)" value="Delete" class="btn btn-secondary btn-sm float-right">
-                                                <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
-                                            </button>
-                                            <button type="button" (click)="editComment(comment._id)" value="Edit" class="btn btn-primary btn-sm float-right">
-                                                <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
-                                            </button>
-                                            <br>
-                                        </a>
-                                    </div>
-                                <!-- </div> -->
-        
-                                <div *ngIf="user.sub.substring(6,user.sub.length) === post.user">
+                                
+                                <div *ngIf="user.sub.substring(6,user.sub.length) === comment.user">
                                     <div *ngIf= "editCommentId === comment._id">
                                         <h2>Edit Comment</h2>
                                         <form (submit)="updateComment(comment._id)" class="card-body">
@@ -181,6 +159,29 @@
                                         </form>
                                     </div>
                                 </div>
+        
+                                <div *ngIf = "editCommentId !== comment._id">
+                                    <div>
+                                    {{comment.content}}
+                                    <div>
+                                        <a>
+                                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a routerLink="/profile/{{comment.user}}">{{comment.author}}</a> 
+                                        </a>
+                                        <a *ngIf= "comment.date_modified != null">
+                                            (Edited)
+                                        </a>
+                                        <a *ngIf="user.sub.substring(6,user.sub.length) === comment.user">
+                                            <button type="button" (click)="openComment(commentContent,comment._id)" value="Delete" class="btn btn-danger btn-sm float-right">
+                                                <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
+                                            </button>
+                                            <button type="button" (click)="editComment(comment._id)" value="Edit" class="btn btn-primary btn-sm float-right">
+                                                <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
+                                            </button>
+                                            <br>
+                                        </a>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -2,31 +2,33 @@
     <div *ngIf="!userObject.isAdmin">
         The Tags page is only available to Admins of this website.
     </div>
-    <div *ngIf="userObject.isAdmin">
+    <div *ngIf="userObject.isAdmin" class="card">
 
-        <form class="card-body">
-            <div>
-                <h5 class="card-title">Tag</h5>
-                <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="name" name="name" placeholder="Add Tag here">
-            </div>
-            <button (click)="addTag()" type="button" class="btn btn-success btn-sm" value="Add">
-                <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
-            </button>
-            <div class="alert alert-danger" role="alert" *ngIf="blankName==true">Tag is blank.</div>
-        </form>
-        
-        <div *ngFor= "let tag of tags">
+        <div class="card-body">
+            <form>
+                <div>
+                    <h5 class="card-title">Tag</h5>
+                    <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="name" name="name" placeholder="Add Tag here">
+                </div>
+                <button (click)="addTag()" type="button" class="btn btn-success btn-sm" value="Add">
+                    <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
+                </button>
+                <div class="alert alert-danger" role="alert" *ngIf="blankName==true">Tag is blank.</div>
+            </form>
+            
+            <div *ngFor= "let tag of tags">
 
-            <span class="badge badge-secondary">
-                <a *ngIf="tag != null">
-                    {{tag.name}}
-                </a>
-                <a *ngIf="tag == null">
-                    Invalid tag. Please remove this tag.
-                </a> <span (click)="deleteTag(tag._id)" class="badge badge-secondary">X</span>
-            </span>
+                <span class="badge badge-secondary">
+                    <a *ngIf="tag != null">
+                        {{tag.name}}
+                    </a>
+                    <a *ngIf="tag == null">
+                        Invalid tag. Please remove this tag.
+                    </a> <span (click)="deleteTag(tag._id)" class="badge badge-secondary">X</span>
+                </span>
 
-        </div> 
+            </div> 
+        </div>
     </div>
 </div>
 

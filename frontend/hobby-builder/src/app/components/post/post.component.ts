@@ -157,7 +157,6 @@ export class PostComponent implements OnInit {
     this.editPost = false;
     
     this.title = null;
-    this.userId= null;
     this.description= '';
     this.post_comments= [];
     this.date_created= null;
@@ -250,7 +249,6 @@ export class PostComponent implements OnInit {
         });
 
         this.title = null;
-        this.userId= null;
         this.author = null;
         this.description= '';
         this.post_comments= [];
@@ -328,7 +326,6 @@ export class PostComponent implements OnInit {
       });
 
       this.comment_content = '';
-      this.userId= null;
       this.comment_author = null;
       this.comment_event= null;
       this.comment_post= null;
@@ -427,6 +424,7 @@ export class PostComponent implements OnInit {
       this.comment_blankContent=true;
     }
     else{
+      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
       const newComment =
       {
         content: this.comment_content,
@@ -452,7 +450,6 @@ export class PostComponent implements OnInit {
           this.commentList[index]=comment;
 
           this.comment_content = '';
-          this.userId= null;
           this.comment_author = null;
           this.comment_event= null;
           this.comment_post= null;
@@ -549,7 +546,6 @@ export class PostComponent implements OnInit {
       );
 
       this.tagId = null;
-      this.userId = null;
 
     }
   }

@@ -1,28 +1,26 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
     
+    
     <div *ngIf="posts.length ==0">
         <a>No posts to show.</a>
     </div>
 
     <div *ngIf="posts.length>0">
-        <div *ngFor= "let post of posts">
-
-            <button class="btn"> 
-                <div *ngIf= "editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
-                    <div class="card-body">
-                        <div>
-                            <h1>{{ post.title }}</h1> 
-                        </div>
-                        <div>
-                            by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                            <a *ngIf= "post.date_modified != null">
+        <div *ngFor= "let post of posts" class="card">
+                <div class="btn brn-large">
+                    <div *ngIf= "editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
+                        <div class="card-body">
+                            <div>
+                                <h1>{{ post.title }}</h1> 
+                            </div>
+                            <div>
+                                by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                            </div>
+                            <div *ngIf= "post.date_modified != null" class="font-weight-bold">
                                 (Edited)
-                            </a>
-                        </div>
-                        
+                            </div>
                     </div>
                 </div>
-            </button>
         </div>
     </div>
 </div>
