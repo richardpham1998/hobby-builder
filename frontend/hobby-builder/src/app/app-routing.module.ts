@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthGuard} from '@auth0/auth0-angular';
+import { AddEventComponent } from './components/add-event/add-event.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
@@ -35,6 +36,11 @@ const routes: Routes = [
   {
     path:'tag',
     component: TagComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'add-event',
+    component: AddEventComponent,
     canActivate: [AuthGuard]
   }
 ];

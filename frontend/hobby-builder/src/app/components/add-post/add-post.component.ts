@@ -76,7 +76,7 @@ export class AddPostComponent implements OnInit {
         title: this.title,
         description: this.description,
         user: this.userId,
-        author: this.profileObject.name,
+        author: this.profileObject.nickname,
         post_comments: [],
         tags: [],
         date_created: new Date,

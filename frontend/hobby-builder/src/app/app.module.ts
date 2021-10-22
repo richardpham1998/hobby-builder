@@ -20,6 +20,8 @@ import { CommentComponent } from './components/comment/comment.component';
 import { TagComponent } from './components/tag/tag.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddEventComponent } from './components/add-event/add-event.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AddCommentComponent,
     CommentComponent,
     TagComponent,
-    PostsComponent
+    PostsComponent,
+    AddEventComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     }),
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

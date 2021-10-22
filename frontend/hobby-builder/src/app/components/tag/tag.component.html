@@ -1,4 +1,5 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
+    <br>
     <div *ngIf="!userObject.isAdmin">
         The Tags page is only available to Admins of this website.
     </div>

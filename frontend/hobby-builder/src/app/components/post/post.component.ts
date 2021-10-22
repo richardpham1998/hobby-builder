@@ -8,7 +8,6 @@ import { CommentService } from 'src/app/services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { TagService } from 'src/app/services/tag.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -69,6 +68,9 @@ export class PostComponent implements OnInit {
   //user component
   userObject: User;
 
+  //profile substring
+  profileSubstring : String;
+
   constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
@@ -108,7 +110,16 @@ export class PostComponent implements OnInit {
 
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
     
-    this.auth.user$.subscribe((profile)=>(this.profileObject = profile))
+    this.auth.user$.subscribe((profile)=>
+      {
+        this.profileObject = profile;
+
+        console.log(this.auth.user$)
+        
+        //user.sub.substring(6,user.sub.length)
+      }
+      
+      )
   }
 
   
@@ -300,7 +311,7 @@ export class PostComponent implements OnInit {
       {
         content: this.comment_content,
         user: this.userId,
-        author: this.profileObject.name,
+        author: this.profileObject.nickname,
         post: postId,
         event: eventId,
         date_created: new Date,

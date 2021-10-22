@@ -1,13 +1,14 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
     
-    
-    <div *ngIf="posts.length ==0">
+    <br>
+
+    <div *ngIf="posts.length ==0" class="card">
         <a>No posts to show.</a>
     </div>
 
     <div *ngIf="posts.length>0">
         <div *ngFor= "let post of posts" class="card">
-                <div class="btn brn-large">
+                <div class="btn">
                     <div *ngIf= "editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
                         <div class="card-body">
                             <div>

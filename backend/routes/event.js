@@ -26,11 +26,13 @@ router.post('/event', (req,res,next)=>
         comments: req.body.comments,
         date_event: req.body.date_event,
         date_created: Date.now(),
+        date_modified: null,
         image: req.body.image
     })
 
     newEvent.save((err, event)=>
     {
+
         if(err)
         {
             res.json(err);

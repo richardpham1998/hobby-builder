@@ -3,11 +3,18 @@
         <div class="btn-group">
             <button type="button" routerLink="/" class="btn btn-outline-light"><a class="font-weight-bold">HobbyBuilder</a></button>
             <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-outline-light" ngbDropdownToggle>Post</button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <button routerLink="/add-post" ngbDropdownItem>Add Post</button>
-                <button routerLink="/posts" ngbDropdownItem>View Posts</button>
+                <button class="btn btn-outline-light" ngbDropdownToggle>Post</button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <button routerLink="/add-post" ngbDropdownItem>Add Post</button>
+                    <button routerLink="/posts" ngbDropdownItem>View Posts</button>
+                </div>
             </div>
+            <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+                <button class="btn btn-outline-light" ngbDropdownToggle>Event</button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <button routerLink="/add-event" ngbDropdownItem>Add Event</button>
+                    <button routerLink="/posts" ngbDropdownItem>View Events</button>
+                </div>
             </div>
             <button type="button" routerLink="/tag" class="btn btn-outline-light">Tags</button>
 

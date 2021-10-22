@@ -1,5 +1,4 @@
 <div class = "container" *ngIf="auth.user$ | async as user">
-
     <br>
     
     <div *ngIf = "post==null">
@@ -64,13 +63,16 @@
                                 (Edited)
                             </a> 
                         </div>
+
+                        <hr>
                           
 
-                        <div class="card">
+                        <div>
                             <p>{{ post.description }}</p>
                         </div>
 
-                        <br>
+                        <hr>
+
                         <div class="card-title" >
                             Tags:                      
                             <a *ngIf="user.sub.substring(6,user.sub.length) === post.user">
