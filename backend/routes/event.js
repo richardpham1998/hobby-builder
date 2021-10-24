@@ -21,6 +21,7 @@ router.post('/event', (req,res,next)=>
         location: req.body.location,
         attendees: req.body.attendees,
         hosts: req.body.hosts,
+        user: req.body.user,
         tags: req.body.tags,
         author: req.body.author,
         comments: req.body.comments,
@@ -32,7 +33,6 @@ router.post('/event', (req,res,next)=>
 
     newEvent.save((err, event)=>
     {
-
         if(err)
         {
             res.json(err);
@@ -109,6 +109,10 @@ router.patch('/event/:id', (req,res,user)=>
             if(req.body.tags != null)
             {
                 resultObject.tags = req.body.tags;
+            }
+            if(req.body.user!=null)
+            {
+                resultObject.user = req.body.user;
             }
 
             if((resultObject.title == null || resultObject.description == null || resultObject.author == null || resultObject.location == null || resultObject.attendees == null || resultObject.host == null || resultObject.comments == null))

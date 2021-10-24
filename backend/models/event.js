@@ -25,6 +25,12 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    user:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
     author:
     {
         type: String,

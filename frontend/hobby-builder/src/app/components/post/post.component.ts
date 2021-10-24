@@ -193,7 +193,6 @@ export class PostComponent implements OnInit {
   //updates post
   updatePost(id: String)
   {
-    this.editPost = false;
 
     if(this.title != null)
     {
@@ -223,6 +222,7 @@ export class PostComponent implements OnInit {
       }
     }
     else{
+      this.editPost = false;
       this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
       const newPost =
       {

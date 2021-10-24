@@ -114,15 +114,7 @@ export class AddEventComponent implements OnInit {
         image: this.image
       }
 
-      this.title = null;
-      this.userId= null;
-      this.tags = [];
-      this.description= '';
-      this.location = '';
-      this.date_event = null;
-      this.image = null;
-      this.date_created= null;
-      this.date_modified= null;
+      alert(newEvent.user);
 
       this.eventService.addEvent(newEvent).subscribe(event=>{
         this.events.push(event);
@@ -133,6 +125,16 @@ export class AddEventComponent implements OnInit {
       this.blankTitle=false;
       this.blankDescription=false;
       this.blankLocation=false;
+
+      this.title = null;
+      this.userId= null;
+      this.tags = [];
+      this.description= '';
+      this.location = '';
+      this.date_event = null;
+      this.image = null;
+      this.date_created= null;
+      this.date_modified= null;
 
       
     }
