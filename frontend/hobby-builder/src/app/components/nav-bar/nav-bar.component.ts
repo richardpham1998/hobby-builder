@@ -13,6 +13,7 @@ export class NavBarComponent implements OnInit {
   profileObject: any;
   userId: String;
 
+
   constructor(public auth : AuthService, private userService : UserService) { }
 
   ngOnInit(): void {
@@ -20,6 +21,8 @@ export class NavBarComponent implements OnInit {
     this.auth.user$.subscribe((profile)=>{
       this.profileObject = profile;
       this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
+
+
     });
   }
 

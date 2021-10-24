@@ -18,7 +18,7 @@ router.post('/user',(req,res,next)=>
 {
     let newUser = new User(
         {
-            user_name: req.body.user_name,
+            username: req.body.username,
             comments: req.body.comments,
             events_created: req.body.events_created,
             events_hosting: req.body.events_hosting,
@@ -68,9 +68,9 @@ router.patch('/user/:id',(req,res,next)=>
         }
         else{
             resultObject = result;
-            if(req.body.user_name != null)
+            if(req.body.username != null)
             {
-                resultObject.user_name = req.body.user_name;
+                resultObject.username = req.body.username;
             }
             if(req.body.comments != null)
             {
@@ -99,7 +99,7 @@ router.patch('/user/:id',(req,res,next)=>
 
             
         User.updateOne({_id: req.params.id},
-            {   "user_name": resultObject.user_name,
+            {   "username": resultObject.username,
                 "comments": resultObject.comments,
                 "events_created": resultObject.events_created,
                 "events_hosting": resultObject.events_hosting,

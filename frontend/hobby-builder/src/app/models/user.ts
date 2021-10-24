@@ -1,6 +1,7 @@
 export class User
 {
     _id?: String;
+    username: String;
     comments:String[];
     events_created:String[];
     events_hosting:String[];

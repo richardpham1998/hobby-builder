@@ -3,6 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class AddPostComponent implements OnInit {
   date_created: Date = null;
   date_modified: Date = null;
 
+  userName : String;
+
   profileObject: any = null;
 
   blankTitle: boolean = false;
@@ -30,11 +33,15 @@ export class AddPostComponent implements OnInit {
   added : boolean = false;
 
 
-  constructor(private postService : PostService, public auth: AuthService, private modalService: NgbModal) { }
+  constructor(private postService : PostService, public auth: AuthService, private modalService: NgbModal, private userService : UserService) { }
 
   ngOnInit(): void {
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
-    this.auth.user$.subscribe((profile)=>(this.profileObject = profile));
+    this.auth.user$.subscribe((profile)=>{
+      
+      this.profileObject = profile;
+      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{this.userName=profile.username})
+    });
   }
 
   addPost()
@@ -76,7 +83,7 @@ export class AddPostComponent implements OnInit {
         title: this.title,
         description: this.description,
         user: this.userId,
-        author: this.profileObject.nickname,
+        author: this.userName,
         post_comments: [],
         tags: [],
         date_created: new Date,

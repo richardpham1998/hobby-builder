@@ -3,6 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {EventService} from '../../services/event.service';
 import {Event} from '../../models/event';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-add-event',
@@ -33,14 +34,21 @@ export class AddEventComponent implements OnInit {
   blankDescription: boolean = false;
   blankLocation: boolean = false;
 
+  userName: String;
+
   added : boolean = false;
 
 
-  constructor(private eventService : EventService, public auth: AuthService, private modalService: NgbModal) { }
+  constructor(private eventService : EventService, public auth: AuthService, private modalService: NgbModal, private userService : UserService) { }
 
   ngOnInit(): void {
     this.eventService.getEvents().subscribe(events=>this.events=events);
-    this.auth.user$.subscribe((profile)=>(this.profileObject = profile));
+    this.auth.user$.subscribe((profile)=>{
+      
+      this.profileObject = profile;
+      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{this.userName=profile.username})
+    });
+    
   }
 
   addEvent()

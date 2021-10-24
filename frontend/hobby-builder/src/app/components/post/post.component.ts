@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TagService } from 'src/app/services/tag.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-post',
@@ -21,6 +22,8 @@ export class PostComponent implements OnInit {
 
   post: Post = null;
   id: String = null;
+
+  userName: String;
   
   //post components
   posts: Post[] = [];
@@ -71,7 +74,7 @@ export class PostComponent implements OnInit {
   //profile substring
   profileSubstring : String;
 
-  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal) { }
+  constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal, private userService : UserService) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get("id");
@@ -110,16 +113,11 @@ export class PostComponent implements OnInit {
 
     this.postService.getPosts().subscribe(posts=>this.posts=posts);
     
-    this.auth.user$.subscribe((profile)=>
-      {
-        this.profileObject = profile;
-
-        console.log(this.auth.user$)
-        
-        //user.sub.substring(6,user.sub.length)
-      }
+    this.auth.user$.subscribe((profile)=>{
       
-      )
+      this.profileObject = profile;
+      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{this.userName=profile.username})
+    })
   }
 
   
@@ -311,7 +309,7 @@ export class PostComponent implements OnInit {
       {
         content: this.comment_content,
         user: this.userId,
-        author: this.profileObject.nickname,
+        author: this.userName,
         post: postId,
         event: eventId,
         date_created: new Date,

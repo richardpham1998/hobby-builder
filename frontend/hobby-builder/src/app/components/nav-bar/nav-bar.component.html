@@ -23,8 +23,9 @@
             *ngIf="(auth.isAuthenticated$ | async) == false" class="float-right"
             ></app-login-button>
         
+            
 
-            <input type="button" *ngIf="(auth.isAuthenticated$ | async)" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-outline-light"/>
+            <input type="button" *ngIf="(auth.isAuthenticated$ | async) as user" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-outline-light"/>
 
             <app-logout-button
             *ngIf="(auth.isAuthenticated$ | async)"
