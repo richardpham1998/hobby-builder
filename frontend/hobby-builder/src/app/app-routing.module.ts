@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthGuard} from '@auth0/auth0-angular';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { HomeComponent } from './components/home/home.component';
@@ -41,6 +43,16 @@ const routes: Routes = [
   {
     path:'add-event',
     component: AddEventComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'add-comment/:num/:id',
+    component: AddCommentComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'edit-comment/:num/:id/:commentId',
+    component: EditCommentComponent,
     canActivate: [AuthGuard]
   }
 ];

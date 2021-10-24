@@ -22,6 +22,9 @@ import { PostsComponent } from './components/posts/posts.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommentComponent,
     TagComponent,
     PostsComponent,
-    AddEventComponent
+    AddEventComponent,
+    EditCommentComponent,
+    EditPostComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
