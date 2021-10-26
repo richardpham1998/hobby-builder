@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Post } from 'src/app/models/post';
+import { Tag } from 'src/app/models/tag';
 import { User } from 'src/app/models/user';
 import { PostService } from 'src/app/services/post.service';
+import { TagService } from 'src/app/services/tag.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -20,7 +22,6 @@ export class EditPostComponent implements OnInit {
   title: String = null;
   userId: String = null;
   author: String = null;
-  tags: String[] = [];
   description: String = '';
   post_comments: String[] = [];
   date_created: Date = null;
@@ -32,12 +33,25 @@ export class EditPostComponent implements OnInit {
   blankDescription: boolean = false;
   edited: boolean = false;
 
+   //input array
+   tags : String[] = [];
+
+   //tag components
+   tagOptions: Tag[]= [];
+   tagId: String = null;
+   hobbyNames: String[] = [];
+   hobbyObject: Tag;
+   hobbyExists: boolean = false;
+
   constructor(
     private postService: PostService,
     public auth: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private tagService: TagService
+  ) {
+
+  }
 
   ngOnInit(): void {
     //actual post id
@@ -62,6 +76,13 @@ export class EditPostComponent implements OnInit {
         this.post_comments = this.post.post_comments;
         this.date_created = this.post.date_created;
         this.date_modified = this.post.date_modified;
+
+        this.tagService.getTags().subscribe(tags=>
+          {
+            this.tagOptions=tags;
+            this.loadHobbyNames();
+          }
+          );
       });
     });
   }
@@ -112,4 +133,75 @@ export class EditPostComponent implements OnInit {
       this.blankDescription = false;
     }
   }
+
+   //tag methods
+
+   sortTags(a : Tag, b: Tag)
+   {
+       if(a.name>b.name)
+       {
+         return 1;
+       }
+       else if(a.name<b.name)
+       {
+         return -1;
+       }
+       else{
+         return 0;
+       }
+   }
+ 
+   loadHobbyNames()
+   {
+     for(let i = 0; i < this.tags.length;i++)
+     {
+       this.tagService.getTag(this.tags[i]).subscribe(hobby=>
+         {
+           this.hobbyObject = hobby;
+           if(this.hobbyObject==null)
+           {
+             this.hobbyNames[i]=null;
+           }
+           else{
+             this.hobbyNames[i]=this.hobbyObject.name;
+           }
+           
+         });
+       
+     }
+     this.hobbyObject=null;
+   }
+ 
+   addHobby()
+   {
+     if(this.tagId==null)
+     {
+       this.hobbyExists=false;
+     }
+     else if(this.tags.includes(this.tagId))
+     {
+       this.hobbyExists=true;
+     }
+     else{
+       this.hobbyExists=false;
+       this.tags.push(this.tagId);
+       this.tagId = null;
+ 
+     }
+     this.loadHobbyNames();
+   }
+ 
+   deleteHobby(hobby: String)
+   {
+     for(var i = 0; i < this.tags.length; i++)
+     {
+       if(this.tags[i] == hobby)
+       {
+         this.tags.splice(i,1);
+         this.hobbyNames.splice(i,1);
+       }
+     }
+     this.loadHobbyNames();
+   }
+
 }
