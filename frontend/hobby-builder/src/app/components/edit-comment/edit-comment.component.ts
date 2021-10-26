@@ -4,8 +4,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Comment } from 'src/app/models/comment';
 import { User } from 'src/app/models/user';
 import { CommentService } from 'src/app/services/comment.service';
-import { EventService } from 'src/app/services/event.service';
-import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

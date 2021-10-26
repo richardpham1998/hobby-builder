@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {AuthGuard} from '@auth0/auth0-angular';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
+import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { AddEventComponent } from './components/add-event/add-event.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { HomeComponent } from './components/home/home.component';
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path:'add-post',
     component: AddPostComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'edit-post/:id',
+    component: EditPostComponent,
     canActivate: [AuthGuard]
   },
   {

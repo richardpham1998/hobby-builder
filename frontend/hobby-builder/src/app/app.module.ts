@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { EditTagsComponent } from './components/edit-tags/edit-tags.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     AddEventComponent,
     EditCommentComponent,
     EditPostComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    EditTagsComponent
   ],
   imports: [
     BrowserModule,
