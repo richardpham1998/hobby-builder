@@ -11,6 +11,7 @@ import { PostComponent } from './components/post/post.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { TagComponent } from './components/tag/tag.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 const routes: Routes = [
   {
     path:'',
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path:'profile/:id',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'edit-profile/:id',
+    component: EditProfileComponent,
     canActivate: [AuthGuard]
   },
   {

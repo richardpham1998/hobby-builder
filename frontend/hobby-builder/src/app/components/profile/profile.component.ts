@@ -108,49 +108,6 @@ export class ProfileComponent implements OnInit {
     this.hobbyObject = null;
   }
 
-  addHobby() {
-    if (this.tagId == null) {
-      this.hobbyExists = false;
-    }
-    if (this.hobbies.includes(this.tagId)) {
-      this.hobbyExists = true;
-    } else {
-      this.hobbyExists = false;
-      this.hobbies.push(this.tagId);
-
-      this.userService
-        .patchUser(this.userId, this.profile)
-        .subscribe((user) => {
-          this.profile = user;
-          this.userService.getUser(this.userId).subscribe((user) => {
-            this.profile = user;
-            this.hobbies = this.profile.hobbies;
-          });
-          this.loadHobbyNames();
-        });
-
-      this.tagId = null;
-    }
-  }
-
-  deleteHobby(hobby: String) {
-    for (var i = 0; i < this.hobbies.length; i++) {
-      if (this.hobbies[i] == hobby) {
-        this.hobbies.splice(i, 1);
-        this.hobbyNames.splice(i, 1);
-      }
-    }
-
-    this.userService.patchUser(this.userId, this.profile).subscribe((user) => {
-      this.profile = user;
-      this.userService.getUser(this.userId).subscribe((user) => {
-        this.profile = user;
-        this.hobbies = this.profile.hobbies;
-      });
-      this.loadHobbyNames();
-    });
-  }
-
   //delete user
   deleteUser(id : String)
   {

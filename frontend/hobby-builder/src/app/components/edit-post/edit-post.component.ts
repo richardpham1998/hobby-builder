@@ -123,7 +123,6 @@ export class EditPostComponent implements OnInit {
       this.post.title = this.title;
       this.post.description = this.description;
 
-      console.log(this.post);
 
       this.postService.patchPost(this.id, this.post).subscribe((post) => {
         this.edited = true;

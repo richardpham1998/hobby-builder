@@ -20,6 +20,10 @@ router.post('/user',(req,res,next)=>
         {
             username: req.body.username,
             comments: req.body.comments,
+            biography: req.body.biography,
+            city: req.body.city,
+            province: req.body.province,
+            country: req.body.country,
             events_created: req.body.events_created,
             events_hosting: req.body.events_hosting,
             events_attending: req.body.events_attending,
@@ -72,6 +76,22 @@ router.patch('/user/:id',(req,res,next)=>
             {
                 resultObject.username = req.body.username;
             }
+            if(req.body.biography != null)
+            {
+                resultObject.biography = req.body.biography;
+            }
+            if(req.body.city != null)
+            {
+                resultObject.city = req.body.city;
+            }
+            if(req.body.province != null)
+            {
+                resultObject.province = req.body.province;
+            }
+            if(req.body.country != null)
+            {
+                resultObject.country = req.body.country;
+            }
             if(req.body.comments != null)
             {
                 resultObject.comments = req.body.comments;
@@ -101,6 +121,10 @@ router.patch('/user/:id',(req,res,next)=>
         User.updateOne({_id: req.params.id},
             {   "username": resultObject.username,
                 "comments": resultObject.comments,
+                "biography": resultObject.biography,
+                "city": resultObject.city,
+                "province": resultObject.province,
+                "country": resultObject.country,
                 "events_created": resultObject.events_created,
                 "events_hosting": resultObject.events_hosting,
                 "events_attending": resultObject.events_attending,

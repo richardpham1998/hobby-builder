@@ -23,63 +23,83 @@
     </ng-template>
 
     <div class="card">
-        <div class="card-body">
-            <h1 class="card-title">
-                <a *ngIf="userId === id"> Welcome, </a>
+      <div class="card-body">
+        <div>
+          <a *ngIf="userId === id">
+            <button *ngIf="userId === id" type="button" (click)="deleteUserOption(userContent,id)" value="Delete"
+              class="btn btn-danger btn-sm float-right">
+              <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
+            </button>
 
-                {{profile.username}}
-            </h1>
-            <hr>
-
-            Email: {{profile.email}}
-
-            <a *ngIf="userId === id">
-                <button *ngIf="userId === id" type="button" (click)="deleteUserOption(userContent,id)" value="Delete"
-                class="btn btn-danger btn-sm float-right">
-                <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
-                </button>
-
-                <button type="button" (click)="editOption(id)" value="Edit" class="btn btn-primary btn-sm float-right">
-                    <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
-                </button>
-            </a>
-
-            
-
-            <p>
-                <a *ngIf="userId !== id">This user has</a>
-                <a *ngIf="userId === id">You have</a>
-                {{hobbies.length}} hobbies listed
-            </p>
-
-
-            <form *ngIf="userId === id" (submit)="addHobby()" class="card-body">
-                <div>
-                <h5 class="card-title">Hobby</h5>
-
-                <select name="tags" id="tags" [(ngModel)]="tagId" name="tagId">
-
-                    <option selected="true" value="" disabled="disabled">Select Hobby</option>
-                    <option *ngFor="let tag of tags" value="{{tag._id}}">{{tag.name}}</option>
-
-                </select>
-                <input type="submit" class="btn btn-success" value="Add">
-                </div>
-            </form>
-            <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your profile</div>
-
-            <div *ngFor="let hbby of hobbyNames, index as i">
-
-                <span class="badge badge-secondary">
-                    <a *ngIf="hbby != null">
-                        {{hbby}}
-                    </a>
-                    <a *ngIf="hbby == null">
-                        Invalid tag. Please remove this tag.
-                    </a> <span *ngIf="userId===id" (click)="deleteHobby(hobbies[i])" class="badge badge-secondary">X</span>
-                </span>
-            </div>
+            <button type="button" routerLink="/edit-profile/{{id}}" value="Edit"
+              class="btn btn-primary btn-sm float-right">
+              <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
+            </button>
+          </a>
         </div>
+        <h1 class="card-title">
+          <a *ngIf="userId === id"> Welcome, </a>
+
+          {{profile.username}}
+        </h1>
+
+        
+        <hr>
+
+
+
+        <div>
+          <h5 class="card-title">Email:</h5>
+          <a style="width: 100%;" class="card-text" type="text">{{profile.email}}</a>
+          <hr>
+        </div>
+        <div>
+          <h5 class="card-title">Biography:</h5>
+          <a style="width: 100%;" class="card-text" type="text">{{profile.biography}}</a>
+          <hr>
+        </div>
+        <div>
+          <h5 class="card-title">City:</h5>
+          <a style="width: 100%;" class="card-text" type="text">{{profile.city}}</a>
+          <hr>
+        </div>
+        <div>
+          <h5 class="card-title">Province/State:</h5>
+          <a style="width: 100%;" class="card-text" type="text">{{profile.province}}</a>
+          <hr>
+        </div>
+        <div>
+          <h5 class="card-title">Country:</h5>
+          <a style="width: 100%;" class="card-text" type="text">{{profile.country}}</a>
+          <hr>
+        </div>
+
+
+
+
+
+
+        <p>
+          <a *ngIf="userId !== id">This user has</a>
+          <a *ngIf="userId === id">You have</a>
+          {{hobbies.length}} hobbies listed
+        </p>
+
+
+        <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your profile</div>
+
+        <div *ngFor="let hbby of hobbyNames, index as i">
+
+          <span class="badge badge-secondary">
+            <a *ngIf="hbby != null">
+              {{hbby}}
+            </a>
+            <a *ngIf="hbby == null">
+              Invalid tag. Please remove this tag.
+            </a>
+          </span>
+        </div>
+      </div>
     </div>
 
   </div>

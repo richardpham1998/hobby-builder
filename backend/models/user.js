@@ -1,11 +1,31 @@
 const mongoose = require('mongoose');
 const UserSchema = mongoose.Schema({
 
-    nickname:
+    username:
     {
         type:String,
         required:true,
         null: false
+    },
+    biography:
+    {
+        type:String,
+        required:false
+    },
+    city:
+    {
+        type:String,
+        required:false
+    },
+    province:
+    {
+        type:String,
+        required:false
+    },
+    country:
+    {
+        type:String,
+        required:false
     },
     //store id's of comments
     comments:
