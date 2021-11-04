@@ -46,6 +46,8 @@ export class PostComponent implements OnInit {
 
   //comment components
   commentList : Comment[] = [];
+  commentToLike : Comment;
+  commentMap: Map<String, Number>;
 
   //tag components
   tagOptions: Tag[]= [];
@@ -63,6 +65,7 @@ export class PostComponent implements OnInit {
 
   //profile substring
   profileSubstring : String;
+
 
   constructor(private postService : PostService, public auth: AuthService, private commentService: CommentService, private route: ActivatedRoute, private tagService: TagService, private modalService: NgbModal, private userService : UserService) { }
 
@@ -106,7 +109,10 @@ export class PostComponent implements OnInit {
     this.auth.user$.subscribe((profile)=>{
       
       this.profileObject = profile;
-      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{this.userName=profile.username})
+      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{
+        this.userName=profile.username;
+        this.userId= profile._id;
+      })
     })
   }
 
@@ -178,83 +184,6 @@ export class PostComponent implements OnInit {
 
   }
 
-  //updates post
-  updatePost(id: String)
-  {
-
-    if(this.title != null)
-    {
-      this.title.trim;
-    }
-    
-    if(this.description != null)
-    {
-      this.description.trim;
-    }
-
-    if(this.title==null || this.title== ""|| this.description==null || this.description=="")
-    {
-      if(this.title==null  || this.title== "")
-      {
-        this.blankTitle=true;
-      }
-      else{
-        this.blankTitle=false;
-      }
-      if(this.description==null || this.description=="")
-      {
-        this.blankDescription=true;
-      }
-      else{
-        this.blankDescription = false;
-      }
-    }
-    else{
-      this.editPost = false;
-      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
-      const newPost =
-      {
-        title: this.title,
-        description: this.description,
-        user: this.userId,
-        author: this.author,
-        tags: this.tags,
-        post_comments: this.post_comments,
-        date_created: this.date_created,
-        date_modified: new Date
-      }
-
-      var index  = 0;
-      for(let i = 0; i < this.posts.length; i++)
-      {
-        if(this.posts[i]._id = id)
-        {
-          index= i;
-        }
-      }
-
-      this.postService.patchPost(id, newPost).subscribe(post=>{
-          this.posts[index]=post;
-          this.postService.getPosts().subscribe(posts=>this.posts=posts);
-          this.postService.getPost(this.id).subscribe(post=>
-            {
-              this.post=post;
-              if(this.post["name"]=="CastError")
-              {
-                this.post = null;
-              }
-            }
-          );
-        });
-
-        this.title = null;
-        this.author = null;
-        this.description= '';
-        this.post_comments= [];
-        this.date_created= null;
-        this.date_modified= null;  
-    }
-  }
 
   //Comment functionalities
 
@@ -376,6 +305,56 @@ export class PostComponent implements OnInit {
         this.loadHobbyNames();
       }
     );
+    
+  }
+
+  //comment likes code
+  likeComment(id: String)
+  {
+    this.commentService.getComment(id).subscribe(comment=>{
+      this.commentToLike=comment; 
+      this.commentMap = this.commentToLike.likes;
+
+
+      alert(this.commentToLike.likes.get("a"))
+
+      this.commentMap.set("b",1);
+
+      // this.commentMap.set(""+this.userId,1);
+
+
+      this.commentToLike.likes=this.commentMap;
+
+  
+      this.commentService.patchComment(id,this.commentToLike).subscribe(
+        comment=>{
+
+          this.commentToLike=null;
+        }
+      );
+    });
+    
+  }
+
+  dislikeComment(id: String)
+  {
+    this.commentService.getComment(id).subscribe(comment=>{
+      this.commentToLike=comment; 
+      this.commentMap = this.commentToLike.likes;
+      
+      console.log(this.commentMap);
+    });
+
+    alert("TEST "+ this.userId);
+    //this.commentMap.set(this.userId,-1);
+    
+
+
+    //this.commentToLike.likes=this.commentMap;
+
+    this.commentService.patchComment(id,this.commentToLike).subscribe();
+
+    this.commentToLike = null;
     
   }
 
