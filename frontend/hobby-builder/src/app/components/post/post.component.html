@@ -107,7 +107,7 @@
 
               <div>
                 <div>
-                  <a class="float-right"><b>14</b></a>
+                  <a class="float-right"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
                   <button type="button" (click)="likeComment(comment._id)"  class="btn btn-success btn-sm float-right">
                     <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
                     </button>

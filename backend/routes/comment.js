@@ -19,7 +19,7 @@ router.post('/comment', (req,res,next)=>
     let newComment = new Comment({
         content: req.body.content,
         user: req.body.user,
-        likes: new Map(),
+        likes: {"-1":[],"0":[],"1":[]},
         author: req.body.author,
         event: req.body.event,
         post: req.body.post,

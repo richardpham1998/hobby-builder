@@ -47,7 +47,7 @@ export class PostComponent implements OnInit {
   //comment components
   commentList : Comment[] = [];
   commentToLike : Comment;
-  commentMap: Map<String, Number>;
+  commentMap: { "-1": String[]; "0": String[]; "1": String[]; };
 
   //tag components
   tagOptions: Tag[]= [];
@@ -384,36 +384,33 @@ export class PostComponent implements OnInit {
    //comment likes code
    likeComment(id: String)
    {
-     this.commentService.getComment(id).subscribe(comment=>{
-       this.commentToLike=comment; 
-       this.commentMap = this.commentToLike.likes;
- 
- 
-       this.commentMap.set(""+this.userId,1);
- 
- 
-       this.commentToLike.likes=this.commentMap;
- 
- 
-       this.commentService.patchComment(id,this.commentToLike).subscribe(
-         comment=>{
- 
-           this.commentToLike=null;
-         }
-       );
-     });
- 
-   }
- 
-   dislikeComment(id: String)
-   {
     this.commentService.getComment(id).subscribe(comment=>{
       this.commentToLike=comment; 
       this.commentMap = this.commentToLike.likes;
 
+      let liked = false;
 
-      this.commentMap.set(""+this.userId,-1);
+      for(let i = 0; i < this.commentMap["1"].length;i++)
+      {
+        if(this.commentMap["1"][i] === this.userId)
+        {
+          liked = true;
+          break;
+        }
+      }
 
+      if(liked==false)
+      {
+        this.commentMap["1"].push(this.userId);
+      }
+
+      for(let i = this.commentMap["-1"].length-1;i>=0;i--)
+      {
+        if(this.commentMap["-1"][i] === this.userId)
+        {
+          this.commentMap["-1"].splice(i,1);
+        }
+      }
 
       this.commentToLike.likes=this.commentMap;
 
@@ -425,6 +422,54 @@ export class PostComponent implements OnInit {
         }
       );
     });
+
+    this.commentService.getComments().subscribe(comments=>this.comments=comments);
+ 
+ 
+   }
+ 
+   dislikeComment(id: String)
+   {
+    this.commentService.getComment(id).subscribe(comment=>{
+      this.commentToLike=comment; 
+      this.commentMap = this.commentToLike.likes;
+
+      let disliked = false;
+
+      for(let i = 0; i < this.commentMap["-1"].length;i++)
+      {
+        if(this.commentMap["-1"][i] === this.userId)
+        {
+          disliked = true;
+          break;
+        }
+      }
+
+      if(disliked==false)
+      {
+        this.commentMap["-1"].push(this.userId);
+      }
+
+      for(let i = this.commentMap["1"].length-1;i>=0;i--)
+      {
+        if(this.commentMap["1"][i] === this.userId)
+        {
+          this.commentMap["1"].splice(i,1);
+        }
+      }
+
+      this.commentToLike.likes=this.commentMap;
+
+
+      this.commentService.patchComment(id,this.commentToLike).subscribe(
+        comment=>{
+
+          this.commentToLike=null;
+        }
+      );
+    });
+
+    this.commentService.getComments().subscribe(comments=>this.comments=comments);
  
    }
 

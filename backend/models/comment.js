@@ -8,7 +8,7 @@ const CommentSchema = mongoose.Schema({
     },
     likes:
     {
-        type: Map,
+        type: {"-1":[],"0":[],"1":[]},
         required: true,
         null: false,
     },
