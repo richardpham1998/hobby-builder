@@ -18,6 +18,7 @@ router.post('/post',(req,res,next)=>
     let newPost = new Post(
         {
             title: req.body.title,
+            likes: {"-1":[],"0":[],"1":[]},
             description: req.body.description,
             user: req.body.user,
             author: req.body.author,
@@ -85,10 +86,13 @@ router.patch('/post/:id',(req,res,next)=>
             {
                 resultObject.tags = req.body.tags;
             }
+
+            resultObject.likes = req.body.likes;
         
             Post.updateOne({_id: req.params.id},
                 {
                     "title": resultObject.title,
+                    "likes": resultObject.likes,
                     "description": resultObject.description, 
                     "post_comments": resultObject.post_comments,
                     "tags": resultObject.tags,

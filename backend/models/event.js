@@ -6,6 +6,12 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    likes:
+    {
+        type: {"-1":[],"0":[],"1":[]},
+        required: true,
+        null: false,
+    },
     description:
     {
         type: String,
@@ -21,7 +27,7 @@ const EventSchema = mongoose.Schema({
     //collect id's
     attendees:
     {
-        type: [String],
+        type: {"-1":[],"0":[],"1":[]},
         required: true,
         null: false
     },

@@ -1,6 +1,7 @@
 export class Event
 {
     _id?: String;
+    likes: {"-1":String[],"0":String[],"1":String[]};
     title: String;
     user: String;
     tags: String[];
@@ -8,7 +9,7 @@ export class Event
     description: String;
     location: String;
     comments: String[];
-    attendees: String[];
+    attendees: {"-1":String[],"0":String[],"1":String[]};
     hosts: String[];
     date_event: Date;
     date_created: Date;

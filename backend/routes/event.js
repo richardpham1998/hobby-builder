@@ -17,9 +17,10 @@ router.post('/event', (req,res,next)=>
 {
     let newEvent = new Event({
         title: req.body.title,
+        likes: {"-1":[],"0":[],"1":[]},
         description: req.body.description,
         location: req.body.location,
-        attendees: req.body.attendees,
+        attendees: {"-1":[],"0":[],"1":[]},
         hosts: req.body.hosts,
         user: req.body.user,
         tags: req.body.tags,
@@ -127,6 +128,7 @@ router.patch('/event/:id', (req,res,user)=>
             Event.updateOne({_id: req.params.id}, 
                 {
                 "title": resultObject.title,
+                "likes": resultObject.likes,
                 "description": resultObject.description,
                 "location": resultObject.location,
                 "attendees": resultObject.attendees,

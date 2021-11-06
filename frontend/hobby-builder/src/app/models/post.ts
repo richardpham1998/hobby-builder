@@ -1,6 +1,7 @@
 export class Post
 {
     _id?: String;
+    likes: {"-1":String[],"0":String[],"1":String[]};
     title: String;
     user: String;
     tags: String[];

@@ -42,6 +42,32 @@
     <div class="card">
       <div class="card-body">
         <div *ngIf="!editPost">
+
+          <div>
+            <button *ngIf="!post.likes['1'].includes(userId)" type="button" (click)="likePost(post._id)"
+              class="btn btn-success btn-sm float-left">
+              <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+            </button>
+            <button *ngIf="post.likes['1'].includes(userId)" type="button" (click)="likePost(post._id)"
+              class="btn btn-success btn-sm active float-left">
+              <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+            </button>
+
+            <a *ngIf="post.likes['1'].length-post.likes['-1'].length>0" style="color:darkgreen"
+              class="float-left"><b>{{post.likes["1"].length - post.likes["-1"].length}}</b></a>
+            <a *ngIf="post.likes['1'].length-post.likes['-1'].length==0" style="color:black"
+              class="float-left"><b>{{post.likes["1"].length - post.likes["-1"].length}}</b></a>
+            <a *ngIf="0>post.likes['1'].length-post.likes['-1'].length" style="color:darkred"
+              class="float-left"><b>{{post.likes["1"].length - post.likes["-1"].length}}</b></a>
+            <button *ngIf="!post.likes['-1'].includes(userId)" type="button"
+              (click)="dislikePost(post._id)" class="btn btn-danger btn-sm float-left">
+              <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+            </button>
+            <button *ngIf="post.likes['-1'].includes(userId)" type="button"
+              (click)="dislikePost(post._id)" class="btn btn-danger btn-sm active float-left">
+              <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+            </button>
+          </div>
           <div>
             <h1>
               {{ post.title }}
@@ -119,8 +145,6 @@
                   </a>
                 </div>
                 <div>
-
-
                   <button *ngIf="!comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
                     class="btn btn-success btn-sm float-left">
                     <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">

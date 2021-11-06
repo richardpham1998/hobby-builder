@@ -84,6 +84,7 @@ export class AddPostComponent implements OnInit {
       const newPost =
       {
         title: this.title,
+        likes: {"-1":[],"0":[],"1":[]},
         description: this.description,
         user: this.userId,
         author: this.userName,

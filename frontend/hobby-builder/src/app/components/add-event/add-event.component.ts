@@ -108,13 +108,14 @@ export class AddEventComponent implements OnInit {
       const newEvent =
       {
         title: this.title,
+        likes: {"-1":[],"0":[],"1":[]},
         user: this.userId,
         tags: [],
         author: this.profileObject.nickname,
         description: this.description,
         location: this.location,
         comments: [],
-        attendees: [],
+        attendees: {"-1":[],"0":[],"1":[]},
         hosts: [],
         date_event: this.date_event,
         date_created: new Date,

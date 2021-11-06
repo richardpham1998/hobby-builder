@@ -27,6 +27,7 @@ export class PostComponent implements OnInit {
   posts: Post[] = [];
   comments: Comment[] = [];
   title: String = null;
+  likes: { '-1': String[]; '0': String[]; '1': String[] };
   userId: String = null;
   author: String = null;
   description: String = '';
@@ -77,28 +78,7 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.postService.getPost(this.id).subscribe((post) => {
-      this.post = post;
-      if (this.post['name'] == 'CastError') {
-        this.post = null;
-      } else {
-        this.tags = this.post.tags;
-        this.tagService.getTags().subscribe((tags) => {
-          this.tagOptions = tags;
-          this.tagOptions.sort((a, b) => this.sortTags(a, b));
-          this.loadHobbyNames();
-        });
-
-        this.commentService.getComments().subscribe((comments) => {
-          this.comments = comments;
-          for (let i = comments.length - 1; i >= 0; i--) {
-            if (comments[i].post === this.post._id) {
-              this.commentList.push(comments[i]);
-            }
-          }
-        });
-      }
-    });
+    this.loadPost();
 
     this.postService.getPosts().subscribe((posts) => (this.posts = posts));
 
@@ -115,6 +95,33 @@ export class PostComponent implements OnInit {
         .subscribe((profile) => {
           this.userName = profile.username;
         });
+    });
+  }
+
+  loadPost() {
+    this.postService.getPost(this.id).subscribe((post) => {
+      this.post = post;
+      this.likes = this.post.likes;
+      if (this.post['name'] == 'CastError') {
+        this.post = null;
+      } else {
+        this.tags = this.post.tags;
+        this.tagService.getTags().subscribe((tags) => {
+          this.tagOptions = tags;
+          this.tagOptions.sort((a, b) => this.sortTags(a, b));
+          this.loadHobbyNames();
+        });
+
+        this.commentService.getComments().subscribe((comments) => {
+          this.comments = comments;
+          this.commentList = [];
+          for (let i = comments.length - 1; i >= 0; i--) {
+            if (comments[i].post === this.post._id) {
+              this.commentList.push(comments[i]);
+            }
+          }
+        });
+      }
     });
   }
 
@@ -201,6 +208,7 @@ export class PostComponent implements OnInit {
       );
       const newPost = {
         title: this.title,
+        likes: this.likes,
         description: this.description,
         user: this.userId,
         author: this.author,
@@ -235,6 +243,62 @@ export class PostComponent implements OnInit {
       this.date_created = null;
       this.date_modified = null;
     }
+  }
+
+  //post like methods
+  likePost(id: String) {
+    //like comment
+    if (!this.likes['1'].includes(this.userId)) {
+      this.likes['1'].push(this.userId);
+    }
+    //unlike comment
+    else {
+      for (let i = this.likes['1'].length - 1; i >= 0; i--) {
+        if (this.likes['1'][i] === this.userId) {
+          this.likes['1'].splice(i, 1);
+        }
+      }
+    }
+
+    //remove user from dislike section if user had disliked it
+    for (let i = this.likes['-1'].length - 1; i >= 0; i--) {
+      if (this.likes['-1'][i] === this.userId) {
+        this.likes['-1'].splice(i, 1);
+      }
+    }
+
+    this.post.likes = this.likes;
+    this.postService.patchPost(id, this.post).subscribe();
+  }
+
+  dislikePost(id: String) {
+    this.postService.getPost(id).subscribe((post) => {
+      this.post = post;
+      this.likes = this.post.likes;
+
+      //dislike comment
+      if (!this.likes['-1'].includes(this.userId)) {
+        this.likes['-1'].push(this.userId);
+      }
+      //un-dislike comment
+      else {
+        for (let i = this.likes['-1'].length - 1; i >= 0; i--) {
+          if (this.likes['-1'][i] === this.userId) {
+            this.likes['-1'].splice(i, 1);
+          }
+        }
+      }
+
+      //remove user from like section if user had disliked it
+      for (let i = this.likes['1'].length - 1; i >= 0; i--) {
+        if (this.likes['1'][i] === this.userId) {
+          this.likes['1'].splice(i, 1);
+        }
+      }
+
+      this.post.likes = this.likes;
+      this.postService.patchPost(id, this.post).subscribe();
+    });
   }
 
   //Comment functionalities
@@ -336,8 +400,7 @@ export class PostComponent implements OnInit {
         this.commentMap['1'].push(this.userId);
       }
       //unlike comment
-      else
-      {
+      else {
         for (let i = this.commentMap['1'].length - 1; i >= 0; i--) {
           if (this.commentMap['1'][i] === this.userId) {
             this.commentMap['1'].splice(i, 1);
@@ -381,8 +444,7 @@ export class PostComponent implements OnInit {
         this.commentMap['-1'].push(this.userId);
       }
       //un-dislike comment
-      else
-      {
+      else {
         for (let i = this.commentMap['-1'].length - 1; i >= 0; i--) {
           if (this.commentMap['-1'][i] === this.userId) {
             this.commentMap['-1'].splice(i, 1);
