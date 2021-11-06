@@ -24,6 +24,7 @@ export class AddCommentComponent implements OnInit {
   post: String = null;
   date_created: Date = null;
   date_modified: Date = null;
+  likes: Map<String, Number>;
 
   profileObject: any = null;
 
@@ -78,10 +79,14 @@ export class AddCommentComponent implements OnInit {
       this.blankContent = true;
       this.added = false;
     } else {
+
+      this.likes = new Map<String,Number>();
+
       const newComment = {
         content: this.content,
         user: this.userId,
         author: this.user.username,
+        likes: this.likes,
         email: this.profileObject.name,
         post: postId,
         event: eventId,

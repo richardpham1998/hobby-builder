@@ -6,6 +6,12 @@ const CommentSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    likes:
+    {
+        type: Map,
+        required: true,
+        null: false,
+    },
     //collect id's
     user:
     {

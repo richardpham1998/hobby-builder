@@ -46,6 +46,8 @@ export class PostComponent implements OnInit {
 
   //comment components
   commentList : Comment[] = [];
+  commentToLike : Comment;
+  commentMap: Map<String, Number>;
 
   //tag components
   tagOptions: Tag[]= [];
@@ -378,6 +380,53 @@ export class PostComponent implements OnInit {
     );
     
   }
+
+   //comment likes code
+   likeComment(id: String)
+   {
+     this.commentService.getComment(id).subscribe(comment=>{
+       this.commentToLike=comment; 
+       this.commentMap = this.commentToLike.likes;
+ 
+ 
+       this.commentMap.set(""+this.userId,1);
+ 
+ 
+       this.commentToLike.likes=this.commentMap;
+ 
+ 
+       this.commentService.patchComment(id,this.commentToLike).subscribe(
+         comment=>{
+ 
+           this.commentToLike=null;
+         }
+       );
+     });
+ 
+   }
+ 
+   dislikeComment(id: String)
+   {
+    this.commentService.getComment(id).subscribe(comment=>{
+      this.commentToLike=comment; 
+      this.commentMap = this.commentToLike.likes;
+
+
+      this.commentMap.set(""+this.userId,-1);
+
+
+      this.commentToLike.likes=this.commentMap;
+
+
+      this.commentService.patchComment(id,this.commentToLike).subscribe(
+        comment=>{
+
+          this.commentToLike=null;
+        }
+      );
+    });
+ 
+   }
 
   //modal code
   openPost(content, id:String) {

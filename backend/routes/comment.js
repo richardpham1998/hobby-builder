@@ -19,6 +19,7 @@ router.post('/comment', (req,res,next)=>
     let newComment = new Comment({
         content: req.body.content,
         user: req.body.user,
+        likes: new Map(),
         author: req.body.author,
         event: req.body.event,
         post: req.body.post,
@@ -61,6 +62,7 @@ router.patch('/comment/:id', (req,res,user)=>
     Comment.updateOne({_id: req.params.id}, 
         {
         "content": req.body.content,
+        "likes": req.body.likes,
         "user": req.body.user,
         "event": req.body.event,
         "author": req.body.author,

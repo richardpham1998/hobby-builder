@@ -2,6 +2,7 @@ export class Comment
 {
     _id?: String;
     content: String;
+    likes: Map<String,Number>;
     user: String;
     author: String;
     event: String;

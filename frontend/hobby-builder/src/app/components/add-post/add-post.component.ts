@@ -40,7 +40,10 @@ export class AddPostComponent implements OnInit {
     this.auth.user$.subscribe((profile)=>{
       
       this.profileObject = profile;
-      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{this.userName=profile.username})
+
+      this.userService.getUser(this.profileObject.sub.substring(6,this.profileObject.sub.length)).subscribe(profile=>{
+        console.log(profile);
+        this.userName=profile.username})
     });
   }
 
