@@ -22,6 +22,7 @@ export class AddCommentComponent implements OnInit {
   email: String = null;
   event: String = null;
   post: String = null;
+  profile: String = null;
   date_created: Date = null;
   date_modified: Date = null;
   likes: {"-1":[],"0":[],"1":[]};
@@ -58,17 +59,23 @@ export class AddCommentComponent implements OnInit {
     });
   }
 
-  addComment(postOrEvent: Number, postEventId: String) {
+  addComment(postOrEventOrProfile: Number, postEventId: String) {
     var postId: String = null;
     var eventId: String = null;
+    var profileId : String = null;
 
     //0
-    if (postOrEvent == 0) {
+    if (postOrEventOrProfile == 0) {
       postId = postEventId;
     }
     //1
-    else if (postOrEvent == 1) {
+    else if (postOrEventOrProfile == 1) {
       eventId = postEventId;
+    }
+    //2
+    else if(postOrEventOrProfile==2)
+    {
+      profileId = postEventId;
     }
 
     if (this.content != null) {
@@ -87,6 +94,7 @@ export class AddCommentComponent implements OnInit {
         author: this.user.username,
         likes: this.likes,
         email: this.profileObject.name,
+        profile: profileId,
         post: postId,
         event: eventId,
         date_created: new Date(),

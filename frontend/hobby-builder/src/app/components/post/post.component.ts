@@ -276,11 +276,11 @@ export class PostComponent implements OnInit {
       this.post = post;
       this.likes = this.post.likes;
 
-      //dislike comment
+      //dislike post
       if (!this.likes['-1'].includes(this.userId)) {
         this.likes['-1'].push(this.userId);
       }
-      //un-dislike comment
+      //un-dislike post
       else {
         for (let i = this.likes['-1'].length - 1; i >= 0; i--) {
           if (this.likes['-1'][i] === this.userId) {

@@ -1,21 +1,51 @@
-<div class = "container" *ngIf="auth.user$ | async as user" >
-    <br>
-    <div class="card">
-        <h1>Add Post</h1>
-        <form (submit)="addPost()" class="card-body">
-            <div>
-                <h5 class="card-title" >Title</h5>
-                <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title" placeholder="Add Title here">
-                <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
-            </div>
-            <div>
-                <h5 class="card-title">Description</h5>
-                <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description" placeholder="Add Description here"></textarea>
-                <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
-            </div>
-            <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
-            <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
-            <input type="submit" class="btn btn-primary btn-sm" value="Add">
-        </form>
-    </div>
+<div class="container" *ngIf="auth.user$ | async as user">
+  <br>
+  <div class="card">
+    <h1>Add Post</h1>
+    <form (submit)="addPost()" class="card-body">
+      <div>
+        <h5 class="card-title">Title</h5>
+        <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title"
+          placeholder="Add Title here">
+        <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
+      </div>
+      <div>
+        <h5 class="card-title">Description</h5>
+        <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description"
+          placeholder="Add Description here"></textarea>
+        <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
+      </div>
+
+      <div>
+        <h5 class="card-title">Tags</h5>
+
+        <select name="tags" id="tags" [(ngModel)]="tagId" name="tagId">
+
+          <option selected="true" value="" disabled="disabled">Select Hobby</option>
+          <option *ngFor="let tag of tagOptions" value="{{tag._id}}">{{tag.name}}</option>
+
+        </select>
+        <button (click)="addHobby()" type="button" class="btn btn-primary btn-sm" value="Add">
+          <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
+        </button>
+
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your post</div>
+      <a *ngFor="let hbby of hobbyNames, index as i">
+        <span class="badge badge-secondary">
+          <a *ngIf="hbby != null">
+            {{hbby}}
+          </a>
+          <a *ngIf="hbby == null">
+            Invalid tag. Please remove this tag.
+          </a> <span (click)="deleteHobby(tags[i])" class="badge badge-secondary">X</span>
+        </span>
+      </a>
+      <br>
+      <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}"
+        ng-value="userId">
+      <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
+      <input type="submit" class="btn btn-primary btn-sm" value="Add">
+    </form>
+  </div>
 </div>

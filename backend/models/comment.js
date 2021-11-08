@@ -30,6 +30,11 @@ const CommentSchema = mongoose.Schema({
         type: String,
         default: null
     },
+    profile:
+    {
+        type: String,
+        default: null
+    },
     post:
     {
         type: String,

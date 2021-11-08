@@ -5,6 +5,7 @@ export class Comment
     likes: {"-1":String[],"0":String[],"1":String[]};
     user: String;
     author: String;
+    profile: String;
     event: String;
     post: String;
     date_created: Date;

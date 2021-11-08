@@ -8,6 +8,8 @@ import { User } from '../../models/user';
 import { Tag } from '../../models/tag';
 import { UserService } from '../../services/user.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommentService } from 'src/app/services/comment.service';
+import {Comment} from '../../models/comment'
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +26,8 @@ export class ProfileComponent implements OnInit {
   email: String = null;
   hobbies: String[] = [];
   hobbyNames: String[] = [];
+  userComments : String[] = [];
+
 
   hobby: String = null;
 
@@ -38,8 +42,15 @@ export class ProfileComponent implements OnInit {
   hobbyObject: Tag;
   hobbyExists: Boolean = false;
 
+    //comment components
+    comments: Comment[] = [];
+    commentList: Comment[] = [];
+    commentToLike: Comment;
+    commentMap: { '-1': String[]; '0': String[]; '1': String[] };
+
   //modal components
   closeResult = '';
+  commentToDelete: String = null;
 
   constructor(
     public auth: AuthService,
@@ -47,6 +58,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private tagService: TagService,
     private modalService: NgbModal,
+    private commentService: CommentService,
     @Inject(DOCUMENT) private doc
   ) {}
 
@@ -64,6 +76,19 @@ export class ProfileComponent implements OnInit {
           if (this.profile['name'] == 'CastError') {
             this.profile = null;
           } else {
+
+            this.commentService.getComments().subscribe((comments) => {
+              
+              this.comments = comments;
+              this.comments = comments;
+              this.commentList = [];
+              for (let i = comments.length - 1; i >= 0; i--) {
+                if (comments[i].profile === this.id) {
+                  this.commentList.push(comments[i]);
+                }
+              }
+            });
+
             this.hobbies = this.profile.hobbies;
 
             this.auth.user$.subscribe((profile) => {
@@ -72,8 +97,7 @@ export class ProfileComponent implements OnInit {
                 6,
                 this.profileObject.sub.length
               );
-              this.loadHobbyNames();
-              console.log(this.profile)
+              //this.loadHobbyNames();
             });
           }
         });
@@ -83,6 +107,50 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+
+
+  //delete user
+  deleteUser(id : String)
+  {
+    
+    this.userService.deleteUser(id).subscribe();
+
+    for (var i = this.comments.length - 1; i >= 0; i--) {
+      if (this.comments[i].profile == id) {
+        this.commentService.deleteComment(this.comments[i]._id).subscribe();
+        this.comments.splice(i, 1);
+      }
+    }
+
+  }
+
+
+  //Comment functionalities
+
+  //removes comment
+  deleteComment(id: any) {
+    var comments = this.comments;
+    this.commentService.deleteComment(id).subscribe((data) => {
+      for (var i = 0; i < comments.length; i++) {
+        if (comments[i]._id == id) {
+          comments.splice(i, 1);
+        }
+      }
+
+      for (var i = 0; i < this.commentList.length; i++) {
+        if (this.commentList[i]._id == id) {
+          this.commentList.splice(i, 1);
+        }
+      }
+
+      this.commentService
+        .getComments()
+        .subscribe((comments) => (this.comments = comments));
+    });
+  }
+
+  //tag methods
 
   sortTags(a: Tag, b: Tag) {
     if (a.name > b.name) {
@@ -94,24 +162,94 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  loadHobbyNames() {
-    for (let i = 0; i < this.hobbies.length; i++) {
-      this.tagService.getTag(this.hobbies[i]).subscribe((hobby) => {
-        this.hobbyObject = hobby;
-        if (this.hobbyObject == null) {
-          this.hobbyNames[i] = null;
-        } else {
-          this.hobbyNames[i] = this.hobbyObject.name;
+
+  //comment likes code
+  likeComment(id: String) {
+    this.commentService.getComment(id).subscribe((comment) => {
+      this.commentToLike = comment;
+      this.commentMap = this.commentToLike.likes;
+
+      //like comment
+      if (!this.commentMap['1'].includes(this.userId)) {
+        this.commentMap['1'].push(this.userId);
+      }
+      //unlike comment
+      else {
+        for (let i = this.commentMap['1'].length - 1; i >= 0; i--) {
+          if (this.commentMap['1'][i] === this.userId) {
+            this.commentMap['1'].splice(i, 1);
+          }
         }
-      });
-    }
-    this.hobbyObject = null;
+      }
+
+      //remove user from dislike section if user had disliked it
+      for (let i = this.commentMap['-1'].length - 1; i >= 0; i--) {
+        if (this.commentMap['-1'][i] === this.userId) {
+          this.commentMap['-1'].splice(i, 1);
+        }
+      }
+
+      this.commentToLike.likes = this.commentMap;
+
+      this.commentService
+        .patchComment(id, this.commentToLike)
+        .subscribe((comment) => {
+          this.commentToLike = null;
+          this.commentService.getComments().subscribe((comments) => {
+            this.comments = comments;
+            this.commentList = [];
+            for (let i = comments.length - 1; i >= 0; i--) {
+              if (comments[i].profile === this.id) {
+                this.commentList.push(comments[i]);
+              }
+            }
+          });
+        });
+    });
   }
 
-  //delete user
-  deleteUser(id : String)
-  {
-    this.userService.deleteUser(id).subscribe();
+  dislikeComment(id: String) {
+    this.commentService.getComment(id).subscribe((comment) => {
+      this.commentToLike = comment;
+      this.commentMap = this.commentToLike.likes;
+
+      //dislike comment
+      if (!this.commentMap['-1'].includes(this.userId)) {
+        this.commentMap['-1'].push(this.userId);
+      }
+      //un-dislike comment
+      else {
+        for (let i = this.commentMap['-1'].length - 1; i >= 0; i--) {
+          if (this.commentMap['-1'][i] === this.userId) {
+            this.commentMap['-1'].splice(i, 1);
+          }
+        }
+      }
+
+      //remove user from like section if user had liked it
+      for (let i = this.commentMap['1'].length - 1; i >= 0; i--) {
+        if (this.commentMap['1'][i] === this.userId) {
+          this.commentMap['1'].splice(i, 1);
+        }
+      }
+
+      this.commentToLike.likes = this.commentMap;
+
+      this.commentService
+        .patchComment(id, this.commentToLike)
+        .subscribe((comment) => {
+          this.commentToLike = null;
+          this.commentService.getComments().subscribe((comments) => {
+            this.comments = comments;
+            this.commentList = [];
+            for (let i = comments.length - 1; i >= 0; i--) {
+              if (comments[i].profile === this.id) {
+                this.commentList.push(comments[i]);
+              }
+            }
+          });
+        });
+    });
   }
 
   //modal code
@@ -123,6 +261,22 @@ export class ProfileComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
           this.deleteUser(id);
           this.auth.logout({ returnTo: this.doc.location.origin });
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+  openComment(content, id: String) {
+    this.commentToDelete = id;
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-comment' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          if (this.commentToDelete != null) {
+            this.deleteComment(this.commentToDelete);
+          }
         },
         (reason) => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
