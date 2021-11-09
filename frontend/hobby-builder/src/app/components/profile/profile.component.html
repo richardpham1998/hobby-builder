@@ -59,70 +59,80 @@
           {{profile.username}}
         </h1>
 
-        <button>See User's Posts</button>
-        <button>See User's Events</button>
-        <button> See Comments </button>
-        <button> See User Info </button>
+
+        <ul class="nav nav-tabs">
+          <li *ngIf="option==1" class="nav-item">
+            <a class="nav-link active" aria-current="page">Wall</a>
+          </li>
+          <li *ngIf="option!=1" class="nav-item">
+            <a class="nav-link" (click) = "setOption(1)">Wall</a>
+          </li>
+          <li *ngIf="option==2" class="nav-item">
+            <a class="nav-link active" aria-current="page">User Info</a>
+          </li>
+          <li *ngIf="option!=2" class="nav-item">
+            <a class="nav-link" (click) = "setOption(2)">User Info</a>
+          </li>
+        </ul>
+
+        <div *ngIf="option==2">
+
+          <div>
+            <h5 class="card-title">Email:</h5>
+            <a style="width: 100%;" class="card-text" type="text">{{profile.email}}</a>
+            <hr>
+          </div>
+          <div>
+            <h5 class="card-title">Biography:</h5>
+            <a style="width: 100%;" class="card-text" type="text">{{profile.biography}}</a>
+            <hr>
+          </div>
+          <div>
+            <h5 class="card-title">City:</h5>
+            <a style="width: 100%;" class="card-text" type="text">{{profile.city}}</a>
+            <hr>
+          </div>
+          <div>
+            <h5 class="card-title">Province/State:</h5>
+            <a style="width: 100%;" class="card-text" type="text">{{profile.province}}</a>
+            <hr>
+          </div>
+          <div>
+            <h5 class="card-title">Country:</h5>
+            <a style="width: 100%;" class="card-text" type="text">{{profile.country}}</a>
+            <hr>
+          </div>
 
 
-        <hr>
 
 
 
-        <div>
-          <h5 class="card-title">Email:</h5>
-          <a style="width: 100%;" class="card-text" type="text">{{profile.email}}</a>
-          <hr>
+
+          <p>
+            <a *ngIf="userId !== id">This user has</a>
+            <a *ngIf="userId === id">You have</a>
+            {{hobbies.length}} hobbies listed
+          </p>
+
+
+          <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your profile</div>
+
+          <div *ngFor="let hbby of hobbyNames">
+
+            <span class="badge badge-secondary">
+              <a *ngIf="hbby != null">
+                {{hbby}}
+              </a>
+              <a *ngIf="hbby == null">
+                Invalid tag. Please remove this tag.
+              </a>
+            </span>
+          </div>
         </div>
-        <div>
-          <h5 class="card-title">Biography:</h5>
-          <a style="width: 100%;" class="card-text" type="text">{{profile.biography}}</a>
-          <hr>
-        </div>
-        <div>
-          <h5 class="card-title">City:</h5>
-          <a style="width: 100%;" class="card-text" type="text">{{profile.city}}</a>
-          <hr>
-        </div>
-        <div>
-          <h5 class="card-title">Province/State:</h5>
-          <a style="width: 100%;" class="card-text" type="text">{{profile.province}}</a>
-          <hr>
-        </div>
-        <div>
-          <h5 class="card-title">Country:</h5>
-          <a style="width: 100%;" class="card-text" type="text">{{profile.country}}</a>
-          <hr>
-        </div>
 
-
-
-
-
-
-        <p>
-          <a *ngIf="userId !== id">This user has</a>
-          <a *ngIf="userId === id">You have</a>
-          {{hobbies.length}} hobbies listed
-        </p>
-
-
-        <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your profile</div>
-
-        <div *ngFor="let hbby of hobbyNames, index as i">
-
-          <span class="badge badge-secondary">
-            <a *ngIf="hbby != null">
-              {{hbby}}
-            </a>
-            <a *ngIf="hbby == null">
-              Invalid tag. Please remove this tag.
-            </a>
-          </span>
-        </div>
       </div>
 
-      <div>
+      <div *ngIf="option==1">
         <h1>Comments</h1>
         <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/2/{{id}}" value="Add Comment"
           class="btn btn-primary btn-sm">

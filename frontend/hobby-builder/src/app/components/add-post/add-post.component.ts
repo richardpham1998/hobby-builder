@@ -206,4 +206,6 @@ export class AddPostComponent implements OnInit {
        }
        this.loadHobbyNames();
      }
+
+     
 }

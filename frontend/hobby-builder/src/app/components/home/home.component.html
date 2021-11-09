@@ -7,11 +7,22 @@
         <div *ngIf="mostRecentPosts.length != 0">
           <div *ngFor="let post of mostRecentPosts">
             <div *ngIf="post != null">
-              {{post.title}}
+              <div class="btn">
+                <div *ngIf="editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
+                  <div class="card-body">
+                    <div>
+                      <h1>{{ post.title }}</h1>
+                    </div>
+                    <div>
+                      by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                    </div>
+                    <div *ngIf="post.date_modified != null" class="font-weight-bold">
+                      (Edited)
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div *ngIf="(auth.user$ | async) as user">
-            <button class="btn btn-primary">See More</button>
           </div>
         </div>
       </div>
@@ -25,11 +36,22 @@
         <div *ngIf="mostRecentEvents.length != 0">
           <div *ngFor="let event of mostRecentEvents">
             <div *ngIf="event != null">
-              {{event.title}}
+              <div class="btn">
+                <div *ngIf="editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
+                  <div class="card-body">
+                    <div>
+                      <h1>{{ event.title }}</h1>
+                    </div>
+                    <div>
+                      by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                    </div>
+                    <div *ngIf="post.date_modified != null" class="font-weight-bold">
+                      (Edited)
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div *ngIf="(auth.user$ | async) as user">
-            <button class="btn btn-primary">See More</button>
           </div>
         </div>
       </div>
@@ -49,7 +71,6 @@
                   {{post.title}}
                 </div>
               </div>
-              <button class="btn btn-primary">See More</button>
             </div>
           </div>
         </div>
@@ -65,7 +86,6 @@
                   {{event.title}}
                 </div>
               </div>
-              <button class="btn btn-primary">See More</button>
             </div>
           </div>
         </div>
@@ -84,7 +104,6 @@
                   {{post.title}}
                 </div>
               </div>
-              <button class="btn btn-primary">See More</button>
             </div>
           </div>
         </div>
@@ -100,7 +119,6 @@
                   {{event.title}}
                 </div>
               </div>
-              <button class="btn btn-primary">See More</button>
             </div>
           </div>
         </div>

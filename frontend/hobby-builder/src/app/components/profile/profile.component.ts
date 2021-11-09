@@ -27,9 +27,13 @@ export class ProfileComponent implements OnInit {
   hobbies: String[] = [];
   hobbyNames: String[] = [];
   userComments : String[] = [];
+  
 
 
   hobby: String = null;
+
+  //option to see user info or comments
+  option : Number = 1;
 
   //Auth0
   profileObject: any = null;
@@ -97,7 +101,7 @@ export class ProfileComponent implements OnInit {
                 6,
                 this.profileObject.sub.length
               );
-              //this.loadHobbyNames();
+              this.loadHobbyNames();
             });
           }
         });
@@ -106,6 +110,20 @@ export class ProfileComponent implements OnInit {
         alert(err);
       }
     );
+  }
+
+  loadHobbyNames() {
+    for (let i = 0; i < this.tags.length; i++) {
+      this.tagService.getTag(this.hobbies[i]).subscribe((hobby) => {
+        this.hobbyObject = hobby;
+        if (this.hobbyObject == null) {
+          this.hobbyNames[i] = null;
+        } else {
+          this.hobbyNames[i] = this.hobbyObject.name;
+        }
+      });
+    }
+    this.hobbyObject = null;
   }
 
 
@@ -292,5 +310,10 @@ export class ProfileComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  setOption(number : Number)
+  {
+    this.option=number;
   }
 }
