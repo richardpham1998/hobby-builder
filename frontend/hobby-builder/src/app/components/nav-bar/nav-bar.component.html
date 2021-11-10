@@ -13,10 +13,11 @@
                 <button class="btn btn-outline-light" ngbDropdownToggle>Event</button>
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <button routerLink="/add-event" ngbDropdownItem>Add Event</button>
-                    <button routerLink="/posts" ngbDropdownItem>View Events</button>
+                    <button routerLink="/events" ngbDropdownItem>View Events</button>
                 </div>
             </div>
             <button type="button" routerLink="/tag" class="btn btn-outline-light">Tags</button>
+            <button type="button" class="btn btn-outline-light">Notifications</button>
 
             <a *ngIf="auth.user$ | async as user" >Logged in as {{userObject.username}}</a>
             <app-login-button

@@ -12,6 +12,9 @@ import { PostsComponent } from './components/posts/posts.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { TagComponent } from './components/tag/tag.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { EventComponent } from './components/event/event.component';
+import { EventsComponent } from './components/events/events.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
 const routes: Routes = [
   {
     path:'',
@@ -55,6 +58,21 @@ const routes: Routes = [
   {
     path:'add-event',
     component: AddEventComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'events',
+    component: EventsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'event/:id',
+    component: EventComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'edit-event/:id',
+    component: EditEventComponent,
     canActivate: [AuthGuard]
   },
   {

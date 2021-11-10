@@ -1,1 +1,242 @@
-<p>event works!</p>
+<div class="container" *ngIf="auth.user$ | async as user">
+  <br>
+
+  <div *ngIf="event==null">
+    Event does not exist
+  </div>
+
+  <div *ngIf="event!=null">
+
+    <ng-template #eventContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-event">Delete Event</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a>Are you sure you want to delete this event?</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">No</button>
+      </div>
+    </ng-template>
+
+    <ng-template #commentContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-comment">Delete Comment</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a>Are you sure you want to delete this comment?</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">No</button>
+      </div>
+    </ng-template>
+
+    <div class="card">
+      <div class="card-body">
+        <div *ngIf="!editEvent">
+
+          <div>
+            <button *ngIf="!event.likes['1'].includes(userId)" type="button" (click)="likeEvent(event._id)"
+              class="btn btn-success btn-sm float-left">
+              <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+            </button>
+            <button *ngIf="event.likes['1'].includes(userId)" type="button" (click)="likeEvent(event._id)"
+              class="btn btn-success btn-sm active float-left">
+              <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+            </button>
+
+            <a *ngIf="event.likes['1'].length-event.likes['-1'].length>0" style="color:darkgreen"
+              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
+            <a *ngIf="event.likes['1'].length-event.likes['-1'].length==0" style="color:black"
+              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
+            <a *ngIf="0>event.likes['1'].length-event.likes['-1'].length" style="color:darkred"
+              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
+            <button *ngIf="!event.likes['-1'].includes(userId)" type="button" (click)="dislikeEvent(event._id)"
+              class="btn btn-danger btn-sm float-left">
+              <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+            </button>
+            <button *ngIf="event.likes['-1'].includes(userId)" type="button" (click)="dislikeEvent(event._id)"
+              class="btn btn-danger btn-sm active float-left">
+              <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+            </button>
+          </div>
+          <div>
+            <h1>
+              {{ event.title }}
+              <a *ngIf="user.sub.substring(6,user.sub.length) === event.user">
+                <button type="button" (click)="openEvent(eventContent,event._id)" value="Delete"
+                  class="btn btn-danger btn-sm float-right">
+                  <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
+                </button>
+
+                <button type="button" routerLink="/edit-event/{{event._id}}" value="Edit"
+                  class="btn btn-primary btn-sm float-right">
+                  <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
+                </button>
+              </a>
+            </h1>
+
+          </div>
+          <div>
+            Created {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+              routerLink="/profile/{{event.user}}">{{event.author}}</a>
+            <a *ngIf="event.date_modified != null" class="font-weight-bold">
+              (Edited)
+            </a>
+          </div>
+
+          <hr>
+
+
+          <div>
+            <p>{{ event.description }}</p>
+          </div>
+
+          <hr> 
+          <div>
+            <p>{{ event.location }}</p>
+          </div>
+          <hr>
+
+          <div>
+            <p>{{ event.date | date:"MM/dd/yyyy 'at' h:mma" }}</p>
+          </div>
+          <hr>
+
+          <div>
+            <button *ngIf="!event.attendees['1'].includes(userId)" type="button" (click)="goingEvent(event._id)"
+              class="btn btn-primary btn-sm float-left">
+              Going
+            </button>
+            <button *ngIf="event.attendees['1'].includes(userId)"type="button" (click)="goingEvent(event._id)"
+              class="btn btn-primary btn-sm active float-left">
+              Going
+            </button>
+            <button *ngIf="!event.attendees['0'].includes(userId)" type="button" (click)="maybeEvent(event._id)"
+              class="btn btn-primary btn-sm float-left">
+              Maybe
+            </button>
+            <button *ngIf="event.attendees['0'].includes(userId)" type="button" (click)="maybeEvent(event._id)"
+              class="btn btn-primary btn-sm active float-left">
+              Maybe
+            </button>
+            <button *ngIf="!event.attendees['-1'].includes(userId)" type="button" (click)="notGoingEvent(event._id)"
+              class="btn btn-primary btn-sm float-left">
+              Not Going
+            </button>
+            <button *ngIf="event.attendees['-1'].includes(userId)" type="button" (click)="notGoingEvent(event._id)"
+              class="btn btn-primary btn-sm active float-left">
+              Not Going
+            </button>
+          </div>
+          <br>
+
+          <hr>
+
+          <div class>
+            <h5 class="card-title">Tags</h5>
+
+          </div>
+          <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your event</div>
+          <a *ngFor="let hbby of hobbyNames, index as i">
+            <span class="badge badge-secondary">
+              <a *ngIf="hbby != null">
+                {{hbby}}
+              </a>
+            </span>
+          </a>
+        </div>
+
+
+
+        <br>
+        <div>
+          <h1>Comments</h1>
+          <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/1/{{event._id}}" value="Add Comment"
+            class="btn btn-primary btn-sm">
+
+          <div *ngIf="commentList.length==0">
+            <a>No comments to show </a>
+          </div>
+          <div *ngIf="commentList.length>0">
+            <div *ngFor="let comment of commentList, index as i">
+              <hr>
+
+              <div>
+                <div>
+                  <a *ngIf="user.sub.substring(6,user.sub.length) === comment.user">
+                    <button type="button" (click)="openComment(commentContent,comment._id)" value="Delete"
+                      class="btn btn-danger btn-sm float-right">
+                      <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
+                    </button>
+                    <button type="button" routerLink="/edit-comment/1/{{event._id}}/{{comment._id}}" value="Edit"
+                      class="btn btn-primary btn-sm float-right">
+                      <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
+                    </button>
+                  </a>
+                </div>
+                <div>
+                  <button *ngIf="!comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
+                    class="btn btn-success btn-sm float-left">
+                    <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+                  </button>
+                  <button *ngIf="comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
+                    class="btn btn-success btn-sm active float-left">
+                    <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+                  </button>
+
+                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length>0" style="color:darkgreen"
+                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
+                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length==0" style="color:black"
+                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
+                  <a *ngIf="0>comment.likes['1'].length-comment.likes['-1'].length" style="color:darkred"
+                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
+                  <button *ngIf="!comment.likes['-1'].includes(userId)" type="button"
+                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm float-left">
+                    <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+                  </button>
+                  <button *ngIf="comment.likes['-1'].includes(userId)" type="button"
+                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm active float-left">
+                    <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+                  </button>
+                </div>
+                <div>
+                  {{comment.content}}
+                  <div>
+                    <a>
+                      Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+                        routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+                    </a>
+                    <a *ngIf="comment.date_modified != null">
+                      (Edited)
+                    </a>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+</div>
