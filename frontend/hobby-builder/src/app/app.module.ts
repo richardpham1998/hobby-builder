@@ -29,6 +29,7 @@ import { EditTagsComponent } from './components/edit-tags/edit-tags.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventComponent } from './components/event/event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { EditEventComponent } from './components/edit-event/edit-event.component
     EditTagsComponent,
     EventsComponent,
     EventComponent,
-    EditEventComponent
+    EditEventComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

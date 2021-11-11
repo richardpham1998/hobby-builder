@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommentService } from 'src/app/services/comment.service';
 import {Comment} from '../../models/comment'
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +21,9 @@ export class ProfileComponent implements OnInit {
   profileJson: String = null;
 
   id: String;
+
+  //visitor object
+  visitorObject : User;
 
   //from UserService
   profile: User = null;
@@ -63,17 +67,23 @@ export class ProfileComponent implements OnInit {
     private tagService: TagService,
     private modalService: NgbModal,
     private commentService: CommentService,
+    private notificationService: NotificationService,
     @Inject(DOCUMENT) private doc
   ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
+
+
+    
+    
     this.tagService.getTags().subscribe(
       (tags) => {
         this.tags = tags;
         this.tags.sort((a, b) => this.sortTags(a, b));
 
+        //object for user you are visiting
         this.userService.getUser(this.id).subscribe((user) => {
           this.profile = user;
 
@@ -101,6 +111,9 @@ export class ProfileComponent implements OnInit {
                 6,
                 this.profileObject.sub.length
               );
+
+                  //object for the visitor
+                  this.userService.getUser(this.userId).subscribe(user=>{this.visitorObject=user})
               this.loadHobbyNames();
             });
           }
@@ -190,6 +203,22 @@ export class ProfileComponent implements OnInit {
       //like comment
       if (!this.commentMap['1'].includes(this.userId)) {
         this.commentMap['1'].push(this.userId);
+
+        var link: String = 'profile'; // post, event, or profile
+        var userToNotify: String = this.profile._id//id of owner of post, event or profile
+        var idToCommentOn: String = this.id; //id of post, event, or profile
+
+      const newNotification = {
+        text: this.visitorObject.username + ' liked your comment. ',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+      };
+
+      this.notificationService.addNotification(newNotification).subscribe();
+
       }
       //unlike comment
       else {

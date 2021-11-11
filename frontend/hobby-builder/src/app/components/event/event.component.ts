@@ -10,6 +10,7 @@ import { TagService } from 'src/app/services/tag.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-event',
@@ -72,7 +73,8 @@ export class EventComponent implements OnInit {
     private route: ActivatedRoute,
     private tagService: TagService,
     private modalService: NgbModal,
-    private userService: UserService
+    private userService: UserService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -157,6 +159,21 @@ export class EventComponent implements OnInit {
     //add user to correct event attendee category
     if (!this.attendees['1'].includes(this.userId)) {
       this.event.attendees['1'].push(this.userId);
+
+      var link: String = 'event'; // post, event, or profile
+      var userToNotify: String = this.event.user; //id of owner of post, event or profile
+      var idToCommentOn: String = this.id; //id of post, event, or profile
+
+      const newNotification = {
+        text: this.userName + ' is going to your '+link+'.',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+      };
+
+      this.notificationService.addNotification(newNotification).subscribe();
     }
     //remove user from category
     else {
@@ -187,6 +204,21 @@ export class EventComponent implements OnInit {
     //add user to correct event attendee category
     if (!this.attendees['0'].includes(this.userId)) {
       this.event.attendees['0'].push(this.userId);
+
+      var link: String = 'event'; // post, event, or profile
+      var userToNotify: String = this.event.user; //id of owner of post, event or profile
+      var idToCommentOn: String = this.id; //id of post, event, or profile
+
+      const newNotification = {
+        text: this.userName + ' might go to your '+link+'.',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+      };
+
+      this.notificationService.addNotification(newNotification).subscribe();
     }
     //remove user from category
     else {
@@ -248,6 +280,22 @@ export class EventComponent implements OnInit {
     //like comment
     if (!this.likes['1'].includes(this.userId)) {
       this.likes['1'].push(this.userId);
+
+      var link: String = 'event'; // post, event, or profile
+      var userToNotify: String = this.event.user; //id of owner of post, event or profile
+      var idToCommentOn: String = this.id; //id of post, event, or profile
+
+      const newNotification = {
+        text: this.userName + ' liked your '+link+'.',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+      };
+
+      this.notificationService.addNotification(newNotification).subscribe();
+
     }
     //unlike comment
     else {
@@ -396,6 +444,21 @@ export class EventComponent implements OnInit {
       //like comment
       if (!this.commentMap['1'].includes(this.userId)) {
         this.commentMap['1'].push(this.userId);
+
+        var link: String = 'event'; // post, event, or profile
+        var userToNotify: String = this.event.user; //id of owner of post, event or profile
+        var idToCommentOn: String = this.id; //id of post, event, or profile
+  
+        const newNotification = {
+          text: this.userName + ' liked your '+link+'.',
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: idToCommentOn, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+        };
+  
+        this.notificationService.addNotification(newNotification).subscribe();
       }
       //unlike comment
       else {

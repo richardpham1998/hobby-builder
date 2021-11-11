@@ -4,6 +4,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { User } from 'src/app/models/user';
 import { CommentService } from 'src/app/services/comment.service';
 import { EventService } from 'src/app/services/event.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -25,7 +26,7 @@ export class AddCommentComponent implements OnInit {
   profile: String = null;
   date_created: Date = null;
   date_modified: Date = null;
-  likes: {"-1":[],"0":[],"1":[]};
+  likes: { '-1': []; '0': []; '1': [] };
 
   profileObject: any = null;
 
@@ -40,7 +41,8 @@ export class AddCommentComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private postService: PostService,
-    private eventService: EventService
+    private eventService: EventService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -60,24 +62,59 @@ export class AddCommentComponent implements OnInit {
   }
 
   addComment(postOrEventOrProfile: Number, postEventId: String) {
+    //indicator to link to comment
     var postId: String = null;
     var eventId: String = null;
-    var profileId : String = null;
+    var profileId: String = null;
+
+    //records details to store in notifications
+    var link: String = null;
+    var userToNotify: String = null;
 
     //0
     if (postOrEventOrProfile == 0) {
       postId = postEventId;
+      link = 'post';
+
+      this.postService.getPost(this.idToCommentOn).subscribe(
+        post=>
+        {
+          userToNotify = post.user;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        }
+      )
     }
     //1
     else if (postOrEventOrProfile == 1) {
       eventId = postEventId;
+      link = 'event';
+
+      this.eventService.getEvent(this.idToCommentOn).subscribe(
+        event=>
+        {
+          userToNotify = event.user;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        }
+      )
     }
     //2
-    else if(postOrEventOrProfile==2)
-    {
+    else if (postOrEventOrProfile == 2) {
       profileId = postEventId;
-    }
+      link = 'profile';
 
+      this.userService.getUser(this.idToCommentOn).subscribe(
+        user=>
+        {
+          userToNotify = user._id;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        }
+      )
+    }
+  }
+
+  //completes the process of adding comment
+  completeComment(link: String, userToNotify: String, profileId:String, postId:String, eventId: String)
+  {
     if (this.content != null) {
       this.content.trim;
     }
@@ -86,7 +123,14 @@ export class AddCommentComponent implements OnInit {
       this.blankContent = true;
       this.added = false;
     } else {
-
+      const newNotification = {
+        text: this.user.username + ' commented on your ' + link + '.',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: this.idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+      };
 
       const newComment = {
         content: this.content,
@@ -101,7 +145,10 @@ export class AddCommentComponent implements OnInit {
         date_modified: null,
       };
 
-      this.commentService.addComment(newComment).subscribe();
+      this.commentService.addComment(newComment).subscribe((comment) => {
+        //create notification
+        this.notificationService.addNotification(newNotification).subscribe();
+      });
 
       this.content = '';
       this.userId = null;
