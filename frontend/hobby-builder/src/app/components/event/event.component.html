@@ -156,9 +156,31 @@
         </div>
 
 
+        <ul class="nav nav-tabs">
+          <li *ngIf="option==1" class="nav-item">
+            <a class="nav-link active" aria-current="page">Comments</a>
+          </li>
+          <li *ngIf="option!=1" class="nav-item">
+            <a class="nav-link" (click)="setOption(1)">Comments</a>
+          </li>
+          <li *ngIf="option==2" class="nav-item">
+            <a class="nav-link active" aria-current="page">Users Attending</a>
+          </li>
+          <li *ngIf="option!=2" class="nav-item">
+            <a class="nav-link" (click)="setOption(2)">Users Attending</a>
+          </li>
+          <li *ngIf="option==3" class="nav-item">
+            <a class="nav-link active" aria-current="page">Users That Might Attend</a>
+          </li>
+          <li *ngIf="option!=3" class="nav-item">
+            <a class="nav-link" (click)="setOption(3)">Users That Might Attend</a>
+          </li>
+        </ul>
 
         <br>
-        <div>
+        <div *ngIf="option==3">Option 3</div>
+        <div *ngIf="option==2">Option 2</div>
+        <div *ngIf="option==1">
           <h1>Comments</h1>
           <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/1/{{event._id}}" value="Add Comment"
             class="btn btn-primary btn-sm">

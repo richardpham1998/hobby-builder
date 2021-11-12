@@ -1,36 +1,37 @@
-<div *ngIf="(auth.user$ | async) as user">
+<div *ngIf="(auth.user$ | async) as user" class="container">
 
   <div *ngIf="userObject._id===comment.user">
     <div class="card">
-      <form (submit)="editComment()">
-        <label>
-          <b>Edit Comment</b>
-        </label>
-        <div>
-          <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="content" name="content"
-            placeholder="Edit Comment here"></textarea>
-        </div>
-        <input type="hidden" [(ngModel)]="userId" name="userId"
-          ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
+      <div class="card-body">
+        <form (submit)="editComment()">
+          <h1>Edit Comment</h1>
+          <div>
+            <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="content" name="content"
+              placeholder="Edit Comment here"></textarea>
+          </div>
+          <input type="hidden" [(ngModel)]="userId" name="userId"
+            ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
 
-        <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
-        <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
+          <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
+          <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
 
-        <a *ngIf="eventOrPost==0">
-          0
-          <input type="button" routerLink="/post/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
-        </a>
-        <a *ngIf="eventOrPost==1">
-          1
-          <input type="button" routerLink="/event/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
-        </a>
-        <a *ngIf="eventOrPost==2">
-          2
-          <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
-        </a>
-        <input type="submit" class="btn btn-primary btn-sm" value="Update">
+          <a *ngIf="eventOrPost==0">
 
-      </form>
+            <input type="button" routerLink="/post/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
+          </a>
+          <a *ngIf="eventOrPost==1">
+
+            <input type="button" routerLink="/event/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
+          </a>
+          <a *ngIf="eventOrPost==2">
+
+            <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
+          </a>
+          <input type="submit" class="btn btn-primary btn-sm" value="Update">
+
+        </form>
+
+      </div>
     </div>
 
   </div>
@@ -38,15 +39,12 @@
     <div class="card">
       <div class="card-body">User is not authorized to modify this comment.</div>
       <a *ngIf="eventOrPost==0">
-        0
         <input type="button" routerLink="/post/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
       </a>
       <a *ngIf="eventOrPost==1">
-        1
         <input type="button" routerLink="/event/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
       </a>
       <a *ngIf="eventOrPost==2">
-        2
         <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
       </a>
     </div>

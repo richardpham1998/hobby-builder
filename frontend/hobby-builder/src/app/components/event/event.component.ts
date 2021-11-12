@@ -66,6 +66,9 @@ export class EventComponent implements OnInit {
   //profile substring
   profileSubstring: String;
 
+  //view options
+  option : Number = 1;
+
   constructor(
     private eventService: EventService,
     public auth: AuthService,
@@ -585,5 +588,10 @@ export class EventComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  private setOption(val : Number)
+  {
+    this.option = val;
   }
 }
