@@ -1,6 +1,8 @@
-<div *ngIf="(auth.user$ | async) as user">
-  <div *ngIf="profile == null">
-    <a>Profile does not exist</a>
+<div *ngIf="(auth.user$ | async) as user" class="container">
+  <div *ngIf="profile == null" class="card">
+    <div class="card-body">
+      <a>Profile does not exist</a>
+    </div>
   </div>
   <div *ngIf="profile != null">
 
@@ -133,7 +135,7 @@
 
         </div>
 
-        <div *ngIf="option==1">
+        <div *ngIf="option==1" class="container">
           <h1>Comments</h1>
           <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/2/{{id}}" value="Add Comment"
             class="btn btn-primary btn-sm">
@@ -203,6 +205,8 @@
 
 
         </div>
+
+        <br>
 
       </div>
 

@@ -1,8 +1,15 @@
 <div class="container" *ngIf="auth.user$ | async as user">
   <br>
 
-  <div *ngIf="event==null">
-    Event does not exist
+  <div *ngIf="event==null"class="card">
+    <div class="card-body">
+      Event does not exist
+    </div>
+    <div class="container">
+      <input type="button" routerLink="/events" class="btn btn-primary btn-sm" value="Back">
+    </div>
+    <br>
+    
   </div>
 
   <div *ngIf="event!=null">

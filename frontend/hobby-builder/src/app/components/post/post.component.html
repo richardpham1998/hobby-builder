@@ -1,8 +1,14 @@
 <div class="container" *ngIf="auth.user$ | async as user">
   <br>
 
-  <div *ngIf="post==null">
-    Post does not exist
+  <div *ngIf="post==null" class="card">
+    <div class="card-body">
+      Post does not exist
+    </div>
+    <div class="container">
+      <input type="button" routerLink="/posts" class="btn btn-primary btn-sm" value="Back">
+    </div>
+    <br>
   </div>
 
   <div *ngIf="post!=null">

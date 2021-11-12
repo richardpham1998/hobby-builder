@@ -56,7 +56,10 @@
     </div>
   
     <div *ngIf="eventsCopy.length ==0" class="card">
-      <a>No events to show.</a>
+      <div class="card-body">
+        <a>No events to show.</a>
+      </div>
+
     </div>
   
     <div *ngIf="eventsCopy.length>0">
