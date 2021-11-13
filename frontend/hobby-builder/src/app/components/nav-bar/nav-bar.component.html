@@ -21,7 +21,12 @@
                 <img src="/assets/img/bell.svg" alt="Notifications" width="100%" height="100%">
             </button>
 
-            <button class="btn btn-outline-light"readonly><a class="text-white">Logged in as {{userObject.username}}</a></button>
+            
+            <!-- <button type="button" routerLink="/notifications" class="btn btn-outline-light btn-danger">
+                <img src="/assets/img/bell-fill.svg" alt="Notifications" width="100%" height="100%">
+            </button> -->
+
+
 
             <app-login-button
             *ngIf="(auth.isAuthenticated$ | async) == false" class="float-right"
@@ -29,7 +34,9 @@
         
             
 
-            <input type="button" *ngIf="(auth.isAuthenticated$ | async) as user" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-outline-light"/>
+            <button type="button" *ngIf="(auth.isAuthenticated$ | async) as user" routerLink="/profile/{{userId}}" value="Profile" class="btn btn-outline-light">
+                <a>Profile:<b>{{userObject.username}}</b></a>
+            </button>
 
             <app-logout-button
             *ngIf="(auth.isAuthenticated$ | async)"

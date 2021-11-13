@@ -76,7 +76,37 @@
             <li *ngIf="option!=2" class="nav-item">
               <a class="nav-link" (click)="setOption(2)">User Info</a>
             </li>
+            <li *ngIf="option==3" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Posts</a>
+            </li>
+            <li *ngIf="option!=3" class="nav-item">
+              <a class="nav-link" (click)="setOption(3)">User Posts</a>
+            </li>
+            <li *ngIf="option==4" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Events</a>
+            </li>
+            <li *ngIf="option!=4" class="nav-item">
+              <a class="nav-link" (click)="setOption(4)">User Events</a>
+            </li>
+            <li *ngIf="option==5" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Comments</a>
+            </li>
+            <li *ngIf="option!=5" class="nav-item">
+              <a class="nav-link" (click)="setOption(5)">User Comments</a>
+            </li>
+            <li *ngIf="option==6" class="nav-item">
+              <a class="nav-link active" aria-current="page">Events Going/Maybe </a>
+            </li>
+            <li *ngIf="option!=6" class="nav-item">
+              <a class="nav-link" (click)="setOption(6)">Events Going/Maybe</a>
+            </li>
           </ul>
+
+          <div *ngIf="option==5"></div>
+
+          <div *ngIf="option==4"></div>
+
+          <div *ngIf="option==3"></div>
 
           <div *ngIf="option==2">
 
@@ -162,27 +192,25 @@
                 </div>
                 <div>
                   <button *ngIf="!comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-success btn-sm float-left">
+                    class="btn btn-link btn-sm float-left">
                     <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
                   </button>
                   <button *ngIf="comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-success btn-sm active float-left">
-                    <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+                    class="btn btn-link btn-sm float-left">
+                    <img src="/assets/img/thumbs_up_fill.svg" alt="Like" width="100%" height="100%">
                   </button>
 
-                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length>0" style="color:darkgreen"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
-                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length==0" style="color:black"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
-                  <a *ngIf="0>comment.likes['1'].length-comment.likes['-1'].length" style="color:darkred"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
+
+                  <a style="color:black" class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
+                  
+
                   <button *ngIf="!comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm float-left">
+                    (click)="dislikeComment(comment._id)" class="btn btn-link btn-sm float-left">
                     <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
                   </button>
                   <button *ngIf="comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm active float-left">
-                    <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+                    (click)="dislikeComment(comment._id)" class="btn btn-link float-left">
+                    <img src="/assets/img/thumbs_down_fill.svg" alt="Dislike" width="100%" height="100%">
                   </button>
                 </div>
                 <div>

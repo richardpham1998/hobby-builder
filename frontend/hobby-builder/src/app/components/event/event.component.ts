@@ -67,7 +67,11 @@ export class EventComponent implements OnInit {
   profileSubstring: String;
 
   //view options
-  option : Number = 1;
+  option: Number = 1;
+
+  //user attendees;
+  usersAttending: User[]=[];
+  usersMayAttend: User[]=[];
 
   constructor(
     private eventService: EventService,
@@ -85,7 +89,12 @@ export class EventComponent implements OnInit {
 
     this.loadEvent();
 
-    this.eventService.getEvents().subscribe((events) => (this.events = events));
+    this.eventService.getEvents().subscribe((events) => {
+      
+      this.events = events;
+    
+      this.loadUserArrays();
+    });
 
     this.auth.user$.subscribe((profile) => {
       this.profileObject = profile;
@@ -101,6 +110,8 @@ export class EventComponent implements OnInit {
           this.userName = profile.username;
         });
     });
+
+    
   }
 
   loadEvent() {
@@ -168,7 +179,7 @@ export class EventComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' is going to your '+link+'.',
+        text: this.userName + ' is going to your ' + link + '.',
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
@@ -201,6 +212,9 @@ export class EventComponent implements OnInit {
 
     this.event.attendees = this.attendees;
     this.eventService.patchEvent(id, this.event).subscribe();
+
+    this.loadUserArrays();
+
   }
 
   maybeEvent(id: String) {
@@ -213,7 +227,7 @@ export class EventComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' might go to your '+link+'.',
+        text: this.userName + ' might go to your ' + link + '.',
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
@@ -246,6 +260,8 @@ export class EventComponent implements OnInit {
 
     this.event.attendees = this.attendees;
     this.eventService.patchEvent(id, this.event).subscribe();
+
+    this.loadUserArrays();
   }
 
   notGoingEvent(id: String) {
@@ -276,6 +292,8 @@ export class EventComponent implements OnInit {
 
     this.event.attendees = this.attendees;
     this.eventService.patchEvent(id, this.event).subscribe();
+
+    this.loadUserArrays();
   }
 
   //event like methods
@@ -289,7 +307,7 @@ export class EventComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' liked your '+link+'.',
+        text: this.userName + ' liked your ' + link + '.',
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
@@ -298,7 +316,6 @@ export class EventComponent implements OnInit {
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
-
     }
     //unlike comment
     else {
@@ -451,16 +468,16 @@ export class EventComponent implements OnInit {
         var link: String = 'event'; // post, event, or profile
         var userToNotify: String = this.event.user; //id of owner of post, event or profile
         var idToCommentOn: String = this.id; //id of post, event, or profile
-  
+
         const newNotification = {
-          text: this.userName + ' liked your '+link+'.',
+          text: this.userName + ' liked your ' + link + '.',
           linkType: link,
           user: userToNotify, //person who created the post/event/profile
           idToLink: idToCommentOn, //post/event/profile id
           date_created: new Date(),
           date_modified: null,
         };
-  
+
         this.notificationService.addNotification(newNotification).subscribe();
       }
       //unlike comment
@@ -590,8 +607,26 @@ export class EventComponent implements OnInit {
     }
   }
 
-  private setOption(val : Number)
-  {
+  private setOption(val: Number) {
     this.option = val;
+  }
+
+  //gets list of attendees
+  private loadUserArrays()
+  {
+    this.usersAttending=[];
+    this.usersMayAttend=[];
+    this.userService.getUsers().subscribe((users) => {
+      for (let i = 0; i < users.length; i++) {
+        if(this.event.attendees['1'].includes(users[i]._id))
+        {
+          this.usersAttending.push(users[i]);
+        }
+        else if(this.event.attendees['0'].includes(users[i]._id))
+        {
+          this.usersMayAttend.push(users[i]);
+        }
+      }
+    });
   }
 }

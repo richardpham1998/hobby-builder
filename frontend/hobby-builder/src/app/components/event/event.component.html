@@ -1,7 +1,7 @@
 <div class="container" *ngIf="auth.user$ | async as user">
   <br>
 
-  <div *ngIf="event==null"class="card">
+  <div *ngIf="event==null" class="card">
     <div class="card-body">
       Event does not exist
     </div>
@@ -9,7 +9,7 @@
       <input type="button" routerLink="/events" class="btn btn-primary btn-sm" value="Back">
     </div>
     <br>
-    
+
   </div>
 
   <div *ngIf="event!=null">
@@ -52,27 +52,22 @@
 
           <div>
             <button *ngIf="!event.likes['1'].includes(userId)" type="button" (click)="likeEvent(event._id)"
-              class="btn btn-success btn-sm float-left">
+              class="btn btn-link btn-sm float-left">
               <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
             </button>
             <button *ngIf="event.likes['1'].includes(userId)" type="button" (click)="likeEvent(event._id)"
-              class="btn btn-success btn-sm active float-left">
-              <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+              class="btn btn-link btn-sm float-left">
+              <img src="/assets/img/thumbs_up_fill.svg" alt="Like" width="100%" height="100%">
             </button>
 
-            <a *ngIf="event.likes['1'].length-event.likes['-1'].length>0" style="color:darkgreen"
-              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
-            <a *ngIf="event.likes['1'].length-event.likes['-1'].length==0" style="color:black"
-              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
-            <a *ngIf="0>event.likes['1'].length-event.likes['-1'].length" style="color:darkred"
-              class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
+            <a style="color:black" class="float-left"><b>{{event.likes["1"].length - event.likes["-1"].length}}</b></a>
             <button *ngIf="!event.likes['-1'].includes(userId)" type="button" (click)="dislikeEvent(event._id)"
-              class="btn btn-danger btn-sm float-left">
+              class="btn btn-link btn-sm float-left">
               <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
             </button>
             <button *ngIf="event.likes['-1'].includes(userId)" type="button" (click)="dislikeEvent(event._id)"
-              class="btn btn-danger btn-sm active float-left">
-              <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+              class="btn btn-link btn-sm float-left">
+              <img src="/assets/img/thumbs_down_fill.svg" alt="Dislike" width="100%" height="100%">
             </button>
           </div>
           <div>
@@ -107,7 +102,7 @@
             <p>{{ event.description }}</p>
           </div>
 
-          <hr> 
+          <hr>
           <div>
             <p>{{ event.location }}</p>
           </div>
@@ -123,7 +118,7 @@
               class="btn btn-primary btn-sm float-left">
               Going
             </button>
-            <button *ngIf="event.attendees['1'].includes(userId)"type="button" (click)="goingEvent(event._id)"
+            <button *ngIf="event.attendees['1'].includes(userId)" type="button" (click)="goingEvent(event._id)"
               class="btn btn-primary btn-sm active float-left">
               Going
             </button>
@@ -185,8 +180,36 @@
         </ul>
 
         <br>
-        <div *ngIf="option==3">Option 3</div>
-        <div *ngIf="option==2">Option 2</div>
+        <div *ngIf="option==3">
+          <div *ngIf="usersMayAttend.length ==0">
+            <div class="card-body" routerLink="/profile/{{attendee._id}}">
+              <a>No results</a>
+            </div>
+          </div>
+          <div *ngIf="usersMayAttend.length != 0">
+            <div *ngFor="let attendee of usersMayAttend" class="card">
+              <div class="card-body" routerLink="/profile/{{attendee._id}}">
+                <b>{{attendee.username}}</b>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div *ngIf="option==2">
+          <div *ngIf="usersAttending.length == 0">
+            <div class="card-body" routerLink="/profile/{{attendee._id}}">
+              <a>No results</a>
+            </div>
+          </div>
+          <div *ngIf="usersAttending.length != 0">
+            <div *ngFor="let attendee of usersAttending" class="card">
+              <div class="card-body" routerLink="/profile/{{attendee._id}}">
+                <b>{{attendee.username}}</b>
+              </div>
+            </div>
+          </div>
+
+        </div>
         <div *ngIf="option==1">
           <h1>Comments</h1>
           <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/1/{{event._id}}" value="Add Comment"
@@ -214,27 +237,24 @@
                 </div>
                 <div>
                   <button *ngIf="!comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-success btn-sm float-left">
+                    class="btn btn-link btn-sm float-left">
                     <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
                   </button>
                   <button *ngIf="comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-success btn-sm active float-left">
-                    <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
+                    class="btn btn-link btn-sm float-left">
+                    <img src="/assets/img/thumbs_up_fill.svg" alt="Like" width="100%" height="100%">
                   </button>
 
-                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length>0" style="color:darkgreen"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
-                  <a *ngIf="comment.likes['1'].length-comment.likes['-1'].length==0" style="color:black"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
-                  <a *ngIf="0>comment.likes['1'].length-comment.likes['-1'].length" style="color:darkred"
+
+                  <a style="color:black"
                     class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
                   <button *ngIf="!comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm float-left">
+                    (click)="dislikeComment(comment._id)" class="btn btn-link btn-sm float-left">
                     <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
                   </button>
                   <button *ngIf="comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-danger btn-sm active float-left">
-                    <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
+                    (click)="dislikeComment(comment._id)" class="btn btn-link btn-sm float-left">
+                    <img src="/assets/img/thumbs_down_fill.svg" alt="Dislike" width="100%" height="100%">
                   </button>
                 </div>
                 <div>
