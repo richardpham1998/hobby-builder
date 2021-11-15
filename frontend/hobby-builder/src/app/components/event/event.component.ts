@@ -298,6 +298,9 @@ export class EventComponent implements OnInit {
 
   //event like methods
   likeEvent(id: String) {
+
+    this.likes = this.event.likes;
+
     //like comment
     if (!this.likes['1'].includes(this.userId)) {
       this.likes['1'].push(this.userId);
@@ -334,10 +337,14 @@ export class EventComponent implements OnInit {
     }
 
     this.event.likes = this.likes;
+
     this.eventService.patchEvent(id, this.event).subscribe();
   }
 
   dislikeEvent(id: String) {
+
+    this.likes = this.event.likes;
+
     this.eventService.getEvent(id).subscribe((event) => {
       this.event = event;
       this.likes = this.event.likes;
@@ -363,6 +370,7 @@ export class EventComponent implements OnInit {
       }
 
       this.event.likes = this.likes;
+
       this.eventService.patchEvent(id, this.event).subscribe();
     });
   }

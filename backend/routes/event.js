@@ -125,6 +125,8 @@ router.patch('/event/:id', (req,res,user)=>
                     resultObject.date_modified = null;
                 }
 
+                resultObject.likes = req.body.likes;
+
             Event.updateOne({_id: req.params.id}, 
                 {
                 "title": resultObject.title,
@@ -145,7 +147,7 @@ router.patch('/event/:id', (req,res,user)=>
                 {
                     res.json(err);
                 }
-                else if(req.body.title == null || req.body.description == null || req.body.author == null || req.body.location == null || req.body.attendees == null || req.body.host == null || req.body.comments == null)
+                else if(req.body.title == null || req.body.description == null || req.body.author == null || req.body.location == null || req.body.attendees == null|| req.body.comments == null)
                 {
                     res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
                 }

@@ -261,8 +261,7 @@
                   {{comment.content}}
                   <div>
                     <a>
-                      Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
-                        routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+                      Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by {{comment.author}}
                     </a>
                     <a *ngIf="comment.date_modified != null">
                       (Edited)

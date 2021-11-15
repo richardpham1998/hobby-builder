@@ -95,18 +95,158 @@
               <a class="nav-link" (click)="setOption(5)">User Comments</a>
             </li>
             <li *ngIf="option==6" class="nav-item">
-              <a class="nav-link active" aria-current="page">Events Going/Maybe </a>
+              <a class="nav-link active" aria-current="page">Events Going</a>
             </li>
             <li *ngIf="option!=6" class="nav-item">
-              <a class="nav-link" (click)="setOption(6)">Events Going/Maybe</a>
+              <a class="nav-link" (click)="setOption(6)">Events Going</a>
+            </li>
+            <li *ngIf="option==7" class="nav-item">
+              <a class="nav-link active" aria-current="page">Events Maybe </a>
+            </li>
+            <li *ngIf="option!=7" class="nav-item">
+              <a class="nav-link" (click)="setOption(7)">Events Maybe</a>
             </li>
           </ul>
 
-          <div *ngIf="option==5"></div>
+          <div *ngIf="option==7">
 
-          <div *ngIf="option==4"></div>
+            <div *ngIf="eventsUserMaybe.length==0" class = "card">
+              <div class="card-body">
+                No events found
+              </div>
+            </div>
 
-          <div *ngIf="option==3"></div>
+            <div *ngIf="eventsUserMaybe.length > 0">
+              <div *ngFor="let event of eventsUserMaybe" class="card">
+                <div class="btn" routerLink="/event/{{event._id}}">
+                    <div class="card-body">
+                      <div>
+                        <h1>{{ event.title }}</h1>
+                      </div>
+                      <div>
+                        by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                      </div>
+                      <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                        (Edited)
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="option==6">
+
+            <div *ngIf="eventsUserAttending.length==0" class = "card">
+              <div class="card-body">
+                No events found
+              </div>
+            </div>
+
+            <div *ngIf="eventsUserAttending.length > 0">
+              <div *ngFor="let event of eventsUserAttending" class="card">
+                <div class="btn" routerLink="/event/{{event._id}}">
+                    <div class="card-body">
+                      <div>
+                        <h1>{{ event.title }}</h1>
+                      </div>
+                      <div>
+                        by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                      </div>
+                      <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                        (Edited)
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <div *ngIf="option==5">
+
+            <div *ngIf="commentsFromUser.length==0" class = "card">
+              <div class="card-body">
+                No comments found
+              </div>
+            </div>
+
+            <div *ngIf="commentsFromUser.length > 0">
+              <div *ngFor="let comment of commentsFromUser" class="card">
+                <div class="btn">
+
+                  <!-- Link reference not added yet -->
+                    <div class="card-body">
+                      <div>
+                        {{comment.content}}
+                        <div>
+                          <a>
+                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+                              routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+                          </a>
+                          <a *ngIf="comment.date_modified != null">
+                            (Edited)
+                          </a>
+            
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="option==4">
+            <div *ngIf="eventsFromUser.length==0" class = "card">
+              <div class="card-body">
+                No events found
+              </div>
+            </div>
+            
+            <div *ngIf="eventsFromUser.length > 0">
+              <div *ngFor="let event of eventsFromUser" class="card">
+                <div class="btn" routerLink="/event/{{event._id}}">
+                    <div class="card-body">
+                      <div>
+                        <h1>{{ event.title }}</h1>
+                      </div>
+                      <div>
+                        by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                      </div>
+                      <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                        (Edited)
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="option==3">
+            <div *ngIf="postsFromUser.length==0" class = "card">
+              <div class="card-body">
+                No posts found
+              </div>
+            </div>
+
+            <div *ngIf="postsFromUser.length > 0">
+              <div *ngFor="let post of postsFromUser" class="card">
+                <div class="btn" routerLink="/post/{{post._id}}">
+                    <div class="card-body">
+                      <div>
+                        <h1>{{ post.title }}</h1>
+                      </div>
+                      <div>
+                        by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                      </div>
+                      <div *ngIf="post.date_modified != null" class="font-weight-bold">
+                        (Edited)
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
 
           <div *ngIf="option==2">
 

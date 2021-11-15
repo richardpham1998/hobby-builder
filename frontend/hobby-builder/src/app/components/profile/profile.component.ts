@@ -9,8 +9,12 @@ import { Tag } from '../../models/tag';
 import { UserService } from '../../services/user.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommentService } from 'src/app/services/comment.service';
-import {Comment} from '../../models/comment'
+import { Comment } from '../../models/comment';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Post } from 'src/app/models/post';
+import { PostService } from 'src/app/services/post.service';
+import { Event } from 'src/app/models/event';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,21 +27,19 @@ export class ProfileComponent implements OnInit {
   id: String;
 
   //visitor object
-  visitorObject : User;
+  visitorObject: User;
 
   //from UserService
   profile: User = null;
   email: String = null;
   hobbies: String[] = [];
   hobbyNames: String[] = [];
-  userComments : String[] = [];
-  
-
+  userComments: String[] = [];
 
   hobby: String = null;
 
   //option to see user info or comments
-  option : Number = 1;
+  option: Number = 1;
 
   //Auth0
   profileObject: any = null;
@@ -50,15 +52,22 @@ export class ProfileComponent implements OnInit {
   hobbyObject: Tag;
   hobbyExists: Boolean = false;
 
-    //comment components
-    comments: Comment[] = [];
-    commentList: Comment[] = [];
-    commentToLike: Comment;
-    commentMap: { '-1': String[]; '0': String[]; '1': String[] };
+  //comment components
+  comments: Comment[] = [];
+  commentList: Comment[] = [];
+  commentToLike: Comment;
+  commentMap: { '-1': String[]; '0': String[]; '1': String[] };
 
   //modal components
   closeResult = '';
   commentToDelete: String = null;
+
+  //arrays to display
+  postsFromUser: Post[] = [];
+  eventsFromUser: Event[] = [];
+  commentsFromUser: Comment[] = [];
+  eventsUserAttending: Event[] = [];
+  eventsUserMaybe: Event[] = [];
 
   constructor(
     public auth: AuthService,
@@ -67,6 +76,8 @@ export class ProfileComponent implements OnInit {
     private tagService: TagService,
     private modalService: NgbModal,
     private commentService: CommentService,
+    private postService: PostService,
+    private eventService: EventService,
     private notificationService: NotificationService,
     @Inject(DOCUMENT) private doc
   ) {}
@@ -74,10 +85,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
 
-
-
-    
-    
     this.tagService.getTags().subscribe(
       (tags) => {
         this.tags = tags;
@@ -90,9 +97,7 @@ export class ProfileComponent implements OnInit {
           if (this.profile['name'] == 'CastError') {
             this.profile = null;
           } else {
-
             this.commentService.getComments().subscribe((comments) => {
-              
               this.comments = comments;
               this.comments = comments;
               this.commentList = [];
@@ -112,9 +117,14 @@ export class ProfileComponent implements OnInit {
                 this.profileObject.sub.length
               );
 
-                  //object for the visitor
-                  this.userService.getUser(this.userId).subscribe(user=>{this.visitorObject=user})
+              //object for the visitor
+              this.userService.getUser(this.userId).subscribe((user) => {
+                this.visitorObject = user;
+              });
               this.loadHobbyNames();
+
+              //load user posts, events, comments
+              this.loadArrays();
             });
           }
         });
@@ -123,6 +133,40 @@ export class ProfileComponent implements OnInit {
         alert(err);
       }
     );
+  }
+
+  //loads user posts, events, comments
+  loadArrays() {
+    this.postService.getPosts().subscribe((posts) => {
+      for (let i = posts.length - 1; i >= 0; i--) {
+        if (posts[i].user === this.profile._id) {
+          this.postsFromUser.push(posts[i]);
+        }
+      }
+    });
+
+    this.eventService.getEvents().subscribe((events) => {
+      for (let i = events.length - 1; i >= 0; i--) {
+        if(events[i].user === this.profile._id)
+        {
+          this.eventsFromUser.push(events[i]);
+        }
+        if (events[i].attendees[1].includes(this.profile._id)) {
+          this.eventsUserAttending.push(events[i]);
+        }
+        if (events[i].attendees[0].includes(this.profile._id)) {
+          this.eventsUserMaybe.push(events[i]);
+        }
+      }
+    });
+
+    this.commentService.getComments().subscribe((comments) => {
+      for (let i = comments.length - 1; i >= 0; i--) {
+        if (comments[i].user === this.profile._id) {
+          this.commentsFromUser.push(comments[i]);
+        }
+      }
+    });
   }
 
   loadHobbyNames() {
@@ -139,12 +183,8 @@ export class ProfileComponent implements OnInit {
     this.hobbyObject = null;
   }
 
-
-
   //delete user
-  deleteUser(id : String)
-  {
-    
+  deleteUser(id: String) {
     this.userService.deleteUser(id).subscribe();
 
     for (var i = this.comments.length - 1; i >= 0; i--) {
@@ -153,9 +193,7 @@ export class ProfileComponent implements OnInit {
         this.comments.splice(i, 1);
       }
     }
-
   }
-
 
   //Comment functionalities
 
@@ -193,7 +231,6 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
   //comment likes code
   likeComment(id: String) {
     this.commentService.getComment(id).subscribe((comment) => {
@@ -205,20 +242,19 @@ export class ProfileComponent implements OnInit {
         this.commentMap['1'].push(this.userId);
 
         var link: String = 'profile'; // post, event, or profile
-        var userToNotify: String = this.profile._id//id of owner of post, event or profile
+        var userToNotify: String = this.profile._id; //id of owner of post, event or profile
         var idToCommentOn: String = this.id; //id of post, event, or profile
 
-      const newNotification = {
-        text: this.visitorObject.username + ' liked your comment. ',
-        linkType: link,
-        user: userToNotify, //person who created the post/event/profile
-        idToLink: idToCommentOn, //post/event/profile id
-        date_created: new Date(),
-        date_modified: null,
-      };
+        const newNotification = {
+          text: this.visitorObject.username + ' liked your comment. ',
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: idToCommentOn, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+        };
 
-      this.notificationService.addNotification(newNotification).subscribe();
-
+        this.notificationService.addNotification(newNotification).subscribe();
       }
       //unlike comment
       else {
@@ -341,8 +377,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  setOption(number : Number)
-  {
-    this.option=number;
+  setOption(number: Number) {
+    this.option = number;
   }
 }
