@@ -1,25 +1,27 @@
-<div >
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Most Recent Posts</h5>
-        <div *ngIf="mostRecentPosts.length == 0">Nothing to show.</div>
-        <div *ngIf="mostRecentPosts.length != 0">
-          <div *ngFor="let post of mostRecentPosts">
-            <div *ngIf="post != null">
-              <div class="btn">
-                <div *ngIf="editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ post.title }}</h1>
-                    </div>
-                    <div>
-                      by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="post.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
+<div class="container">
+
+  <div class="card">
+    <div class="card-body">
+      <h1>Welcome to HobbyBuilder!</h1>
+    </div>
+  </div>
+   <div class="card">
+    <div class="card-body"> 
+      <h5 class="card-title">Most Recent Posts</h5>
+      <div *ngIf="mostRecentPosts.length == 0">Nothing to show.</div>
+      <div *ngIf="mostRecentPosts.length != 0">
+        <div *ngFor="let post of mostRecentPosts" class="card">
+          <div class="btn">
+            <div routerLink="/post/{{post._id}}">
+              <div class="card-body">
+                <div>
+                  <h1>{{ post.title }}</h1>
+                </div>
+                <div>
+                  by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                </div>
+                <div *ngIf="post.date_modified != null" class="font-weight-bold">
+                  (Edited)
                 </div>
               </div>
             </div>
@@ -28,27 +30,24 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Most Recent Events</h5>
-        <div *ngIf="mostRecentEvents.length == 0">Nothing to show.</div>
-        <div *ngIf="mostRecentEvents.length != 0">
-          <div *ngFor="let event of mostRecentEvents">
-            <div *ngIf="event != null">
-              <div class="btn">
-                <div *ngIf="editPostId != post._id" class="card" routerLink="/post/{{post._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ event.title }}</h1>
-                    </div>
-                    <div>
-                      by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="post.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
+
+  <div class="card">
+    <div class="card-body"> 
+      <h5 class="card-title">Most Recent Events</h5>
+      <div *ngIf="mostRecentEvents.length == 0">Nothing to show.</div>
+      <div *ngIf="mostRecentEvents.length != 0">
+        <div *ngFor="let event of mostRecentEvents" class="card">
+          <div class="btn">
+            <div routerLink="/event/{{event._id}}">
+              <div class="card-body">
+                <div>
+                  <h1>{{ event.title }}</h1>
+                </div>
+                <div>
+                  by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                </div>
+                <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                  (Edited)
                 </div>
               </div>
             </div>
@@ -57,33 +56,54 @@
       </div>
     </div>
   </div>
+
 
   <div *ngIf="(auth.user$ | async) as user">
-    <div >
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Recommended Posts</h5>
-            <div *ngIf="recommendedPosts.length == 0">Nothing to show.</div>
-            <div *ngIf="recommendedPosts.length != 0">
-              <div *ngFor="let post of recommendedPosts">
-                <div *ngIf="post != null">
-                  {{post.title}}
+
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Recommended Posts</h5>
+        <div *ngIf="recommendedPosts.length == 0">Nothing to show.</div>
+        <div *ngIf="recommendedPosts.length != 0">
+          <div *ngFor="let post of recommendedPosts" class="card">
+            <div class="btn">
+              <div routerLink="/post/{{post._id}}">
+                <div class="card-body">
+                  <div>
+                    <h1>{{ post.title }}</h1>
+                  </div>
+                  <div>
+                    by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                  </div>
+                  <div *ngIf="post.date_modified != null" class="font-weight-bold">
+                    (Edited)
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Recommended Events</h5>
-            <div *ngIf="recommendedEvents.length == 0">Nothing to show.</div>
-            <div *ngIf="recommendedEvents.length != 0">
-              <div *ngFor="let event of recommendedEvents">
-                <div *ngIf="event != null">
-                  {{event.title}}
+    </div>
+    
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Recommended Events</h5>
+        <div *ngIf="recommendedEvents.length == 0">Nothing to show.</div>
+        <div *ngIf="recommendedEvents.length != 0">
+          <div *ngFor="let event of recommendedEvents" class="card">
+            <div class="btn">
+              <div routerLink="/event/{{event._id}}">
+                <div class="card-body">
+                  <div>
+                    <h1>{{ event.title }}</h1>
+                  </div>
+                  <div>
+                    by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                  </div>
+                  <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                    (Edited)
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,31 +112,24 @@
       </div>
     </div>
 
-    <div >
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Your Posts</h5>
-            <div *ngIf="yourPosts.length == 0">Nothing to show.</div>
-            <div *ngIf="yourPosts.length != 0">
-              <div *ngFor="let post of yourPosts, index as i">
-                <div *ngIf="post != null">
-                  {{post.title}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Your Events</h5>
-            <div *ngIf="mostRecentEvents.length == 0">Nothing to show.</div>
-            <div *ngIf="mostRecentEvents.length != 0">
-              <div *ngFor="let event of yourEvents, index as i">
-                <div *ngIf="event != null">
-                  {{event.title}}
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Your Tracked Events</h5>
+        <div *ngIf="yourEvents.length == 0">Nothing to show.</div>
+        <div *ngIf="yourEvents.length != 0">
+          <div *ngFor="let event of yourEvents" class="card">
+            <div class="btn">
+              <div routerLink="/event/{{event._id}}">
+                <div class="card-body">
+                  <div>
+                    <h1>{{ event.title }}</h1>
+                  </div>
+                  <div>
+                    by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                  </div>
+                  <div *ngIf="event.date_modified != null" class="font-weight-bold">
+                    (Edited)
+                  </div>
                 </div>
               </div>
             </div>
@@ -125,22 +138,12 @@
       </div>
     </div>
 
-    <div >
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Events Hosting</h5>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Events Attending</h5>
-          </div>
-        </div>
-      </div>
-    </div>
+  
+
+
+    
+
+
   </div>
   <br>
   <div *ngIf="!(auth.user$ | async)">

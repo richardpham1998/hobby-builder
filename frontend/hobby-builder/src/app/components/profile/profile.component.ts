@@ -15,6 +15,7 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { Event } from 'src/app/models/event';
 import { EventService } from 'src/app/services/event.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -79,10 +80,14 @@ export class ProfileComponent implements OnInit {
     private postService: PostService,
     private eventService: EventService,
     private notificationService: NotificationService,
+    private router: Router,
     @Inject(DOCUMENT) private doc
   ) {}
 
   ngOnInit(): void {
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false
+
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.tagService.getTags().subscribe(

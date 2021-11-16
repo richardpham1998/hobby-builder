@@ -25,7 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditCommentComponent } from './components/edit-comment/edit-comment.component';
 import { EditPostComponent } from './components/edit-post/edit-post.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
-import { EditTagsComponent } from './components/edit-tags/edit-tags.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventComponent } from './components/event/event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
@@ -49,7 +48,6 @@ import { NotificationsComponent } from './components/notifications/notifications
     EditCommentComponent,
     EditPostComponent,
     EditProfileComponent,
-    EditTagsComponent,
     EventsComponent,
     EventComponent,
     EditEventComponent,

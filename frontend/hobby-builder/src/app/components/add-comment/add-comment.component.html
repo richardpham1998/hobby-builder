@@ -15,15 +15,12 @@
        <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
 
        <a *ngIf="eventOrPost==0">
-         0
          <input type="button" routerLink="/post/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
        </a>
        <a *ngIf="eventOrPost==1">
-         1
          <input type="button" routerLink="/event/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
        </a>
        <a *ngIf="eventOrPost==2">
-         2
          <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
        </a>
        <input type="submit" class="btn btn-primary btn-sm" value="Add">

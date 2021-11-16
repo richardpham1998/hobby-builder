@@ -48,16 +48,13 @@ export class HomeComponent implements OnInit {
         this.mostRecentPosts.sort((a,b)=>this.sortPost(a,b));
 
         //gets maximum of 5 posts
-        this.mostRecentPosts = this.mostRecentPosts.slice(0,5);
-
-        //add null if array length is not 0 to display buffer value in html code
-        if(this.mostRecentPosts.length!= 0)
+        if(this.mostRecentPosts.length > 5)
         {
-          while(this.mostRecentPosts.length<5)
-          {
-            this.mostRecentPosts.push(null);
-          }
+          this.mostRecentPosts = this.mostRecentPosts.slice(0,5);
         }
+
+
+
       }
 
         
@@ -77,17 +74,13 @@ export class HomeComponent implements OnInit {
         this.mostRecentEvents.sort((a,b)=>this.sortEvent(a,b));
 
         //gets maximum of 5 posts
-        this.mostRecentEvents = this.mostRecentEvents.slice(0,5);
-
-
-        //add null if array length is not 0 to display buffer value in html code
-        if(this.mostRecentEvents.length!= 0)
+        if(this.mostRecentEvents.length > 5)
         {
-        while(this.mostRecentEvents.length<5)
-          {
-            this.mostRecentEvents.push(null);
-          }
+          this.mostRecentEvents = this.mostRecentEvents.slice(0,5);
         }
+
+
+       
 
       });
 
@@ -120,24 +113,15 @@ export class HomeComponent implements OnInit {
               }
 
               //gets maximum of 5 posts
-              this.recommendedPosts = this.recommendedPosts.slice(0,5);
-              this.yourPosts = this.yourPosts.slice(0,5);
+              if(this.recommendedPosts.length > 5)
+              {
+                this.recommendedPosts = this.recommendedPosts.slice(0,5);
+              }
+              if(this.yourPosts.length > 5)
+              {
+                this.yourPosts = this.yourPosts.slice(0,5);
+              }
 
-              //add null if array length is not 0 to display buffer value in html code
-             if(this.recommendedPosts.length != 0)
-             {
-              while(this.recommendedPosts.length<5)
-              {
-                this.recommendedPosts.push(null);
-              }
-             }
-             if(this.yourPosts.length != 0)
-             {
-              while(this.yourPosts.length<5)
-              {
-                this.yourPosts.push(null);
-              }
-             }
 
               for(let i = 0; i < this.events.length; i++)
               {
@@ -148,8 +132,8 @@ export class HomeComponent implements OnInit {
                   this.recommendedEvents.push(this.events[i]);
                 }
       
-                //check user that created event
-                if(this.userId===this.events[i].user)
+                //check if user is going/maybe to events
+                if(this.events[i].attendees["1"].includes(this.userId) || this.events[i].attendees["0"].includes(this.userId))
                 {
                   this.yourEvents.push(this.events[i]);
                 }
@@ -157,33 +141,16 @@ export class HomeComponent implements OnInit {
 
 
               //gets maximum of 5 posts
-              this.recommendedEvents = this.recommendedEvents.slice(0,5);
-              this.yourEvents = this.yourEvents.slice(0,5);
-
-              //add null if array length is not 0 to display buffer value in html code
-             if(this.recommendedEvents.length != 0)
-             {
-              while(this.recommendedEvents.length<5)
+              if(this.recommendedEvents.length > 5)
               {
-                this.recommendedEvents.push(null);
+                this.recommendedEvents = this.recommendedEvents.slice(0,5);
               }
-             }
-             if(this.yourEvents.length != 0)
-             {
-              while(this.yourEvents.length<5)
+              if(this.yourEvents.length > 5)
               {
-                this.yourEvents.push(null);
-              }
-             }
-
-            
+                this.yourEvents = this.yourEvents.slice(0,5);
+              }    
         });
     });
-
-    
-
-    
-
     
   }
 
