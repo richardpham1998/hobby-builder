@@ -13,7 +13,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
 import { CommentComponent } from './components/comment/comment.component';
@@ -29,6 +29,9 @@ import { EventsComponent } from './components/events/events.component';
 import { EventComponent } from './components/event/event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { TagOptionsComponent } from './components/tag-options/tag-options.component';
+import { CommentSectionComponent } from './components/comment-section/comment-section.component';
+import { TagsListComponent } from './components/tags-list/tags-list.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { NotificationsComponent } from './components/notifications/notifications
     EventsComponent,
     EventComponent,
     EditEventComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    TagOptionsComponent,
+    CommentSectionComponent,
+    TagsListComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +69,8 @@ import { NotificationsComponent } from './components/notifications/notifications
     HttpClientModule,
     FormsModule,
     NgbModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

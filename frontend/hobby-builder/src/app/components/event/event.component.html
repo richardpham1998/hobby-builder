@@ -140,22 +140,9 @@
             </button>
           </div>
           <br>
-
           <hr>
 
-          <div class>
-            <h5 class="card-title">Tags</h5>
-
-          </div>
-          <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your event</div>
-          <a *ngFor="let hbby of hobbyNames, index as i">
-            <span class="badge badge-secondary">
-              <a *ngIf="hbby != null">
-                {{hbby}}
-              </a>
-            </span>
-          </a>
-        </div>
+          <app-tags-list [tags]="tags"></app-tags-list>
 
 
         <ul class="nav nav-tabs">

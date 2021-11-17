@@ -39,19 +39,13 @@ export class AddEventComponent implements OnInit {
 
   added: boolean = false;
 
-  //tag components
-  tagOptions: Tag[] = [];
-  tagId: String = null;
-  hobbyNames: String[] = [];
-  hobbyObject: Tag;
-  hobbyExists: boolean = false;
+
 
   constructor(
     private eventService: EventService,
     public auth: AuthService,
     private modalService: NgbModal,
     private userService: UserService,
-    private tagService: TagService
   ) {}
 
   ngOnInit(): void {
@@ -69,12 +63,6 @@ export class AddEventComponent implements OnInit {
         });
     });
 
-    this.tagService.getTags().subscribe(tags=>
-      {
-        this.tagOptions=tags;
-        this.loadHobbyNames();
-      }
-      );
   }
 
   addEvent() {
@@ -166,80 +154,10 @@ export class AddEventComponent implements OnInit {
       this.date_created = null;
       this.date_modified = null;
 
-      this.hobbyNames=[];
     }
 
     this.eventService.getEvents().subscribe((events) => (this.events = events));
   }
 
-     //tag methods
-
-     sortTags(a : Tag, b: Tag)
-     {
-         if(a.name>b.name)
-         {
-           return 1;
-         }
-         else if(a.name<b.name)
-         {
-           return -1;
-         }
-         else{
-           return 0;
-         }
-     }
-
-     loadHobbyNames()
-     {
-       for(let i = 0; i < this.tags.length;i++)
-       {
-         this.tagService.getTag(this.tags[i]).subscribe(hobby=>
-           {
-             this.hobbyObject = hobby;
-             if(this.hobbyObject==null)
-             {
-               this.hobbyNames[i]=null;
-             }
-             else{
-               this.hobbyNames[i]=this.hobbyObject.name;
-             }
-             
-           });
-         
-       }
-       this.hobbyObject=null;
-     }
    
-     addHobby()
-     {
-
-       if(this.tagId==null)
-       {
-         this.hobbyExists=false;
-       }
-       else if(this.tags.includes(this.tagId))
-       {
-         this.hobbyExists=true;
-       }
-       else{
-         this.hobbyExists=false;
-         this.tags.push(this.tagId);
-         this.tagId = null;
-   
-       }
-       this.loadHobbyNames();
-     }
-   
-     deleteHobby(hobby: String)
-     {
-       for(var i = 0; i < this.tags.length; i++)
-       {
-         if(this.tags[i] == hobby)
-         {
-           this.tags.splice(i,1);
-           this.hobbyNames.splice(i,1);
-         }
-       }
-       this.loadHobbyNames();
-     }
 }

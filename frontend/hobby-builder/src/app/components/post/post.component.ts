@@ -46,14 +46,6 @@ export class PostComponent implements OnInit {
 
   //comment components
   commentList: Comment[] = [];
-  commentToLike: Comment;
-  commentMap: { '-1': String[]; '0': String[]; '1': String[] };
-
-  //tag components
-  tagOptions: Tag[] = [];
-  tagId: String = null;
-  hobbyNames: String[] = [];
-  hobbyObject: Tag;
 
   //modal components
   closeResult = '';
@@ -71,7 +63,6 @@ export class PostComponent implements OnInit {
     public auth: AuthService,
     private commentService: CommentService,
     private route: ActivatedRoute,
-    private tagService: TagService,
     private modalService: NgbModal,
     private userService: UserService,
     private notificationService: NotificationService
@@ -108,11 +99,6 @@ export class PostComponent implements OnInit {
         this.post = null;
       } else {
         this.tags = this.post.tags;
-        this.tagService.getTags().subscribe((tags) => {
-          this.tagOptions = tags;
-          this.tagOptions.sort((a, b) => this.sortTags(a, b));
-          this.loadHobbyNames();
-        });
 
         this.commentService.getComments().subscribe((comments) => {
           this.comments = comments;
@@ -225,197 +211,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-  //Comment functionalities
-
-  //removes comment
-  deleteComment(id: any) {
-    var comments = this.comments;
-    this.commentService.deleteComment(id).subscribe((data) => {
-      for (var i = 0; i < comments.length; i++) {
-        if (comments[i]._id == id) {
-          comments.splice(i, 1);
-        }
-      }
-
-      for (var i = 0; i < this.commentList.length; i++) {
-        if (this.commentList[i]._id == id) {
-          this.commentList.splice(i, 1);
-        }
-      }
-
-      this.commentService
-        .getComments()
-        .subscribe((comments) => (this.comments = comments));
-    });
-  }
-
-  //tag methods
-
-  sortTags(a: Tag, b: Tag) {
-    if (a.name > b.name) {
-      return 1;
-    } else if (a.name < b.name) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
-
-  loadHobbyNames() {
-    for (let i = 0; i < this.tags.length; i++) {
-      this.tagService.getTag(this.tags[i]).subscribe((hobby) => {
-        this.hobbyObject = hobby;
-        if (this.hobbyObject == null) {
-          this.hobbyNames[i] = null;
-        } else {
-          this.hobbyNames[i] = this.hobbyObject.name;
-        }
-      });
-    }
-    this.hobbyObject = null;
-  }
-
-  addHobby() {
-    if (this.tagId == null) {
-      this.hobbyExists = false;
-    } else if (this.tags.includes(this.tagId)) {
-      this.hobbyExists = true;
-    } else {
-      this.hobbyExists = false;
-      this.tags.push(this.tagId);
-
-      this.postService.patchPost(this.id, this.post).subscribe((post) => {
-        this.postService.getPost(this.id).subscribe((post) => {
-          this.post = post;
-          this.tags = this.post.tags;
-        });
-        this.loadHobbyNames();
-      });
-
-      this.tagId = null;
-    }
-  }
-
-  deleteHobby(hobby: String) {
-    for (var i = 0; i < this.tags.length; i++) {
-      if (this.tags[i] == hobby) {
-        this.tags.splice(i, 1);
-        this.hobbyNames.splice(i, 1);
-      }
-    }
-
-    this.postService.patchPost(this.id, this.post).subscribe((post) => {
-      this.postService.getPost(this.id).subscribe((post) => {
-        this.post = post;
-        this.tags = this.post.tags;
-      });
-      this.loadHobbyNames();
-    });
-  }
-
-  //comment likes code
-  likeComment(id: String) {
-    this.commentService.getComment(id).subscribe((comment) => {
-      this.commentToLike = comment;
-      this.commentMap = this.commentToLike.likes;
-
-      //like comment
-      if (!this.commentMap['1'].includes(this.userId)) {
-        this.commentMap['1'].push(this.userId);
-
-        var link: String = 'post'; // post, event, or profile
-        var userToNotify: String = this.post.user; //id of owner of post, event or profile
-        var idToCommentOn: String = this.id; //id of post, event, or profile
-
-        const newNotification = {
-          text: this.userName + ' liked your comment. ',
-          linkType: link,
-          user: userToNotify, //person who created the post/event/profile
-          idToLink: idToCommentOn, //post/event/profile id
-          date_created: new Date(),
-          date_modified: null,
-        };
-
-        this.notificationService.addNotification(newNotification).subscribe();
-      }
-      //unlike comment
-      else {
-        for (let i = this.commentMap['1'].length - 1; i >= 0; i--) {
-          if (this.commentMap['1'][i] === this.userId) {
-            this.commentMap['1'].splice(i, 1);
-          }
-        }
-      }
-
-      //remove user from dislike section if user had disliked it
-      for (let i = this.commentMap['-1'].length - 1; i >= 0; i--) {
-        if (this.commentMap['-1'][i] === this.userId) {
-          this.commentMap['-1'].splice(i, 1);
-        }
-      }
-
-      this.commentToLike.likes = this.commentMap;
-
-      this.commentService
-        .patchComment(id, this.commentToLike)
-        .subscribe((comment) => {
-          this.commentToLike = null;
-          this.commentService.getComments().subscribe((comments) => {
-            this.comments = comments;
-            this.commentList = [];
-            for (let i = comments.length - 1; i >= 0; i--) {
-              if (comments[i].post === this.post._id) {
-                this.commentList.push(comments[i]);
-              }
-            }
-          });
-        });
-    });
-  }
-
-  dislikeComment(id: String) {
-    this.commentService.getComment(id).subscribe((comment) => {
-      this.commentToLike = comment;
-      this.commentMap = this.commentToLike.likes;
-
-      //dislike comment
-      if (!this.commentMap['-1'].includes(this.userId)) {
-        this.commentMap['-1'].push(this.userId);
-      }
-      //un-dislike comment
-      else {
-        for (let i = this.commentMap['-1'].length - 1; i >= 0; i--) {
-          if (this.commentMap['-1'][i] === this.userId) {
-            this.commentMap['-1'].splice(i, 1);
-          }
-        }
-      }
-
-      //remove user from like section if user had liked it
-      for (let i = this.commentMap['1'].length - 1; i >= 0; i--) {
-        if (this.commentMap['1'][i] === this.userId) {
-          this.commentMap['1'].splice(i, 1);
-        }
-      }
-
-      this.commentToLike.likes = this.commentMap;
-
-      this.commentService
-        .patchComment(id, this.commentToLike)
-        .subscribe((comment) => {
-          this.commentToLike = null;
-          this.commentService.getComments().subscribe((comments) => {
-            this.comments = comments;
-            this.commentList = [];
-            for (let i = comments.length - 1; i >= 0; i--) {
-              if (comments[i].post === this.post._id) {
-                this.commentList.push(comments[i]);
-              }
-            }
-          });
-        });
-    });
-  }
 
   //modal code
   openPost(content, id: String) {
@@ -435,22 +230,7 @@ export class PostComponent implements OnInit {
       );
   }
 
-  openComment(content, id: String) {
-    this.commentToDelete = id;
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-comment' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-          if (this.commentToDelete != null) {
-            this.deleteComment(this.commentToDelete);
-          }
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
+ 
 
   private getDismissReason(reason: any): string {
     this.postToDelete = null;
