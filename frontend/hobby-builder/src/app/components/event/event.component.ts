@@ -49,11 +49,7 @@ export class EventComponent implements OnInit {
   commentToLike: Comment;
   commentMap: { '-1': String[]; '0': String[]; '1': String[] };
 
-  //tag components
-  tagOptions: Tag[] = [];
-  tagId: String = null;
-  hobbyNames: String[] = [];
-  hobbyObject: Tag;
+
 
   //modal components
   closeResult = '';
@@ -78,7 +74,6 @@ export class EventComponent implements OnInit {
     public auth: AuthService,
     private commentService: CommentService,
     private route: ActivatedRoute,
-    private tagService: TagService,
     private modalService: NgbModal,
     private userService: UserService,
     private notificationService: NotificationService
@@ -122,12 +117,7 @@ export class EventComponent implements OnInit {
       if (this.event['name'] == 'CastError') {
         this.event = null;
       } else {
-        this.tags = this.event.tags;
-        this.tagService.getTags().subscribe((tags) => {
-          this.tagOptions = tags;
-          this.tagOptions.sort((a, b) => this.sortTags(a, b));
-          this.loadHobbyNames();
-        });
+
 
         this.commentService.getComments().subscribe((comments) => {
           this.comments = comments;
@@ -399,69 +389,7 @@ export class EventComponent implements OnInit {
     });
   }
 
-  //tag methods
-
-  sortTags(a: Tag, b: Tag) {
-    if (a.name > b.name) {
-      return 1;
-    } else if (a.name < b.name) {
-      return -1;
-    } else {
-      return 0;
-    }
-  }
-
-  loadHobbyNames() {
-    for (let i = 0; i < this.tags.length; i++) {
-      this.tagService.getTag(this.tags[i]).subscribe((hobby) => {
-        this.hobbyObject = hobby;
-        if (this.hobbyObject == null) {
-          this.hobbyNames[i] = null;
-        } else {
-          this.hobbyNames[i] = this.hobbyObject.name;
-        }
-      });
-    }
-    this.hobbyObject = null;
-  }
-
-  addHobby() {
-    if (this.tagId == null) {
-      this.hobbyExists = false;
-    } else if (this.tags.includes(this.tagId)) {
-      this.hobbyExists = true;
-    } else {
-      this.hobbyExists = false;
-      this.tags.push(this.tagId);
-
-      this.eventService.patchEvent(this.id, this.event).subscribe((event) => {
-        this.eventService.getEvent(this.id).subscribe((event) => {
-          this.event = event;
-          this.tags = this.event.tags;
-        });
-        this.loadHobbyNames();
-      });
-
-      this.tagId = null;
-    }
-  }
-
-  deleteHobby(hobby: String) {
-    for (var i = 0; i < this.tags.length; i++) {
-      if (this.tags[i] == hobby) {
-        this.tags.splice(i, 1);
-        this.hobbyNames.splice(i, 1);
-      }
-    }
-
-    this.eventService.patchEvent(this.id, this.event).subscribe((event) => {
-      this.eventService.getEvent(this.id).subscribe((event) => {
-        this.event = event;
-        this.tags = this.event.tags;
-      });
-      this.loadHobbyNames();
-    });
-  }
+ 
 
   //comment likes code
   likeComment(id: String) {
