@@ -105,11 +105,12 @@
           <div *ngIf="commentList.length==0">
             <a>No comments to show </a>
           </div>
+
           <div *ngIf="commentList.length>0">
             <div *ngFor="let comment of commentList, index as i">
               <hr>
 
-              <app-comment [comment]="comment"></app-comment>
+              <app-comment [comment]="comment" [comments]="comments" [(commentList)]="commentList" type="0" [typeId]="post._id" (refresh)="refresh($event)"></app-comment>
               <!-- <div>
                 <div>
                   <a *ngIf="user.sub.substring(6,user.sub.length) === comment.user">

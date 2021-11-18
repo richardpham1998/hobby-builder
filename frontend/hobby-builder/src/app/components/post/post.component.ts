@@ -24,6 +24,7 @@ export class PostComponent implements OnInit {
 
   userName: String;
 
+
   //post components
   posts: Post[] = [];
   comments: Comment[] = [];
@@ -91,6 +92,15 @@ export class PostComponent implements OnInit {
     });
   }
 
+
+  refresh(list : Comment[])
+  {
+    this.commentList = list;
+    this.loadComments();
+    alert("test");
+
+  }
+
   loadPost() {
     this.postService.getPost(this.id).subscribe((post) => {
       this.post = post;
@@ -100,15 +110,20 @@ export class PostComponent implements OnInit {
       } else {
         this.tags = this.post.tags;
 
-        this.commentService.getComments().subscribe((comments) => {
-          this.comments = comments;
-          this.commentList = [];
-          for (let i = comments.length - 1; i >= 0; i--) {
-            if (comments[i].post === this.post._id) {
-              this.commentList.push(comments[i]);
-            }
-          }
-        });
+        this.loadComments();
+      }
+    });
+  }
+
+  loadComments()
+  {
+    this.commentService.getComments().subscribe((comments) => {
+      this.comments = comments;
+      this.commentList = [];
+      for (let i = comments.length - 1; i >= 0; i--) {
+        if (comments[i].post === this.post._id) {
+          this.commentList.push(comments[i]);
+        }
       }
     });
   }

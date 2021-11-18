@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { CommentService } from 'src/app/services/comment.service';
@@ -13,10 +13,18 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./comment.component.css'],
 })
 export class CommentComponent implements OnInit {
-  // @Input() commentList: Comment[];
-  // @Input() comments: Comment[];
-
+  @Input() commentList: Comment[];
+  @Input() comments: Comment[];
   @Input() comment : Comment;
+
+  //0 for post, 1 for event, 2 for profile
+  @Input() type : String;
+
+  //id of post/event/user
+  @Input() typeId: String;
+
+  //refresh screen if comment is modified in any way
+  @Output('refresh') refresh = new EventEmitter<Comment[]>();
 
   //comment components
   commentToLike: Comment;
@@ -27,6 +35,11 @@ export class CommentComponent implements OnInit {
   userId: String = null;
   userName: String = null;
 
+    //modal components
+    closeResult = '';
+    postToDelete: String = null;
+    commentToDelete: String = null;
+
   constructor(
     private commentService: CommentService,
     private modalService: NgbModal,
@@ -36,6 +49,7 @@ export class CommentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.auth.user$.subscribe((profile) => {
       this.profileObject = profile;
       this.userId = this.profileObject.sub.substring(
@@ -50,34 +64,36 @@ export class CommentComponent implements OnInit {
           this.userName = profile.username;
         });
     });
+
+    
   }
 
+
   //Comment functionalities
+
+  //refresh comment
+  refreshComments()
+  {
+    this.refresh.emit(this.commentList);
+  }
 
   //removes comment
   deleteComment(id: any) {
     // var comments = this.comments;
     this.commentService.deleteComment(id).subscribe((data) => {
-      // for (var i = 0; i < comments.length; i++) {
-      //   if (comments[i]._id == id) {
-      //     comments.splice(i, 1);
-      //   }
-      // }
 
-      // for (var i = 0; i < this.commentList.length; i++) {
-      //   if (this.commentList[i]._id == id) {
-      //     this.commentList.splice(i, 1);
-      //   }
-      // }
-
-      // this.commentService
-      //   .getComments()
-      //   .subscribe((comments) => (this.comments = comments));
+      for (var i = 0; i < this.commentList.length; i++) {
+        if (this.commentList[i]._id == id) {
+          this.commentList.splice(i, 1);
+        }
+      }
+      this.refreshComments();
     });
   }
 
   //comment likes code
   likeComment(id: String) {
+
     this.commentService.getComment(id).subscribe((comment) => {
       this.commentToLike = comment;
       this.commentMap = this.commentToLike.likes;
@@ -122,21 +138,41 @@ export class CommentComponent implements OnInit {
       this.commentService
         .patchComment(id, this.commentToLike)
         .subscribe((comment) => {
+
           this.commentToLike = null;
           this.commentService.getComments().subscribe((comments) => {
-            // this.comments = comments;
-            // this.commentList = [];
-            // for (let i = comments.length - 1; i >= 0; i--) {
-            //   if (comments[i].post === this.post._id) {
-            //     this.commentList.push(comments[i]);
-            //   }
-            // }
+            this.comments = comments;
+            this.commentList = [];
+            for (let i = comments.length - 1; i >= 0; i--) {
+              if(this.type=== '0')
+              {
+                if (comments[i].post === this.typeId) {
+                  this.commentList.push(comments[i]);
+                }
+              }
+              if(this.type=== '1')
+              {
+                if (comments[i].event === this.typeId) {
+                 this.commentList.push(comments[i]);
+                }
+              }
+              if(this.type=== '2')
+              {
+                if (comments[i].profile === this.typeId) {
+                  this.commentList.push(comments[i]);
+                }
+              }
+            }
+
           });
         });
+        this.refreshComments();
     });
+
   }
 
   dislikeComment(id: String) {
+
     this.commentService.getComment(id).subscribe((comment) => {
       this.commentToLike = comment;
       this.commentMap = this.commentToLike.likes;
@@ -163,37 +199,71 @@ export class CommentComponent implements OnInit {
 
       this.commentToLike.likes = this.commentMap;
 
-      // this.commentService
-      //   .patchComment(id, this.commentToLike)
-      //   .subscribe((comment) => {
-      //     this.commentToLike = null;
-      //     this.commentService.getComments().subscribe((comments) => {
-      //       this.comments = comments;
-      //       this.commentList = [];
-      //       for (let i = comments.length - 1; i >= 0; i--) {
-      //         if (comments[i].post === this.post._id) {
-      //           this.commentList.push(comments[i]);
-      //         }
-      //       }
-      //     });
-      //   });
+      this.commentService
+        .patchComment(id, this.commentToLike)
+        .subscribe((comment) => {
+          this.commentToLike = null;
+          this.commentToLike = null;
+          this.commentService.getComments().subscribe((comments) => {
+            this.comments = comments;
+            this.commentList = [];
+            for (let i = comments.length - 1; i >= 0; i--) {
+              if(this.type=== '0')
+              {
+                if (comments[i].post === this.typeId) {
+                  this.commentList.push(comments[i]);
+                }
+              }
+              if(this.type=== '1')
+              {
+                if (comments[i].event === this.typeId) {
+                 this.commentList.push(comments[i]);
+                }
+              }
+              if(this.type=== '2')
+              {
+                if (comments[i].profile === this.typeId) {
+                  this.commentList.push(comments[i]);
+                }
+              }
+            }
+
+          });
+        });
+
+        this.refreshComments();
     });
   }
 
   //modal code
-  //  openComment(content, id: String) {
-  //   this.commentToDelete = id;
-  //   this.modalService
-  //     .open(content, { ariaLabelledBy: 'modal-comment' })
-  //     .result.then(
-  //       (result) => {
-  //         this.closeResult = `Closed with: ${result}`;
-  //         if (this.commentToDelete != null) {
-  //           this.deleteComment(this.commentToDelete);
-  //         }
-  //       },
-  //       (reason) => {
-  //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //       }
-  //     );
+   openComment(content, id: String) {
+    this.commentToDelete = id;
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-comment' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          if (this.commentToDelete != null) {
+            this.deleteComment(this.commentToDelete);
+          }
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+   }
+
+
+  private getDismissReason(reason: any): string {
+    this.postToDelete = null;
+    this.commentToDelete = null;
+
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }
