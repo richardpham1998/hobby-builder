@@ -118,19 +118,7 @@
 
             <div *ngIf="eventsUserMaybe.length > 0">
               <div *ngFor="let event of eventsUserMaybe" class="card">
-                <div class="btn" routerLink="/event/{{event._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ event.title }}</h1>
-                    </div>
-                    <div>
-                      by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="event.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
-                </div>
+                <app-event-display [event]="event"></app-event-display>
               </div>
             </div>
           </div>
@@ -144,19 +132,7 @@
 
             <div *ngIf="eventsUserAttending.length > 0">
               <div *ngFor="let event of eventsUserAttending" class="card">
-                <div class="btn" routerLink="/event/{{event._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ event.title }}</h1>
-                    </div>
-                    <div>
-                      by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="event.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
-                </div>
+                <app-event-display [event]="event"></app-event-display>
               </div>
             </div>
           </div>
@@ -172,64 +148,9 @@
 
             <div *ngIf="commentsFromUser.length > 0">
               <div *ngFor="let comment of commentsFromUser" class="card">
-                <div class="btn">
 
-                  <div *ngIf="comment.post != null"  [routerLink]="['/post', comment.post]">
-                    <div class="card-body">
-                      POST
-                      <div>
-                        {{comment.content}}
-                        <div>
-                          <a>
-                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
-                              routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
-                          </a>
-                          <a *ngIf="comment.date_modified != null">
-                            (Edited)
-                          </a>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="comment.event != null" [routerLink]="['/event', comment.event]">
-                    <div class="card-body">
-                      EVENT
-                      <div>
-                        {{comment.content}}
-                        <div>
-                          <a>
-                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
-                              routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
-                          </a>
-                          <a *ngIf="comment.date_modified != null">
-                            (Edited)
-                          </a>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="comment.profile != null" [routerLink]="['/profile', comment.profile]">
-                    <div class="card-body">
-                      PROFILE
-                      <div>
-                        {{comment.content}}
-                        <div>
-                          <a>
-                            Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
-                              routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
-                          </a>
-                          <a *ngIf="comment.date_modified != null">
-                            (Edited)
-                          </a>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
+                <app-comment-display [comment]="comment"></app-comment-display>
+                
               </div>
             </div>
           </div>
@@ -243,19 +164,7 @@
 
             <div *ngIf="eventsFromUser.length > 0">
               <div *ngFor="let event of eventsFromUser" class="card">
-                <div class="btn" routerLink="/event/{{event._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ event.title }}</h1>
-                    </div>
-                    <div>
-                      by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="event.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
-                </div>
+                <app-event-display [event]="event"></app-event-display>
               </div>
             </div>
           </div>
@@ -269,19 +178,9 @@
 
             <div *ngIf="postsFromUser.length > 0">
               <div *ngFor="let post of postsFromUser" class="card">
-                <div class="btn" routerLink="/post/{{post._id}}">
-                  <div class="card-body">
-                    <div>
-                      <h1>{{ post.title }}</h1>
-                    </div>
-                    <div>
-                      by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
-                    </div>
-                    <div *ngIf="post.date_modified != null" class="font-weight-bold">
-                      (Edited)
-                    </div>
-                  </div>
-                </div>
+
+                <app-post-display [post]="post"></app-post-display>
+                
               </div>
             </div>
 
@@ -352,58 +251,8 @@
             <div *ngFor="let comment of commentList, index as i">
               <hr>
 
-              <div>
-                <div>
-                  <a *ngIf="user.sub.substring(6,user.sub.length) === comment.user">
-                    <button type="button" (click)="openComment(commentContent,comment._id)" value="Delete"
-                      class="btn btn-danger btn-sm float-right">
-                      <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
-                    </button>
-                    <button type="button" routerLink="/edit-comment/2/{{id}}/{{comment._id}}" value="Edit"
-                      class="btn btn-primary btn-sm float-right">
-                      <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
-                    </button>
-                  </a>
-                </div>
-                <div>
-                  <button *ngIf="!comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-link btn-sm float-left">
-                    <img src="/assets/img/thumbs_up.svg" alt="Like" width="100%" height="100%">
-                  </button>
-                  <button *ngIf="comment.likes['1'].includes(userId)" type="button" (click)="likeComment(comment._id)"
-                    class="btn btn-link btn-sm float-left">
-                    <img src="/assets/img/thumbs_up_fill.svg" alt="Like" width="100%" height="100%">
-                  </button>
+              <app-comment [comment]="comment" [comments]="comments" [(commentList)]="commentList" type="2" [typeId]="id" [owner]="id" (refresh)="refresh($event)"></app-comment>
 
-
-                  <a style="color:black"
-                    class="float-left"><b>{{comment.likes["1"].length - comment.likes["-1"].length}}</b></a>
-
-
-                  <button *ngIf="!comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-link btn-sm float-left">
-                    <img src="/assets/img/thumbs_down.svg" alt="Dislike" width="100%" height="100%">
-                  </button>
-                  <button *ngIf="comment.likes['-1'].includes(userId)" type="button"
-                    (click)="dislikeComment(comment._id)" class="btn btn-link float-left">
-                    <img src="/assets/img/thumbs_down_fill.svg" alt="Dislike" width="100%" height="100%">
-                  </button>
-                </div>
-                <div>
-                  {{comment.content}}
-                  <div>
-                    <a>
-                      Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
-                        routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
-                    </a>
-                    <a *ngIf="comment.date_modified != null">
-                      (Edited)
-                    </a>
-
-                  </div>
-                </div>
-
-              </div>
             </div>
           </div>
 

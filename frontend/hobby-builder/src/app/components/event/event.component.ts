@@ -109,6 +109,13 @@ export class EventComponent implements OnInit {
     
   }
 
+    //refresh from Comment component
+    refresh(list : Comment[])
+    {
+      this.commentList = list;
+      this.loadEvent();
+    }
+
   loadEvent() {
     this.eventService.getEvent(this.id).subscribe((event) => {
       this.event = event;
@@ -118,6 +125,7 @@ export class EventComponent implements OnInit {
         this.event = null;
       } else {
 
+        this.tags = this.event.tags;
 
         this.commentService.getComments().subscribe((comments) => {
           this.comments = comments;

@@ -93,12 +93,11 @@ export class PostComponent implements OnInit {
   }
 
 
+  //refresh from Comment component
   refresh(list : Comment[])
   {
     this.commentList = list;
-    this.loadComments();
-    alert("test");
-
+    this.loadPost();
   }
 
   loadPost() {

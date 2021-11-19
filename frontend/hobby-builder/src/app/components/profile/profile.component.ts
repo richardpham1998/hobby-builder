@@ -85,8 +85,7 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     this.id = this.route.snapshot.paramMap.get('id');
 
@@ -96,48 +95,61 @@ export class ProfileComponent implements OnInit {
         this.tags.sort((a, b) => this.sortTags(a, b));
 
         //object for user you are visiting
-        this.userService.getUser(this.id).subscribe((user) => {
-          this.profile = user;
-
-          if (this.profile['name'] == 'CastError') {
-            this.profile = null;
-          } else {
-            this.commentService.getComments().subscribe((comments) => {
-              this.comments = comments;
-              this.comments = comments;
-              this.commentList = [];
-              for (let i = comments.length - 1; i >= 0; i--) {
-                if (comments[i].profile === this.id) {
-                  this.commentList.push(comments[i]);
-                }
-              }
-            });
-
-            this.hobbies = this.profile.hobbies;
-
-            this.auth.user$.subscribe((profile) => {
-              this.profileObject = profile;
-              this.userId = this.profileObject.sub.substring(
-                6,
-                this.profileObject.sub.length
-              );
-
-              //object for the visitor
-              this.userService.getUser(this.userId).subscribe((user) => {
-                this.visitorObject = user;
-              });
-              this.loadHobbyNames();
-
-              //load user posts, events, comments
-              this.loadArrays();
-            });
-          }
-        });
+        this.loadUser();
       },
       (err) => {
         alert(err);
       }
     );
+  }
+
+  //refresh from Comment component
+  refresh(list: Comment[]) {
+    this.commentList = list;
+    this.loadUser();
+  }
+
+  loadUser() {
+    this.userService.getUser(this.id).subscribe((user) => {
+      this.profile = user;
+
+      if (this.profile['name'] == 'CastError') {
+        this.profile = null;
+      } else {
+        this.loadComments();
+
+        this.hobbies = this.profile.hobbies;
+
+        this.auth.user$.subscribe((profile) => {
+          this.profileObject = profile;
+          this.userId = this.profileObject.sub.substring(
+            6,
+            this.profileObject.sub.length
+          );
+
+          //object for the visitor
+          this.userService.getUser(this.userId).subscribe((user) => {
+            this.visitorObject = user;
+          });
+          this.loadHobbyNames();
+
+          //load user posts, events, comments
+          this.loadArrays();
+        });
+      }
+    });
+  }
+  loadComments() {
+    this.commentService.getComments().subscribe((comments) => {
+      this.comments = comments;
+      this.comments = comments;
+      this.commentList = [];
+      for (let i = comments.length - 1; i >= 0; i--) {
+        if (comments[i].profile === this.id) {
+          this.commentList.push(comments[i]);
+        }
+      }
+    });
   }
 
   //loads user posts, events, comments
@@ -152,8 +164,7 @@ export class ProfileComponent implements OnInit {
 
     this.eventService.getEvents().subscribe((events) => {
       for (let i = events.length - 1; i >= 0; i--) {
-        if(events[i].user === this.profile._id)
-        {
+        if (events[i].user === this.profile._id) {
           this.eventsFromUser.push(events[i]);
         }
         if (events[i].attendees[1].includes(this.profile._id)) {

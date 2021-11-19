@@ -17,6 +17,9 @@ export class CommentComponent implements OnInit {
   @Input() comments: Comment[];
   @Input() comment : Comment;
 
+  //author of post/event/profile
+  @Input() owner: String;
+
   //0 for post, 1 for event, 2 for profile
   @Input() type : String;
 
@@ -102,20 +105,37 @@ export class CommentComponent implements OnInit {
       if (!this.commentMap['1'].includes(this.userId)) {
         this.commentMap['1'].push(this.userId);
 
-        var link: String = 'post'; // post, event, or profile
-        // var userToNotify: String = this.post.user; //id of owner of post, event or profile
-        // var idToCommentOn: String = this.id; //id of post, event, or profile
+        // post, event, or profile
+        var link: String;
 
-        // const newNotification = {
-        //   text: this.userName + ' liked your comment. ',
-        //   linkType: link,
-        //   user: userToNotify, //person who created the post/event/profile
-        //   idToLink: idToCommentOn, //post/event/profile id
-        //   date_created: new Date(),
-        //   date_modified: null,
-        // };
+        if(this.type==='0')
+        {
+          link='post';
+        }
+        else if(this.type==='1')
+        {
+          link='event';
+        }
+        else if(this.type==='2')
+        {
+          link='profile';
+        }
+        
+  
+        
+        var userToNotify: String = this.owner; //id of owner of post, event or profile
+        var idToCommentOn: String = this.typeId; //id of post, event, or profile
 
-        // this.notificationService.addNotification(newNotification).subscribe();
+        const newNotification = {
+          text: this.userName + ' liked your comment. ',
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: idToCommentOn, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+        };
+
+        this.notificationService.addNotification(newNotification).subscribe();
       }
       //unlike comment
       else {

@@ -30,8 +30,10 @@ import { EventComponent } from './components/event/event.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TagOptionsComponent } from './components/tag-options/tag-options.component';
-import { CommentSectionComponent } from './components/comment-section/comment-section.component';
 import { TagsListComponent } from './components/tags-list/tags-list.component';
+import { PostDisplayComponent } from './components/post-display/post-display.component';
+import { EventDisplayComponent } from './components/event-display/event-display.component';
+import { CommentDisplayComponent } from './components/comment-display/comment-display.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +58,10 @@ import { TagsListComponent } from './components/tags-list/tags-list.component';
     EditEventComponent,
     NotificationsComponent,
     TagOptionsComponent,
-    CommentSectionComponent,
-    TagsListComponent
+    TagsListComponent,
+    PostDisplayComponent,
+    EventDisplayComponent,
+    CommentDisplayComponent
   ],
   imports: [
     BrowserModule,

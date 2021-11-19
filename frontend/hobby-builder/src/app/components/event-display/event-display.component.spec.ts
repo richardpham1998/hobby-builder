@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentSectionComponent } from './comment-section.component';
+import { EventDisplayComponent } from './event-display.component';
 
-describe('CommentSectionComponent', () => {
-  let component: CommentSectionComponent;
-  let fixture: ComponentFixture<CommentSectionComponent>;
+describe('EventDisplayComponent', () => {
+  let component: EventDisplayComponent;
+  let fixture: ComponentFixture<EventDisplayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CommentSectionComponent ]
+      declarations: [ EventDisplayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentSectionComponent);
+    fixture = TestBed.createComponent(EventDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
