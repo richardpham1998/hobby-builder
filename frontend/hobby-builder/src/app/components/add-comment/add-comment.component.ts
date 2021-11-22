@@ -130,6 +130,7 @@ export class AddCommentComponent implements OnInit {
         idToLink: this.idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
+        newNotif: true
       };
 
       const newComment = {
@@ -142,7 +143,7 @@ export class AddCommentComponent implements OnInit {
         post: postId,
         event: eventId,
         date_created: new Date(),
-        date_modified: null,
+        date_modified: null
       };
 
       this.commentService.addComment(newComment).subscribe((comment) => {

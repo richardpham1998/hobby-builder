@@ -183,6 +183,8 @@ export class EventComponent implements OnInit {
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
+        newNotif: true,
+        isClosed: false
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -231,6 +233,7 @@ export class EventComponent implements OnInit {
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
+        newNotif: true
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -314,6 +317,8 @@ export class EventComponent implements OnInit {
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
+        newNotif: true,
+        isClosed: false
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -420,6 +425,8 @@ export class EventComponent implements OnInit {
           idToLink: idToCommentOn, //post/event/profile id
           date_created: new Date(),
           date_modified: null,
+          newNotif: true,
+          isClosed: false
         };
 
         this.notificationService.addNotification(newNotification).subscribe();

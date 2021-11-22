@@ -21,6 +21,7 @@ router.post('/notification',(req,res,next)=>
             user: req.body.user,
             linkType: req.body.linkType,
             idToLink: req.body.idToLink,
+            newNotif: req.body.newNotif,
             date_created: Date.now(),
             date_modified: null
         }
@@ -57,7 +58,6 @@ router.get('/notification/:id', (req,res,next)=>
 //modify notification
 router.patch('/notification/:id',(req,res,next)=>
 {
-    var resultObject = null;
 
     Notification.findById(req.params.id, function(err, result)
     {
@@ -65,17 +65,15 @@ router.patch('/notification/:id',(req,res,next)=>
         {
             res.json(err);
         }
-        else{
-            resultObject = result;
-
-        
+        else{        
             Notification.updateOne({_id: req.params.id},
                 {
-                    "text": resultObject.text,
-                    "user": resultObject.user,
-                    "linkType": resultObject.linkType, 
-                    "idToLink": resultObject.idToLink,
-                    "tags": resultObject.tags,
+                    "text": req.body.text,
+                    "user": req.body.user,
+                    "linkType": req.body.linkType, 
+                    "idToLink": req.body.idToLink,
+                    "tags": req.body.tags,
+                    "newNotif": req.body.newNotif,
                     "date_modified": Date.now()
                 }, 
                 function(err, result1)

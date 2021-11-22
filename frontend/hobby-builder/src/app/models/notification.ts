@@ -7,4 +7,5 @@ export class Notification
     idToLink: String;
     date_created: Date;
     date_modified: Date;
+    newNotif: Boolean;
 }

@@ -13,6 +13,12 @@ const NotificationSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    newNotif:
+    {
+        type:Boolean,
+        required: true,
+        null: false
+    },
     linkType:
     {
         type: String,

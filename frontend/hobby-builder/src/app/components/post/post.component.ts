@@ -171,6 +171,7 @@ export class PostComponent implements OnInit {
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
+        newNotif: true
       };
 
       this.notificationService.addNotification(newNotification).subscribe();

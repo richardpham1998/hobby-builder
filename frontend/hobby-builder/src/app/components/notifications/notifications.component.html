@@ -1,33 +1,81 @@
 <div class="container" *ngIf="auth.user$ | async as user">
-    <br>
-  
-    <div *ngIf="notifications== null || notifications.length==0" class="card">
-      <div class="card-body">
-          You currently have no notifications.
-        <br>
-      </div>
+  <br>
+
+  <div *ngIf="notifications== null || notifications.length==0" class="card">
+    <h1>Notifications</h1>
+
+    <div class="card-body">
+      You currently have no notifications.
+      <br>
     </div>
-    <div *ngIf="notifications!= null && notifications.length>0" class="card">
-      <h1>Notifications</h1>
-      <div *ngFor="let notification of notifications" class="card">
-        <div class="btn" routerLink="/{{notification.linkType}}/{{notification.idToLink}}">
-          
-            <div class="card-body">
+  </div>
+  <div *ngIf="notifications!= null && notifications.length>0" class="card">
+    <h1>Notifications</h1>
+
+    <div class="card-body"> 
+      
+      <button class="btn btn-danger btn-sm" (click)="clearAll()">Clear All</button>
+
+
+
+      <div *ngFor="let notification of notifications">
+
+
+
+        <div *ngIf="notification.newNotif == true">
+
+
+          <div class="btn" style="background-color: #e7e7e7">
+
+            <button type="button" class="close" aria-label="Close" (click)="deleteNotification(notification._id)">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+
+            <div class="card-body" (click)="turnOld(notification._id, notification)"
+              routerLink="/{{notification.linkType}}/{{notification.idToLink}}">
 
               <div>
-               {{ notification.text }} 
+                {{ notification.text }}
               </div>
               <div>
                 {{ notification.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
               </div>
 
             </div>
-          
+
+          </div>
         </div>
+
+        <div *ngIf="notification.newNotif == false">
+
+          <div class="btn" routerLink="/{{notification.linkType}}/{{notification.idToLink}}">
+
+            <button type="button" class="close" aria-label="Close" (click)="deleteNotification(notification._id)">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            
+            <div class="card-body">
+
+              <div>
+                {{ notification.text }}
+              </div>
+              <div>
+                {{ notification.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+
+
       </div>
+
     </div>
- 
-  
-  
+  </div>
+
+
+
 </div>
-  
