@@ -67,8 +67,8 @@ export class ProfileComponent implements OnInit {
   postsFromUser: Post[] = [];
   eventsFromUser: Event[] = [];
   commentsFromUser: Comment[] = [];
-  eventsUserAttending: Event[] = [];
-  eventsUserMaybe: Event[] = [];
+  eventsUserTracked: Event[] = [];
+  friendsOfUser: User[] = [];
 
   constructor(
     public auth: AuthService,
@@ -154,6 +154,13 @@ export class ProfileComponent implements OnInit {
 
   //loads user posts, events, comments
   loadArrays() {
+
+    this.postsFromUser=[];
+    this.eventsFromUser=[];
+    this.eventsUserTracked=[];
+    this.commentsFromUser=[];
+    this.friendsOfUser=[];
+
     this.postService.getPosts().subscribe((posts) => {
       for (let i = posts.length - 1; i >= 0; i--) {
         if (posts[i].user === this.profile._id) {
@@ -167,11 +174,11 @@ export class ProfileComponent implements OnInit {
         if (events[i].user === this.profile._id) {
           this.eventsFromUser.push(events[i]);
         }
-        if (events[i].attendees[1].includes(this.profile._id)) {
-          this.eventsUserAttending.push(events[i]);
-        }
-        if (events[i].attendees[0].includes(this.profile._id)) {
-          this.eventsUserMaybe.push(events[i]);
+        if (
+          events[i].attendees[1].includes(this.profile._id) ||
+          events[i].attendees[0].includes(this.profile._id)
+        ) {
+          this.eventsUserTracked.push(events[i]);
         }
       }
     });
@@ -180,6 +187,14 @@ export class ProfileComponent implements OnInit {
       for (let i = comments.length - 1; i >= 0; i--) {
         if (comments[i].user === this.profile._id) {
           this.commentsFromUser.push(comments[i]);
+        }
+      }
+    });
+
+    this.userService.getUsers().subscribe((users) => {
+      for (let i = users.length - 1; i >= 0; i--) {
+        if (this.profile.friends['3'].includes(users[i]._id)) {
+          this.friendsOfUser.push(users[i]);
         }
       }
     });
@@ -268,7 +283,7 @@ export class ProfileComponent implements OnInit {
           idToLink: idToCommentOn, //post/event/profile id
           date_created: new Date(),
           date_modified: null,
-          newNotif: true
+          newNotif: true,
         };
 
         this.notificationService.addNotification(newNotification).subscribe();
@@ -399,46 +414,156 @@ export class ProfileComponent implements OnInit {
   }
 
   //friend request options
-  addFriend()
-  {
-    // this.visitorObject.friends['1'].push(this.profile._id);
+  addFriend() {
+    this.visitorObject.friends['1'].push(this.profile._id);
 
-    
-    // for(let i = this.visitorObject.friends['2'].length-1; i>=0; i--)
-    // {
-    //   if(this.visitorObject.friends['2'][i].includes(this.profile._id))
-    //   {
+    for (let i = this.visitorObject.friends['2'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['2'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['2'].splice(i, 1);
+      }
+    }
 
-    //   }
-    // }
+    for (let i = this.visitorObject.friends['3'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['3'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['3'].splice(i, 1);
+      }
+    }
 
-    // for(let i = this.visitorObject.friends['3'].length-1; i>=0; i--)
-    // {
+    this.userService
+      .patchUser(this.visitorObject._id, this.visitorObject)
+      .subscribe();
 
-    // }
+    this.profile.friends['2'].push(this.visitorObject._id);
 
-  //  this.userService.patchUser(this.visitorObject._id,this.visitorObject).subscribe();
-   
-  //  this.profile.friends['2'].push(this.visitorObject._id);
-  //  this.userService
+    for (let i = this.profile.friends['1'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['1'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['1'].splice(i, 1);
+      }
+    }
+
+    for (let i = this.profile.friends['3'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['3'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['3'].splice(i, 1);
+      }
+    }
+
+    this.userService.patchUser(this.profile._id, this.profile).subscribe();
+
+    var link: String = 'profile'; // post, event, or profile
+    var userToNotify: String = this.profile._id; //id of owner of post, event or profile
+
+    const newNotification = {
+      text: this.visitorObject.username + ' sent you a friend request',
+      linkType: link,
+      user: userToNotify, //person who created the post/event/profile
+      idToLink: this.visitorObject._id, //post/event/profile id
+      date_created: new Date(),
+      date_modified: null,
+      newNotif: true,
+      isClosed: false,
+    };
+
+    this.notificationService.addNotification(newNotification).subscribe();
+
+    this.loadArrays();
   }
-  friendPending()
-  {
+  cancelFriend() {
+    for (let i = this.visitorObject.friends['1'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['1'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['1'].splice(i, 1);
+      }
+    }
 
+    for (let i = this.visitorObject.friends['2'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['2'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['2'].splice(i, 1);
+      }
+    }
+
+    for (let i = this.visitorObject.friends['3'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['3'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['3'].splice(i, 1);
+      }
+    }
+
+    this.userService
+      .patchUser(this.visitorObject._id, this.visitorObject)
+      .subscribe();
+
+    for (let i = this.profile.friends['1'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['1'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['1'].splice(i, 1);
+      }
+    }
+
+    for (let i = this.profile.friends['2'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['2'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['2'].splice(i, 1);
+      }
+    }
+
+    for (let i = this.profile.friends['3'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['3'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['3'].splice(i, 1);
+      }
+    }
+
+    this.userService.patchUser(this.profile._id, this.profile).subscribe();
+
+    this.loadArrays();
   }
 
-  acceptFriend()
-  {
+  acceptFriend() {
+    this.visitorObject.friends['3'].push(this.profile._id);
 
-  }
-  
-  rejectFriend()
-  {
+    for (let i = this.visitorObject.friends['2'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['2'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['2'].splice(i, 1);
+      }
+    }
 
-  }
+    for (let i = this.visitorObject.friends['1'].length - 1; i >= 0; i--) {
+      if (this.visitorObject.friends['1'][i].includes('' + this.profile._id)) {
+        this.visitorObject.friends['1'].splice(i, 1);
+      }
+    }
 
-  removeFriend()
-  {
+    this.userService
+      .patchUser(this.visitorObject._id, this.visitorObject)
+      .subscribe();
 
+    this.profile.friends['3'].push(this.visitorObject._id);
+
+    for (let i = this.profile.friends['1'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['1'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['1'].splice(i, 1);
+      }
+    }
+
+    for (let i = this.profile.friends['2'].length - 1; i >= 0; i--) {
+      if (this.profile.friends['2'][i].includes('' + this.visitorObject._id)) {
+        this.profile.friends['2'].splice(i, 1);
+      }
+    }
+
+    this.userService.patchUser(this.profile._id, this.profile).subscribe();
+
+    var link: String = 'profile'; // post, event, or profile
+    var userToNotify: String = this.profile._id; //id of owner of post, event or profile
+
+    const newNotification = {
+      text: this.visitorObject.username + ' accepted your friend request',
+      linkType: link,
+      user: userToNotify, //person who created the post/event/profile
+      idToLink: this.visitorObject._id, //post/event/profile id
+      date_created: new Date(),
+      date_modified: null,
+      newNotif: true,
+      isClosed: false,
+    };
+
+    this.notificationService.addNotification(newNotification).subscribe();
+
+    this.loadArrays();
   }
 }

@@ -13,5 +13,5 @@ export class User
     posts:String[];
     hobbies:String[];
     isAdmin: Boolean;
-    friends: {"0":[],"1":[], "2": [], "3": []};
+    friends: {"0":String[],"1":String[], "2": String[], "3": String[]};
 }

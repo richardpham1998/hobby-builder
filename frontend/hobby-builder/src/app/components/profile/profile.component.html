@@ -74,14 +74,14 @@
               <button class="btn btn-primary" (click)="addFriend()">Add Friend</button>
             </a>
             <a *ngIf="visitorObject.friends['1'].includes(profile._id)">
-              <button class="btn btn-primary" (click)="friendPending()">Friend Request Pending. Click to Cancel</button>
+              <button class="btn btn-primary" (click)="cancelFriend()">Friend Request Pending. Click to Cancel</button>
             </a>
             <a *ngIf="visitorObject.friends['2'].includes(profile._id)">
               <button class="btn btn-primary" (click)="acceptFriend()">Accept Friend Request</button>
-              <button class="btn btn-primary" (click)="rejectFriend()">Reject Friend Request</button>
+              <button class="btn btn-primary" (click)="cancelFriend()">Reject Friend Request</button>
             </a>
             <a *ngIf="visitorObject.friends['3'].includes(profile._id)">
-              <button class="btn btn-primary" (click)="removeFriend()">Friends. Click to Remove Friend</button>
+              <button class="btn btn-primary" (click)="cancelFriend()">Friends. Click to Remove Friend</button>
             </a>
         </a>
 
@@ -118,42 +118,44 @@
               <a class="nav-link" (click)="setOption(5)">User Comments</a>
             </li>
             <li *ngIf="option==6" class="nav-item">
-              <a class="nav-link active" aria-current="page">Events Going</a>
+              <a class="nav-link active" aria-current="page">Tracked Events</a>
             </li>
             <li *ngIf="option!=6" class="nav-item">
-              <a class="nav-link" (click)="setOption(6)">Events Going</a>
+              <a class="nav-link" (click)="setOption(6)">Tracked Events</a>
             </li>
             <li *ngIf="option==7" class="nav-item">
-              <a class="nav-link active" aria-current="page">Events Maybe </a>
+              <a class="nav-link active" aria-current="page">Friends</a>
             </li>
             <li *ngIf="option!=7" class="nav-item">
-              <a class="nav-link" (click)="setOption(7)">Events Maybe</a>
+              <a class="nav-link" (click)="setOption(7)">Friends</a>
             </li>
           </ul>
 
           <div *ngIf="option==7">
 
-            <div *ngIf="eventsUserMaybe.length==0" class="card">
+            <div *ngIf="friendsOfUser.length==0" class="card">
               <div class="card-body">
-                No events found
+                No friends found
               </div>
             </div>
 
-            <div *ngIf="eventsUserMaybe.length > 0">
-              <div *ngFor="let event of eventsUserMaybe" class="card">
-                <app-event-display [event]="event"></app-event-display>
+            <div *ngIf="friendsOfUser.length > 0">
+              <div *ngFor="let friend of friendsOfUser" class="card">
+                <div class="card-body" routerLink="/profile/{{friend._id}}">
+                  {{friend.username}}
+                </div>
               </div>
             </div>
           </div>
           <div *ngIf="option==6">
 
-            <div *ngIf="eventsUserAttending.length==0" class="card">
+            <div *ngIf="eventsUserTracked.length==0" class="card">
               <div class="card-body">
                 No events found
               </div>
             </div>
 
-            <div *ngIf="eventsUserAttending.length > 0">
+            <div *ngIf="eventsUserTracked.length > 0">
               <div *ngFor="let event of eventsUserAttending" class="card">
                 <app-event-display [event]="event"></app-event-display>
               </div>
