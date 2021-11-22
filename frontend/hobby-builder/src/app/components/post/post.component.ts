@@ -54,7 +54,7 @@ export class PostComponent implements OnInit {
   commentToDelete: String = null;
 
   //user component
-  userObject: User;
+  visitorObject: User;
 
   //profile substring
   profileSubstring: String;
@@ -88,6 +88,7 @@ export class PostComponent implements OnInit {
         )
         .subscribe((profile) => {
           this.userName = profile.username;
+          this.visitorObject= profile;
         });
     });
   }
@@ -135,6 +136,30 @@ export class PostComponent implements OnInit {
         if (posts[i]._id == id) {
           posts.splice(i, 1);
         }
+      }
+
+      if (this.visitorObject._id !== this.post.user && this.visitorObject.isAdmin) {
+        var link: String = 'post'; // post, event, or profile
+        var userToNotify: String = this.post.user; //id of owner of post, event or profile
+
+        const newNotification = {
+          text:
+            'Admin ' +
+            this.userName +
+            ' deleted your ' +
+            link +
+            ': ' +
+            this.post.title,
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: this.post._id, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+          newNotif: true,
+          isClosed: false,
+        };
+
+        this.notificationService.addNotification(newNotification).subscribe();
       }
 
       for (var i = this.comments.length - 1; i >= 0; i--) {

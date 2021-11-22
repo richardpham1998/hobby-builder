@@ -28,7 +28,8 @@ router.post('/user',(req,res,next)=>
             events_hosting: req.body.events_hosting,
             events_attending: req.body.events_attending,
             posts: req.body.posts,
-            hobbies: req.body.hobbies
+            hobbies: req.body.hobbies,
+            friends: {"0":[],"1":[], "2": [], "3": []}
         }
     )
 
@@ -117,6 +118,8 @@ router.patch('/user/:id',(req,res,next)=>
                 resultObject.hobbies = req.body.hobbies;
             }
 
+            resultObject.friends = req.body.friends;
+
             
         User.updateOne({_id: req.params.id},
             {   "username": resultObject.username,
@@ -129,7 +132,8 @@ router.patch('/user/:id',(req,res,next)=>
                 "events_hosting": resultObject.events_hosting,
                 "events_attending": resultObject.events_attending,
                 "posts": resultObject.posts,
-                "hobbies": resultObject.hobbies
+                "hobbies": resultObject.hobbies,
+                "friends": resultObject.friends
             }, 
             function(err, result1)
             {

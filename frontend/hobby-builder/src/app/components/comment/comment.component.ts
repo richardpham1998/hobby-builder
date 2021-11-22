@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
 import { Comment } from '../../models/comment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-comment',
@@ -15,13 +16,13 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class CommentComponent implements OnInit {
   @Input() commentList: Comment[];
   @Input() comments: Comment[];
-  @Input() comment : Comment;
+  @Input() comment: Comment;
 
   //author of post/event/profile
   @Input() owner: String;
 
   //0 for post, 1 for event, 2 for profile
-  @Input() type : String;
+  @Input() type: String;
 
   //id of post/event/user
   @Input() typeId: String;
@@ -38,10 +39,12 @@ export class CommentComponent implements OnInit {
   userId: String = null;
   userName: String = null;
 
-    //modal components
-    closeResult = '';
-    postToDelete: String = null;
-    commentToDelete: String = null;
+  visitor: User;
+
+  //modal components
+  closeResult = '';
+  postToDelete: String = null;
+  commentToDelete: String = null;
 
   constructor(
     private commentService: CommentService,
@@ -52,7 +55,6 @@ export class CommentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.auth.user$.subscribe((profile) => {
       this.profileObject = profile;
       this.userId = this.profileObject.sub.substring(
@@ -65,38 +67,71 @@ export class CommentComponent implements OnInit {
         )
         .subscribe((profile) => {
           this.userName = profile.username;
+          this.visitor = profile;
         });
     });
-
-    
   }
-
 
   //Comment functionalities
 
   //refresh comment
-  refreshComments()
-  {
+  refreshComments() {
     this.refresh.emit(this.commentList);
   }
 
   //removes comment
   deleteComment(id: any) {
-    // var comments = this.comments;
-    this.commentService.deleteComment(id).subscribe((data) => {
-
-      for (var i = 0; i < this.commentList.length; i++) {
-        if (this.commentList[i]._id == id) {
-          this.commentList.splice(i, 1);
+    this.commentService.getComment(id).subscribe(commentToRemove => {
+     
+      this.commentService.deleteComment(id).subscribe((data) => {
+        for (var i = 0; i < this.commentList.length; i++) {
+          if (this.commentList[i]._id == id) {
+            this.commentList.splice(i, 1);
+          }
         }
-      }
-      this.refreshComments();
+        this.refreshComments();
+
+        var userToNotify: String = this.owner; //id of owner of post, event or profile
+        var idToCommentOn: String = this.typeId; //id of post, event, or profile
+
+        if (
+          this.visitor.isAdmin &&
+          this.visitor._id != commentToRemove.user
+        ) {
+
+          // post, event, or profile
+          var link: String;
+
+          if (this.type === '0') {
+            link = 'post';
+          } else if (this.type === '1') {
+            link = 'event';
+          } else if (this.type === '2') {
+            link = 'profile';
+          }
+
+          const newNotification = {
+            text:
+              'Admin ' +
+              this.visitor.username +
+              ' deleted your comment: '
+              +"'"+commentToRemove.content+"'",
+            linkType: link,
+            user: commentToRemove.user, //person who created the comment
+            idToLink: idToCommentOn, //post/event/profile id
+            date_created: new Date(),
+            date_modified: null,
+            newNotif: true,
+          };
+
+          this.notificationService.addNotification(newNotification).subscribe();
+        }
+      });
     });
   }
 
   //comment likes code
   likeComment(id: String) {
-
     this.commentService.getComment(id).subscribe((comment) => {
       this.commentToLike = comment;
       this.commentMap = this.commentToLike.likes;
@@ -105,38 +140,37 @@ export class CommentComponent implements OnInit {
       if (!this.commentMap['1'].includes(this.userId)) {
         this.commentMap['1'].push(this.userId);
 
-        // post, event, or profile
-        var link: String;
+        alert(this.commentToLike.user + ' ' + this.visitor._id);
+        if (this.commentToLike.user !== this.visitor._id) {
+          // post, event, or profile
+          var link: String;
 
-        if(this.type==='0')
-        {
-          link='post';
-        }
-        else if(this.type==='1')
-        {
-          link='event';
-        }
-        else if(this.type==='2')
-        {
-          link='profile';
-        }
-        
-  
-        
-        var userToNotify: String = this.owner; //id of owner of post, event or profile
-        var idToCommentOn: String = this.typeId; //id of post, event, or profile
+          if (this.type === '0') {
+            link = 'post';
+          } else if (this.type === '1') {
+            link = 'event';
+          } else if (this.type === '2') {
+            link = 'profile';
+          }
 
-        const newNotification = {
-          text: this.userName + ' liked your comment. ',
-          linkType: link,
-          user: userToNotify, //person who created the post/event/profile
-          idToLink: idToCommentOn, //post/event/profile id
-          date_created: new Date(),
-          date_modified: null,
-          newNotif: true
-        };
+          var userToNotify: String = this.owner; //id of owner of post, event or profile
+          var idToCommentOn: String = this.typeId; //id of post, event, or profile
 
-        this.notificationService.addNotification(newNotification).subscribe();
+          const newNotification = {
+            text:
+              this.visitor.username +
+              ' liked your comment: ' +
+              this.commentToLike.content,
+            linkType: link,
+            user: this.commentToLike.user, //person who created the comment
+            idToLink: idToCommentOn, //post/event/profile id
+            date_created: new Date(),
+            date_modified: null,
+            newNotif: true,
+          };
+
+          this.notificationService.addNotification(newNotification).subscribe();
+        }
       }
       //unlike comment
       else {
@@ -159,41 +193,34 @@ export class CommentComponent implements OnInit {
       this.commentService
         .patchComment(id, this.commentToLike)
         .subscribe((comment) => {
-
           this.commentToLike = null;
           this.commentService.getComments().subscribe((comments) => {
             this.comments = comments;
             this.commentList = [];
             for (let i = comments.length - 1; i >= 0; i--) {
-              if(this.type=== '0')
-              {
+              if (this.type === '0') {
                 if (comments[i].post === this.typeId) {
                   this.commentList.push(comments[i]);
                 }
               }
-              if(this.type=== '1')
-              {
+              if (this.type === '1') {
                 if (comments[i].event === this.typeId) {
-                 this.commentList.push(comments[i]);
+                  this.commentList.push(comments[i]);
                 }
               }
-              if(this.type=== '2')
-              {
+              if (this.type === '2') {
                 if (comments[i].profile === this.typeId) {
                   this.commentList.push(comments[i]);
                 }
               }
             }
-
           });
         });
-        this.refreshComments();
+      this.refreshComments();
     });
-
   }
 
   dislikeComment(id: String) {
-
     this.commentService.getComment(id).subscribe((comment) => {
       this.commentToLike = comment;
       this.commentMap = this.commentToLike.likes;
@@ -229,35 +256,31 @@ export class CommentComponent implements OnInit {
             this.comments = comments;
             this.commentList = [];
             for (let i = comments.length - 1; i >= 0; i--) {
-              if(this.type=== '0')
-              {
+              if (this.type === '0') {
                 if (comments[i].post === this.typeId) {
                   this.commentList.push(comments[i]);
                 }
               }
-              if(this.type=== '1')
-              {
+              if (this.type === '1') {
                 if (comments[i].event === this.typeId) {
-                 this.commentList.push(comments[i]);
+                  this.commentList.push(comments[i]);
                 }
               }
-              if(this.type=== '2')
-              {
+              if (this.type === '2') {
                 if (comments[i].profile === this.typeId) {
                   this.commentList.push(comments[i]);
                 }
               }
             }
-
           });
         });
 
-        this.refreshComments();
+      this.refreshComments();
     });
   }
 
   //modal code
-   openComment(content, id: String) {
+  openComment(content, id: String) {
     this.commentToDelete = id;
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-comment' })
@@ -272,8 +295,7 @@ export class CommentComponent implements OnInit {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
-   }
-
+  }
 
   private getDismissReason(reason: any): string {
     this.postToDelete = null;

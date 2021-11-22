@@ -63,7 +63,13 @@ const UserSchema = mongoose.Schema({
         type:[String],
         required: true,
         null: false
-    }
+    },
+    friends:
+    {
+        type: {"0":[],"1":[], "2": [], "3": []},
+        required: true,
+        null: false,
+    },
 
 });
 

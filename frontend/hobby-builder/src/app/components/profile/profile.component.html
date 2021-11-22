@@ -44,12 +44,14 @@
       <div class="card">
         <div class="card-body">
           <div>
-            <a *ngIf="userId === id">
-              <button *ngIf="userId === id" type="button" (click)="deleteUserOption(userContent,id)" value="Delete"
+            <a *ngIf="userId === id || visitorObject.isAdmin == true">
+              <button type="button" (click)="deleteUserOption(userContent,id)" value="Delete"
                 class="btn btn-danger btn-sm float-right">
                 <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
               </button>
+            </a>
 
+            <a *ngIf="userId === id">
               <button type="button" routerLink="/edit-profile/{{id}}" value="Edit"
                 class="btn btn-primary btn-sm float-right">
                 <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
@@ -60,7 +62,28 @@
             <a *ngIf="userId === id"> Welcome, </a>
 
             {{profile.username}}
+          
+            <a *ngIf = "profile.isAdmin" style="color: red">
+              (Admin)
+            </a>
           </h1>
+
+
+          <a *ngIf="visitorObject._id !== profile._id">
+            <a *ngIf="!visitorObject.friends['1'].includes(profile._id) && !visitorObject.friends['2'].includes(profile._id) && !visitorObject.friends['3'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="addFriend()">Add Friend</button>
+            </a>
+            <a *ngIf="visitorObject.friends['1'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="friendPending()">Friend Request Pending. Click to Cancel</button>
+            </a>
+            <a *ngIf="visitorObject.friends['2'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="acceptFriend()">Accept Friend Request</button>
+              <button class="btn btn-primary" (click)="rejectFriend()">Reject Friend Request</button>
+            </a>
+            <a *ngIf="visitorObject.friends['3'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="removeFriend()">Friends. Click to Remove Friend</button>
+            </a>
+        </a>
 
 
           <ul class="nav nav-tabs">

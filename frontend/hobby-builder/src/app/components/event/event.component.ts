@@ -49,15 +49,13 @@ export class EventComponent implements OnInit {
   commentToLike: Comment;
   commentMap: { '-1': String[]; '0': String[]; '1': String[] };
 
-
-
   //modal components
   closeResult = '';
   eventToDelete: String = null;
   commentToDelete: String = null;
 
   //user component
-  userObject: User;
+  visitorObject: User;
 
   //profile substring
   profileSubstring: String;
@@ -66,8 +64,8 @@ export class EventComponent implements OnInit {
   option: Number = 1;
 
   //user attendees;
-  usersAttending: User[]=[];
-  usersMayAttend: User[]=[];
+  usersAttending: User[] = [];
+  usersMayAttend: User[] = [];
 
   constructor(
     private eventService: EventService,
@@ -85,9 +83,8 @@ export class EventComponent implements OnInit {
     this.loadEvent();
 
     this.eventService.getEvents().subscribe((events) => {
-      
       this.events = events;
-    
+
       this.loadUserArrays();
     });
 
@@ -103,18 +100,16 @@ export class EventComponent implements OnInit {
         )
         .subscribe((profile) => {
           this.userName = profile.username;
+          this.visitorObject = profile;
         });
     });
-
-    
   }
 
-    //refresh from Comment component
-    refresh(list : Comment[])
-    {
-      this.commentList = list;
-      this.loadEvent();
-    }
+  //refresh from Comment component
+  refresh(list: Comment[]) {
+    this.commentList = list;
+    this.loadEvent();
+  }
 
   loadEvent() {
     this.eventService.getEvent(this.id).subscribe((event) => {
@@ -124,7 +119,6 @@ export class EventComponent implements OnInit {
       if (this.event['name'] == 'CastError') {
         this.event = null;
       } else {
-
         this.tags = this.event.tags;
 
         this.commentService.getComments().subscribe((comments) => {
@@ -143,6 +137,7 @@ export class EventComponent implements OnInit {
   //delete event
   deleteEvent(id: any) {
     var events = this.events;
+
     this.eventService.deleteEvent(id).subscribe((data) => {
       for (var i = 0; i < events.length; i++) {
         if (events[i]._id == id) {
@@ -150,19 +145,44 @@ export class EventComponent implements OnInit {
         }
       }
 
-      for (var i = this.comments.length - 1; i >= 0; i--) {
-        if (this.comments[i].event == id) {
-          this.commentService.deleteComment(this.comments[i]._id).subscribe();
-          this.comments.splice(i, 1);
-        }
-      }
+      if (this.visitorObject._id !== this.event.user && this.visitorObject.isAdmin) {
+        var link: String = 'event'; // post, event, or profile
+        var userToNotify: String = this.event.user; //id of owner of post, event or profile
 
-      this.eventService.getEvent(this.id).subscribe((event) => {
-        this.event = event;
-        if (this.event['name'] == 'CastError') {
-          this.event = null;
+        const newNotification = {
+          text:
+            'Admin ' +
+            this.userName +
+            ' deleted your ' +
+            link +
+            ': ' +
+            this.event.title,
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: this.event._id, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+          newNotif: true,
+          isClosed: false,
+        };
+
+        this.notificationService.addNotification(newNotification).subscribe();
+      }
+      
+        for (var i = this.comments.length - 1; i >= 0; i--) {
+          if (this.comments[i].event == id) {
+            this.commentService.deleteComment(this.comments[i]._id).subscribe();
+            this.comments.splice(i, 1);
+          }
         }
-      });
+
+        this.eventService.getEvent(this.id).subscribe((event) => {
+          this.event = event;
+          if (this.event['name'] == 'CastError') {
+            this.event = null;
+          }
+        });
+      
     });
   }
 
@@ -177,14 +197,15 @@ export class EventComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' is going to your ' + link + '.',
+        text:
+          this.userName + ' is going to your ' + link + ': ' + this.event.title,
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
         newNotif: true,
-        isClosed: false
+        isClosed: false,
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -214,7 +235,6 @@ export class EventComponent implements OnInit {
     this.eventService.patchEvent(id, this.event).subscribe();
 
     this.loadUserArrays();
-
   }
 
   maybeEvent(id: String) {
@@ -227,13 +247,14 @@ export class EventComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' might go to your ' + link + '.',
+        text:
+          this.userName + ' might go to your ' + link + ': ' + this.event.title,
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
-        newNotif: true
+        newNotif: true,
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -299,7 +320,6 @@ export class EventComponent implements OnInit {
 
   //event like methods
   likeEvent(id: String) {
-
     this.likes = this.event.likes;
 
     //like comment
@@ -318,7 +338,7 @@ export class EventComponent implements OnInit {
         date_created: new Date(),
         date_modified: null,
         newNotif: true,
-        isClosed: false
+        isClosed: false,
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -345,7 +365,6 @@ export class EventComponent implements OnInit {
   }
 
   dislikeEvent(id: String) {
-
     this.likes = this.event.likes;
 
     this.eventService.getEvent(id).subscribe((event) => {
@@ -402,8 +421,6 @@ export class EventComponent implements OnInit {
     });
   }
 
- 
-
   //comment likes code
   likeComment(id: String) {
     this.commentService.getComment(id).subscribe((comment) => {
@@ -426,7 +443,7 @@ export class EventComponent implements OnInit {
           date_created: new Date(),
           date_modified: null,
           newNotif: true,
-          isClosed: false
+          isClosed: false,
         };
 
         this.notificationService.addNotification(newNotification).subscribe();
@@ -563,18 +580,14 @@ export class EventComponent implements OnInit {
   }
 
   //gets list of attendees
-  private loadUserArrays()
-  {
-    this.usersAttending=[];
-    this.usersMayAttend=[];
+  private loadUserArrays() {
+    this.usersAttending = [];
+    this.usersMayAttend = [];
     this.userService.getUsers().subscribe((users) => {
       for (let i = 0; i < users.length; i++) {
-        if(this.event.attendees['1'].includes(users[i]._id))
-        {
+        if (this.event.attendees['1'].includes(users[i]._id)) {
           this.usersAttending.push(users[i]);
-        }
-        else if(this.event.attendees['0'].includes(users[i]._id))
-        {
+        } else if (this.event.attendees['0'].includes(users[i]._id)) {
           this.usersMayAttend.push(users[i]);
         }
       }

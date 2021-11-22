@@ -12,4 +12,6 @@ export class User
     events_attending:String[];
     posts:String[];
     hobbies:String[];
+    isAdmin: Boolean;
+    friends: {"0":[],"1":[], "2": [], "3": []};
 }

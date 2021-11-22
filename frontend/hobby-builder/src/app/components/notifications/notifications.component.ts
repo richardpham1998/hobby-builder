@@ -87,8 +87,9 @@ export class NotificationsComponent implements OnInit {
     {
       this.notificationService.deleteNotification(this.notifications[i]._id).subscribe();
 
-      this.notifications=[];
+      
     }
+    this.notifications = [];
   }
 
   turnOld(notifId: String)

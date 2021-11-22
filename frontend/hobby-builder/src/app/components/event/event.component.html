@@ -73,12 +73,14 @@
           <div>
             <h1>
               {{ event.title }}
-              <a *ngIf="user.sub.substring(6,user.sub.length) === event.user">
+              <a *ngIf="user.sub.substring(6,user.sub.length) === event.user || visitorObject.isAdmin == true">
                 <button type="button" (click)="openEvent(eventContent,event._id)" value="Delete"
                   class="btn btn-danger btn-sm float-right">
                   <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
                 </button>
+              </a>
 
+              <a *ngIf="user.sub.substring(6,user.sub.length) === event.user">
                 <button type="button" routerLink="/edit-event/{{event._id}}" value="Edit"
                   class="btn btn-primary btn-sm float-right">
                   <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">

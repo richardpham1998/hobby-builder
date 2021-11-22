@@ -397,4 +397,48 @@ export class ProfileComponent implements OnInit {
   setOption(number: Number) {
     this.option = number;
   }
+
+  //friend request options
+  addFriend()
+  {
+    // this.visitorObject.friends['1'].push(this.profile._id);
+
+    
+    // for(let i = this.visitorObject.friends['2'].length-1; i>=0; i--)
+    // {
+    //   if(this.visitorObject.friends['2'][i].includes(this.profile._id))
+    //   {
+
+    //   }
+    // }
+
+    // for(let i = this.visitorObject.friends['3'].length-1; i>=0; i--)
+    // {
+
+    // }
+
+  //  this.userService.patchUser(this.visitorObject._id,this.visitorObject).subscribe();
+   
+  //  this.profile.friends['2'].push(this.visitorObject._id);
+  //  this.userService
+  }
+  friendPending()
+  {
+
+  }
+
+  acceptFriend()
+  {
+
+  }
+  
+  rejectFriend()
+  {
+
+  }
+
+  removeFriend()
+  {
+
+  }
 }
