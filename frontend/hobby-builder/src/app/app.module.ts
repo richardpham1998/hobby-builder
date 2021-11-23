@@ -34,6 +34,7 @@ import { TagsListComponent } from './components/tags-list/tags-list.component';
 import { PostDisplayComponent } from './components/post-display/post-display.component';
 import { EventDisplayComponent } from './components/event-display/event-display.component';
 import { CommentDisplayComponent } from './components/comment-display/comment-display.component';
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { CommentDisplayComponent } from './components/comment-display/comment-di
     TagsListComponent,
     PostDisplayComponent,
     EventDisplayComponent,
-    CommentDisplayComponent
+    CommentDisplayComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

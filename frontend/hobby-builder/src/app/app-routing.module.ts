@@ -16,6 +16,7 @@ import { EventComponent } from './components/event/event.component';
 import { EventsComponent } from './components/events/events.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { ReportComponent } from './components/report/report.component';
 const routes: Routes = [
   {
     path:'',
@@ -84,6 +85,11 @@ const routes: Routes = [
   {
     path:'edit-comment/:num/:id/:commentId',
     component: EditCommentComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path:'report/:num/:id/:commentId',
+    component: ReportComponent,
     canActivate: [AuthGuard]
   },
   {
