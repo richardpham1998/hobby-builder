@@ -24,7 +24,6 @@ export class PostComponent implements OnInit {
 
   userName: String;
 
-
   //post components
   posts: Post[] = [];
   comments: Comment[] = [];
@@ -88,15 +87,13 @@ export class PostComponent implements OnInit {
         )
         .subscribe((profile) => {
           this.userName = profile.username;
-          this.visitorObject= profile;
+          this.visitorObject = profile;
         });
     });
   }
 
-
   //refresh from Comment component
-  refresh(list : Comment[])
-  {
+  refresh(list: Comment[]) {
     this.commentList = list;
     this.loadPost();
   }
@@ -104,19 +101,20 @@ export class PostComponent implements OnInit {
   loadPost() {
     this.postService.getPost(this.id).subscribe((post) => {
       this.post = post;
-      this.likes = this.post.likes;
-      if (this.post['name'] == 'CastError') {
-        this.post = null;
-      } else {
-        this.tags = this.post.tags;
+      if (this.post != null) {
+        this.likes = this.post.likes;
+        if (this.post['name'] == 'CastError') {
+          this.post = null;
+        } else {
+          this.tags = this.post.tags;
 
-        this.loadComments();
+          this.loadComments();
+        }
       }
     });
   }
 
-  loadComments()
-  {
+  loadComments() {
     this.commentService.getComments().subscribe((comments) => {
       this.comments = comments;
       this.commentList = [];
@@ -138,7 +136,10 @@ export class PostComponent implements OnInit {
         }
       }
 
-      if (this.visitorObject._id !== this.post.user && this.visitorObject.isAdmin) {
+      if (
+        this.visitorObject._id !== this.post.user &&
+        this.visitorObject.isAdmin
+      ) {
         var link: String = 'post'; // post, event, or profile
         var userToNotify: String = this.post.user; //id of owner of post, event or profile
 
@@ -171,13 +172,14 @@ export class PostComponent implements OnInit {
 
       this.postService.getPost(this.id).subscribe((post) => {
         this.post = post;
-        if (this.post['name'] == 'CastError') {
-          this.post = null;
+        if (this.post != null) {
+          if (this.post['name'] == 'CastError') {
+            this.post = null;
+          }
         }
       });
     });
   }
-
 
   //post like methods
   likePost(id: String) {
@@ -190,13 +192,13 @@ export class PostComponent implements OnInit {
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
       const newNotification = {
-        text: this.userName + ' liked your '+link+'.',
+        text: this.userName + ' liked your ' + link + '.',
         linkType: link,
         user: userToNotify, //person who created the post/event/profile
         idToLink: idToCommentOn, //post/event/profile id
         date_created: new Date(),
         date_modified: null,
-        newNotif: true
+        newNotif: true,
       };
 
       this.notificationService.addNotification(newNotification).subscribe();
@@ -251,7 +253,6 @@ export class PostComponent implements OnInit {
     });
   }
 
-
   //modal code
   openPost(content, id: String) {
     this.postToDelete = id;
@@ -269,8 +270,6 @@ export class PostComponent implements OnInit {
         }
       );
   }
-
- 
 
   private getDismissReason(reason: any): string {
     this.postToDelete = null;

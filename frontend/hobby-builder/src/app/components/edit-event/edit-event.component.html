@@ -1,6 +1,6 @@
 <div class="container" *ngIf="auth.user$ | async as user">
   <br>
-  <div *ngIf="userObject._id===event.user">
+  <div *ngIf="userObject != null && event != null && userObject._id===event.user">
     <div class="card">
       <h1>Edit Event</h1>
       <form (submit)="editEvent()" class="card-body">
@@ -50,10 +50,16 @@
       </form>
     </div>
   </div>
-  <div *ngIf="userObject._id!==event.user">
+  <div *ngIf="userObject != null && event != null && userObject._id!==event.user">
     <div class="card">
       <div class="card-body">User is not authorized to modify this event.</div>
       <input type="button" routerLink="/event/{{event._id}}" class="btn btn-primary btn-sm" value="Back">
+    </div>
+  </div>
+
+  <div *ngIf=" userObject == null || event == null">
+    <div class="card">
+      <div class="card-body">Event does not exist.</div>
     </div>
   </div>
 </div>

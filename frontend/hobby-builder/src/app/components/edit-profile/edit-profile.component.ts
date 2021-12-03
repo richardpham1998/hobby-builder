@@ -10,14 +10,15 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
 })
 export class EditProfileComponent implements OnInit {
-  userObject: User;
+  visitorObject: User = null;
+  userObject: User = null;
 
   id: String;
 
-  userId : String = null;
+  userId: String = null;
   biography: String = null;
   city: String = null;
   province: String = null;
@@ -27,18 +28,14 @@ export class EditProfileComponent implements OnInit {
 
   edited: boolean = false;
 
-   //input array
-   tags : String[] = [];
-
-   
+  //input array
+  tags: String[] = [];
 
   constructor(
     public auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     //actual post id
@@ -52,34 +49,32 @@ export class EditProfileComponent implements OnInit {
       );
       this.userService
         .getUser(this.userId)
-        .subscribe((user) => (this.userObject = user));
+        .subscribe((user) => (this.visitorObject = user));
 
       this.userService.getUser(this.id).subscribe((user) => {
-        this.biography=user.biography;
-        this.city=user.city;
-        this.province=user.province;
-        this.country=user.country;
-        this.tags=user.hobbies;
-
+        if(user != null && user['name'] !== "CastError")
+        {
+          this.userObject = user;
+          this.biography = user.biography;
+          this.city = user.city;
+          this.province = user.province;
+          this.country = user.country;
+          this.tags = user.hobbies;
+        }
       });
+
     });
   }
 
   editProfile() {
+    this.userObject.biography = this.biography;
+    this.userObject.city = this.city;
+    this.userObject.province = this.province;
+    this.userObject.country = this.country;
+    this.userObject.hobbies = this.tags;
 
-    this.userObject.biography=this.biography;
-    this.userObject.city=this.city;
-    this.userObject.province=this.province;
-    this.userObject.country=this.country;
-    this.userObject.hobbies=this.tags;
-
-
-      this.userService.patchUser(this.id, this.userObject).subscribe((user) => {
-        this.edited = true;
-      });
-
+    this.userService.patchUser(this.id, this.userObject).subscribe((user) => {
+      this.edited = true;
+    });
   }
-
-
-
 }

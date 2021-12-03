@@ -1,7 +1,7 @@
 <div class="container" *ngIf="auth.user$ | async as user">
 
     <br>
-    <div *ngIf="id===userId">
+    <div *ngIf="visitorObject != null && userObject != null && visitorObject._id === userObject._id">
       <div class="card">
         <h1>Edit Profile</h1>
         <form (submit)="editProfile()" class="card-body">
@@ -44,10 +44,16 @@
         </form>
       </div>
     </div>
-    <div *ngIf="id!==userId">
+    <div *ngIf="visitorObject != null && userObject != null && visitorObject._id !== userObject._id">
       <div class="card">
         <div class="card-body">User is not authorized to modify this profile.</div>
         <input type="button" routerLink="/profile/{{id}}" class="btn btn-primary btn-sm" value="Back">
+      </div>
+    </div>
+
+    <div *ngIf="visitorObject == null || userObject == null">
+      <div class="card">
+        <div class="card-body">Profile does not exist</div>
       </div>
     </div>
   </div>

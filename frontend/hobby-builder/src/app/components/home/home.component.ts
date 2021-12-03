@@ -88,7 +88,14 @@ export class HomeComponent implements OnInit {
       //checks if user is logged in and then shows relevant posts and events
     this.auth.user$.subscribe((profile)=>{
       this.profileObject = profile;
-      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);      
+
+      if(this.profileObject != null)
+      {
+        this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);    
+      }
+      else{
+        this.userId = null;
+      }    
 
       this.userService.getUser(this.userId).subscribe(user=>
         {

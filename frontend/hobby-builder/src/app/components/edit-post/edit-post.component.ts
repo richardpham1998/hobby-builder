@@ -33,18 +33,15 @@ export class EditPostComponent implements OnInit {
   blankDescription: boolean = false;
   edited: boolean = false;
 
-   //input array
-   tags : String[] = [];
-
+  //input array
+  tags: String[] = [];
 
   constructor(
     private postService: PostService,
     public auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     //actual post id
@@ -61,16 +58,16 @@ export class EditPostComponent implements OnInit {
         .subscribe((user) => (this.userObject = user));
 
       this.postService.getPost(this.id).subscribe((post) => {
-        this.post = post;
-        this.title = this.post.title;
-        this.author = this.post.author;
-        this.tags = this.post.tags;
-        this.description = this.post.description;
-        this.post_comments = this.post.post_comments;
-        this.date_created = this.post.date_created;
-        this.date_modified = this.post.date_modified;
-
-       
+        if (post != null) {
+          this.post = post;
+          this.title = this.post.title;
+          this.author = this.post.author;
+          this.tags = this.post.tags;
+          this.description = this.post.description;
+          this.post_comments = this.post.post_comments;
+          this.date_created = this.post.date_created;
+          this.date_modified = this.post.date_modified;
+        }
       });
     });
   }
@@ -111,7 +108,6 @@ export class EditPostComponent implements OnInit {
       this.post.title = this.title;
       this.post.description = this.description;
 
-
       this.postService.patchPost(this.id, this.post).subscribe((post) => {
         this.edited = true;
       });
@@ -120,6 +116,4 @@ export class EditPostComponent implements OnInit {
       this.blankDescription = false;
     }
   }
-
- 
 }

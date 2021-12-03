@@ -11,10 +11,9 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-edit-event',
   templateUrl: './edit-event.component.html',
-  styleUrls: ['./edit-event.component.css']
+  styleUrls: ['./edit-event.component.css'],
 })
 export class EditEventComponent implements OnInit {
-
   userObject: User;
   event: Event;
 
@@ -36,18 +35,15 @@ export class EditEventComponent implements OnInit {
   blankLocation: boolean = false;
   edited: boolean = false;
 
-   //input array
-   tags : String[] = [];
-
+  //input array
+  tags: String[] = [];
 
   constructor(
     private eventService: EventService,
     public auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     //actual event id
@@ -64,17 +60,17 @@ export class EditEventComponent implements OnInit {
         .subscribe((user) => (this.userObject = user));
 
       this.eventService.getEvent(this.id).subscribe((event) => {
-        this.event = event;
-        this.title = this.event.title;
-        this.author = this.event.author;
-        this.tags = this.event.tags;
-        this.description = this.event.description;
-        this.location = this.event.location;
-        this.date_event=this.event.date_event;
-        this.date_created = this.event.date_created;
-        this.date_modified = this.event.date_modified;
-
-        
+        if (event != null) {
+          this.event = event;
+          this.title = this.event.title;
+          this.author = this.event.author;
+          this.tags = this.event.tags;
+          this.description = this.event.description;
+          this.location = this.event.location;
+          this.date_event = this.event.date_event;
+          this.date_created = this.event.date_created;
+          this.date_modified = this.event.date_modified;
+        }
       });
     });
   }
@@ -97,12 +93,11 @@ export class EditEventComponent implements OnInit {
       this.location.trim;
     }
 
-
     if (
       this.title == null ||
       this.title == '' ||
       this.description == null ||
-      this.description == ''||
+      this.description == '' ||
       this.location == null ||
       this.location == ''
     ) {
@@ -129,7 +124,6 @@ export class EditEventComponent implements OnInit {
       this.event.location = this.location;
       this.event.date_event = this.date_event;
 
-
       this.eventService.patchEvent(this.id, this.event).subscribe((event) => {
         this.edited = true;
       });
@@ -138,7 +132,4 @@ export class EditEventComponent implements OnInit {
       this.blankDescription = false;
     }
   }
-
- 
-
 }

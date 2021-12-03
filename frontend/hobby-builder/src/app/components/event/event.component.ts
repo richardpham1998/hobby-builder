@@ -114,22 +114,24 @@ export class EventComponent implements OnInit {
   loadEvent() {
     this.eventService.getEvent(this.id).subscribe((event) => {
       this.event = event;
-      this.attendees = this.event.attendees;
-      this.likes = this.event.likes;
-      if (this.event['name'] == 'CastError') {
-        this.event = null;
-      } else {
-        this.tags = this.event.tags;
+      if (this.event != null) {
+        this.attendees = this.event.attendees;
+        this.likes = this.event.likes;
+        if (this.event['name'] == 'CastError') {
+          this.event = null;
+        } else {
+          this.tags = this.event.tags;
 
-        this.commentService.getComments().subscribe((comments) => {
-          this.comments = comments;
-          this.commentList = [];
-          for (let i = comments.length - 1; i >= 0; i--) {
-            if (comments[i].event === this.event._id) {
-              this.commentList.push(comments[i]);
+          this.commentService.getComments().subscribe((comments) => {
+            this.comments = comments;
+            this.commentList = [];
+            for (let i = comments.length - 1; i >= 0; i--) {
+              if (comments[i].event === this.event._id) {
+                this.commentList.push(comments[i]);
+              }
             }
-          }
-        });
+          });
+        }
       }
     });
   }
@@ -145,7 +147,10 @@ export class EventComponent implements OnInit {
         }
       }
 
-      if (this.visitorObject._id !== this.event.user && this.visitorObject.isAdmin) {
+      if (
+        this.visitorObject._id !== this.event.user &&
+        this.visitorObject.isAdmin
+      ) {
         var link: String = 'event'; // post, event, or profile
         var userToNotify: String = this.event.user; //id of owner of post, event or profile
 
@@ -168,21 +173,22 @@ export class EventComponent implements OnInit {
 
         this.notificationService.addNotification(newNotification).subscribe();
       }
-      
-        for (var i = this.comments.length - 1; i >= 0; i--) {
-          if (this.comments[i].event == id) {
-            this.commentService.deleteComment(this.comments[i]._id).subscribe();
-            this.comments.splice(i, 1);
-          }
-        }
 
-        this.eventService.getEvent(this.id).subscribe((event) => {
-          this.event = event;
+      for (var i = this.comments.length - 1; i >= 0; i--) {
+        if (this.comments[i].event == id) {
+          this.commentService.deleteComment(this.comments[i]._id).subscribe();
+          this.comments.splice(i, 1);
+        }
+      }
+
+      this.eventService.getEvent(this.id).subscribe((event) => {
+        this.event = event;
+        if (this.event != null) {
           if (this.event['name'] == 'CastError') {
             this.event = null;
           }
-        });
-      
+        }
+      });
     });
   }
 
@@ -584,11 +590,13 @@ export class EventComponent implements OnInit {
     this.usersAttending = [];
     this.usersMayAttend = [];
     this.userService.getUsers().subscribe((users) => {
-      for (let i = 0; i < users.length; i++) {
-        if (this.event.attendees['1'].includes(users[i]._id)) {
-          this.usersAttending.push(users[i]);
-        } else if (this.event.attendees['0'].includes(users[i]._id)) {
-          this.usersMayAttend.push(users[i]);
+      if (this.event != null) {
+        for (let i = 0; i < users.length; i++) {
+          if (this.event.attendees['1'].includes(users[i]._id)) {
+            this.usersAttending.push(users[i]);
+          } else if (this.event.attendees['0'].includes(users[i]._id)) {
+            this.usersMayAttend.push(users[i]);
+          }
         }
       }
     });

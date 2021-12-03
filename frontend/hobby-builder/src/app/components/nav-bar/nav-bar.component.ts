@@ -26,7 +26,15 @@ export class NavBarComponent implements OnInit {
 
     this.auth.user$.subscribe((profile)=>{
       this.profileObject = profile;
-      this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);
+
+      if(this.profileObject != null)
+      {
+        this.userId = this.profileObject.sub.substring(6,this.profileObject.sub.length);    
+      }
+      else{
+        this.userId = null;
+      }    
+
 
       if(this.userId != null)
       {

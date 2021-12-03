@@ -58,7 +58,6 @@ export class AddEventComponent implements OnInit {
           this.profileObject.sub.substring(6, this.profileObject.sub.length)
         )
         .subscribe((profile) => {
-          console.log(profile);
           this.userName = profile.username;
         });
     });

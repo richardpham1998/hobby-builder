@@ -1,6 +1,6 @@
 <div class="container" *ngIf="auth.user$ | async as user">
   <br>
-  <div *ngIf="userObject._id===post.user">
+  <div *ngIf="userObject != null && post != null && userObject._id===post.user">
     <div class="card">
       <h1>Edit Post</h1>
       <form (submit)="editPost()" class="card-body">
@@ -35,10 +35,16 @@
       </form>
     </div>
   </div>
-  <div *ngIf="userObject._id!==post.user">
+  <div *ngIf=" userObject != null && post != null &&  userObject._id!==post.user">
     <div class="card">
       <div class="card-body">User is not authorized to modify this post.</div>
       <input type="button" routerLink="/post/{{post._id}}" class="btn btn-primary btn-sm" value="Back">
+    </div>
+  </div>
+
+  <div *ngIf=" userObject == null || post == null">
+    <div class="card">
+      <div class="card-body">Post does not exist.</div>
     </div>
   </div>
 </div>
