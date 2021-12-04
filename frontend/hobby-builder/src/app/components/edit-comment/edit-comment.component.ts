@@ -5,6 +5,7 @@ import { Comment } from 'src/app/models/comment';
 import { User } from 'src/app/models/user';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-comment',
@@ -16,7 +17,7 @@ export class EditCommentComponent implements OnInit {
   eventOrPost: Number;
   idToCommentOn: String;
 
-  comment : Comment
+  comment: Comment;
   content: String = '';
   userId: String = null;
   email: String = null;
@@ -27,16 +28,18 @@ export class EditCommentComponent implements OnInit {
 
   profileObject: any = null;
 
-  blankContent: boolean = false;
   edited: boolean = false;
 
   commentId: String;
+
+  commentForm : FormGroup;
 
   constructor(
     private commentService: CommentService,
     public auth: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -59,33 +62,23 @@ export class EditCommentComponent implements OnInit {
         .subscribe((user) => (this.userObject = user));
     });
 
-    this.commentService.getComment(this.commentId).subscribe(comment=>{
 
-      this.comment=comment;
-      this.content=comment.content;
+    this.commentService.getComment(this.commentId).subscribe((comment) => {
 
-    })
+      this.commentForm =this.fb.group({
+        content:['', Validators.required],
+      });
+
+      this.comment = comment;
+      this.commentForm.setValue({content: comment.content});
+    });
+
+
   }
 
-  editComment() {
-
-    if(this.content != null)
-    {
-      this.content.trim;
-    }
-
-    if(this.content==null  || this.content== "")
-    {
-      this.blankContent=true;
-      this.edited=false;
-    }
-    else{
-    this.comment.content=this.content;
-   
-    this.commentService.patchComment(this.commentId,this.comment).subscribe();
-
-    this.blankContent=false;
-    this.edited=true;
-  }
+  onSubmit() {
+    this.comment.content = this.commentForm.value.content;
+    this.commentService.patchComment(this.commentId, this.comment).subscribe();
+    this.edited = true;
   }
 }
