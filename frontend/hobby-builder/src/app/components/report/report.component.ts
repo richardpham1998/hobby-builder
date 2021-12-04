@@ -5,6 +5,7 @@ import { User } from 'src/app/models/user';
 import { CommentService } from 'src/app/services/comment.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-report',
@@ -23,10 +24,11 @@ export class ReportComponent implements OnInit {
 
   profileObject: any = null;
 
-  blankContent: boolean = false;
   edited: boolean = false;
 
   commentId: String;
+
+  reportForm: FormGroup;
 
 
   constructor(
@@ -34,7 +36,8 @@ export class ReportComponent implements OnInit {
     public auth: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -60,13 +63,15 @@ export class ReportComponent implements OnInit {
     this.userService.getUsers().subscribe((users) => {
       this.users = users;
     });
+
+    this.reportForm =this.fb.group({
+      content:['', Validators.required],
+    });
+
   }
 
-  report() {
-    if (this.content == null || this.content.trim() === '') {
-      this.blankContent = true;
-    } else {
-      this.blankContent = false;
+  onSubmit() {
+
       this.edited= true;
 
       var link: String=""; // post, event, or profile
@@ -95,7 +100,7 @@ export class ReportComponent implements OnInit {
                   ' reported ' +
                   comment.author +
                   "'s comment, '"+comment.content+ "' in a " +
-                  link +' with the following reason: '+ this.content,
+                  link +' with the following reason: '+ this.reportForm.value.content,
                 linkType: link,
                 user: this.users[i]._id, //notify each admin. set null for now.
                 idToLink: this.idOfContent, //post/event/profile id
@@ -118,7 +123,7 @@ export class ReportComponent implements OnInit {
           {
 
             var newNotification = {
-              text: this.userObject.username + ' reported the following ' + link +' with the following reason: '+ this.content,
+              text: this.userObject.username + ' reported the following ' + link +' with the following reason: '+ this.reportForm.value.content,
               linkType: link,
               user: this.users[i]._id, //notify each admin.
               idToLink: this.idOfContent, //post/event/profile id
@@ -132,6 +137,6 @@ export class ReportComponent implements OnInit {
           }
         }
       }
-    }
+    
   }
 }

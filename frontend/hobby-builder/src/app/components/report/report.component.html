@@ -3,17 +3,14 @@
 
   <div class="card">
     <div class="card-body">
-      <form (submit)="report()">
+      <form [formGroup]="reportForm" (submit)="onSubmit()">
         <h1>Report Content</h1>
-        <label>Reason</label>
+        <label>Reason<a style="color:red">*</a></label>
         <div>
-          <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="content" name="content"
+          <textarea style="width: 100%;" class="card-text" type="text" formControlName="content" name="content"
             placeholder="Add Reason here"></textarea>
         </div>
-        <input type="hidden" [(ngModel)]="userId" name="userId"
-          ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
 
-        <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
         <div class="alert alert-success" role="alert" *ngIf="edited==true">Report sent to admin team.</div>
 
         <a *ngIf="eventOrPost==0">
@@ -28,7 +25,7 @@
 
           <input type="button" routerLink="/profile/{{idOfContent}}" class="btn btn-primary btn-sm" value="Back">
         </a>
-        <input type="submit" class="btn btn-primary btn-sm" value="Update">
+        <input type="submit" [disabled]="!reportForm.valid" class="btn btn-primary btn-sm" value="Update">
 
       </form>
 
