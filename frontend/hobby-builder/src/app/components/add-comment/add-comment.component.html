@@ -1,17 +1,16 @@
  <div *ngIf="(auth.user$ | async) as user">
    <div class="card">
-     <form (submit)="addComment(eventOrPost,idToCommentOn)">
+     <!-- <form (submit)="addComment(eventOrPost,idToCommentOn)"> -->
+      <form [formGroup]="commentForm" (ngSubmit) = "onSubmit()">
        <label>
-         <b>Add Comment</b>
+         <b>Add Comment <a style="color: red">*</a></b>
        </label>
        <div>
-         <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="content"
+         <textarea style="width: 100%;" class="card-text" type="text" formControlName="content"
            name="content" placeholder="Add Comment here"></textarea>
        </div>
-       <input type="hidden" [(ngModel)]="userId" name="userId"
-         ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
+       <input type="hidden" formControlName="userId" name="userId">
 
-       <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
        <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
 
        <a *ngIf="eventOrPost==0">
@@ -23,7 +22,7 @@
        <a *ngIf="eventOrPost==2">
          <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
        </a>
-       <input type="submit" class="btn btn-primary btn-sm" value="Add">
+       <input type="submit" [disabled]="!commentForm.valid" class="btn btn-primary btn-sm" value="Add">
 
      </form>
    </div>
