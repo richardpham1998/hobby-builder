@@ -4,8 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../services/event.service';
 import { Event } from '../../models/event';
 import { UserService } from 'src/app/services/user.service';
-import { Tag } from 'src/app/models/tag';
-import { TagService } from 'src/app/services/tag.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-event',
@@ -28,24 +27,20 @@ export class AddEventComponent implements OnInit {
   date_modified: Date;
   image: String;
 
-  profileObject: any = null;
+  eventForm: FormGroup;
 
-  blankDate: boolean = false;
-  blankTitle: boolean = false;
-  blankDescription: boolean = false;
-  blankLocation: boolean = false;
+  profileObject: any = null;
 
   userName: String;
 
   added: boolean = false;
-
-
 
   constructor(
     private eventService: EventService,
     public auth: AuthService,
     private modalService: NgbModal,
     private userService: UserService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -62,101 +57,40 @@ export class AddEventComponent implements OnInit {
         });
     });
 
+    this.eventForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      location: ['', Validators.required],
+      date_event: ['', Validators.required]
+    });
   }
 
-  addEvent() {
+  onSubmit() {
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
     );
 
-    if (this.title != null) {
-      this.title.trim;
-    }
+    const newEvent = {
+      title: this.eventForm.value.title,
+      likes: { '-1': [], '0': [], '1': [] },
+      user: this.userId,
+      tags: this.tags,
+      author: this.profileObject.nickname,
+      description: this.eventForm.value.description,
+      location: this.eventForm.value.location,
+      comments: [],
+      attendees: { '-1': [], '0': [], '1': [] },
+      hosts: [],
+      date_event: this.eventForm.value.date_event,
+      date_created: new Date(),
+      date_modified: null,
+      image: this.image,
+    };
 
-    if (this.description != null) {
-      this.description.trim;
-    }
+    this.eventService.addEvent(newEvent).subscribe((event) => {
+      this.added = true;
+    });
 
-    if (this.location != null) {
-      this.location.trim;
-    }
-
-    if (
-      this.date_event == null ||
-      this.title == null ||
-      this.title == '' ||
-      this.description == null ||
-      this.description == '' ||
-      this.location == null ||
-      this.location == ''
-    ) {
-      if (this.date_event == null) {
-        this.blankDate = true;
-      } else {
-        this.blankDate = false;
-      }
-      if (this.title == null || this.title == '') {
-        this.blankTitle = true;
-      } else {
-        this.blankTitle = false;
-      }
-      if (this.description == null || this.description == '') {
-        this.blankDescription = true;
-      } else {
-        this.blankDescription = false;
-      }
-
-      if (this.location == null || this.location == '') {
-        this.blankLocation = true;
-      } else {
-        this.blankLocation = false;
-      }
-
-      this.added = false;
-    } else {
-      const newEvent = {
-        title: this.title,
-        likes: { '-1': [], '0': [], '1': [] },
-        user: this.userId,
-        tags: this.tags,
-        author: this.profileObject.nickname,
-        description: this.description,
-        location: this.location,
-        comments: [],
-        attendees: { '-1': [], '0': [], '1': [] },
-        hosts: [],
-        date_event: this.date_event,
-        date_created: new Date(),
-        date_modified: null,
-        image: this.image,
-      };
-
-
-      this.eventService.addEvent(newEvent).subscribe((event) => {
-        this.events.push(event);
-        this.added = true;
-      });
-
-      this.blankDate = false;
-      this.blankTitle = false;
-      this.blankDescription = false;
-      this.blankLocation = false;
-
-      this.title = null;
-      this.userId = null;
-      this.tags = [];
-      this.description = '';
-      this.location = '';
-      this.date_event = null;
-      this.image = null;
-      this.date_created = null;
-      this.date_modified = null;
-
-    }
-
-    this.eventService.getEvents().subscribe((events) => (this.events = events));
   }
-
-   
 }
