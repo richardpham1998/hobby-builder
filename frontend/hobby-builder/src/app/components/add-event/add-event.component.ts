@@ -76,7 +76,7 @@ export class AddEventComponent implements OnInit {
       likes: { '-1': [], '0': [], '1': [] },
       user: this.userId,
       tags: this.tags,
-      author: this.profileObject.nickname,
+      author: this.userName,
       description: this.eventForm.value.description,
       location: this.eventForm.value.location,
       comments: [],
