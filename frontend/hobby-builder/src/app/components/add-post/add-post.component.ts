@@ -4,8 +4,7 @@ import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'src/app/services/user.service';
-import { Tag } from 'src/app/models/tag';
-import { TagService } from 'src/app/services/tag.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-post',
@@ -27,10 +26,10 @@ export class AddPostComponent implements OnInit {
 
   profileObject: any = null;
 
-  blankTitle: boolean = false;
-  blankDescription: boolean = false;
 
   added: boolean = false;
+
+  postForm: FormGroup
 
 
   constructor(
@@ -38,6 +37,7 @@ export class AddPostComponent implements OnInit {
     public auth: AuthService,
     private modalService: NgbModal,
     private userService: UserService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -54,46 +54,25 @@ export class AddPostComponent implements OnInit {
         });
     });
 
+    this.postForm =this.fb.group({
+      title:['', Validators.required],
+      description:['', Validators.required],
+    });
+
+
   
   }
 
-  addPost() {
+  onSubmit() {
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
     );
 
-    if (this.title != null) {
-      this.title.trim;
-    }
-
-    if (this.description != null) {
-      this.description.trim;
-    }
-
-    if (
-      this.title == null ||
-      this.title == '' ||
-      this.description == null ||
-      this.description == ''
-    ) {
-      if (this.title == null || this.title == '') {
-        this.blankTitle = true;
-      } else {
-        this.blankTitle = false;
-      }
-      if (this.description == null || this.description == '') {
-        this.blankDescription = true;
-      } else {
-        this.blankDescription = false;
-      }
-
-      this.added = false;
-    } else {
       const newPost = {
-        title: this.title,
+        title: this.postForm.value.title,
         likes: { '-1': [], '0': [], '1': [] },
-        description: this.description,
+        description: this.postForm.value.description,
         user: this.userId,
         author: this.userName,
         post_comments: [],
@@ -101,13 +80,6 @@ export class AddPostComponent implements OnInit {
         date_created: new Date(),
         date_modified: null,
       };
-      this.title = null;
-      this.userId = null;
-      this.description = '';
-      this.tags = [];
-      this.post_comments = [];
-      this.date_created = null;
-      this.date_modified = null;
 
 
       this.postService.addPost(newPost).subscribe((post) => {
@@ -115,9 +87,6 @@ export class AddPostComponent implements OnInit {
         this.added = true;
       });
 
-      this.blankTitle = false;
-      this.blankDescription = false;
-    }
 
     this.postService.getPosts().subscribe((posts) => (this.posts = posts));
 

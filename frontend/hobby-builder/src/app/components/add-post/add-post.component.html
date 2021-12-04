@@ -2,16 +2,16 @@
   <br>
   <div class="card">
     <h1>Add Post</h1>
-    <form (submit)="addPost()" class="card-body">
+    <form [formGroup]="postForm" (ngSubmit) = "onSubmit()" class="card-body">
       <div>
         <h5 class="card-title">Title</h5>
-        <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title"
+        <input style="width: 100%;" class="card-text" type="text" formControlName="title" name="title"
           placeholder="Add Title here">
         <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
       </div>
       <div>
         <h5 class="card-title">Description</h5>
-        <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description"
+        <textarea style="width: 100%;" class="card-text" type="text" formControlName="description" name="description"
           placeholder="Add Description here"></textarea>
         <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
       </div>
@@ -20,10 +20,8 @@
       <app-tag-options [tags]="tags"></app-tag-options>
 
       <br>
-      <input type="hidden" [(ngModel)]="userId" name="userId" ng-init="userId={{user.sub.substring(6,user.sub.length)}}"
-        ng-value="userId">
       <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
-      <input type="submit" class="btn btn-primary btn-sm" value="Add">
+      <input type="submit" [disabled]="!postForm.valid" class="btn btn-primary btn-sm" value="Add">
     </form>
   </div>
 </div>
