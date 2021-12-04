@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <form [formGroup]="commentForm" (submit)="onSubmit()">
-            <h1>Edit Comment</h1>
+            <h1>Edit Comment<a style="color: red">*</a></h1>
             <div>
               <textarea style="width: 100%;" class="card-text" type="text" formControlName="content" name="content"
                 placeholder="Edit Comment here"></textarea>

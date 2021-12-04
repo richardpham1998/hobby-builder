@@ -4,37 +4,34 @@
     <div *ngIf="visitorObject != null && userObject != null && visitorObject._id === userObject._id">
       <div class="card">
         <h1>Edit Profile</h1>
-        <form (submit)="editProfile()" class="card-body">
+        <form [formGroup]="profileForm" (submit)="onSubmit()" class="card-body">
           <div>
             <h5 class="card-title">Biography</h5>
-            <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="biography" name="biography"
+            <textarea style="width: 100%;" class="card-text" type="text" formControlName="biography" name="biography"
               placeholder="Add Biography here"></textarea>
           </div>
           <div>
             <h5 class="card-title">City</h5>
-            <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="city" name="city"
+            <input style="width: 100%;" class="card-text" type="text" formControlName="city" name="city"
               placeholder="Add City here">
           </div>
           <div>
             <h5 class="card-title">Province/State</h5>
-            <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="province" name="province"
+            <input style="width: 100%;" class="card-text" type="text" formControlName="province" name="province"
               placeholder="Add Province here">
           </div>
           <div>
             <h5 class="card-title">Country</h5>
-            <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="country" name="country"
+            <input style="width: 100%;" class="card-text" type="text" formControlName="country" name="country"
               placeholder="Add Country here">
           </div>
           
           <!-- Tag component -->
           <!-- checks if profile data is rendered before loading tag component -->
-          <div *ngIf="biography != null">
+          <div *ngIf="userObject != null">
             <app-tag-options [tags]="tags"></app-tag-options>
           </div>
           
-          
-          <input type="hidden" [(ngModel)]="userId" name="userId"
-            ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
           <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
           <div>
             <input type="button" routerLink="/profile/{{id}}" class="btn btn-primary btn-sm" value="Back">

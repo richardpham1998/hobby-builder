@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import { PostService } from 'src/app/services/post.service';
 import { TagService } from 'src/app/services/tag.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-profile',
@@ -28,13 +29,16 @@ export class EditProfileComponent implements OnInit {
 
   edited: boolean = false;
 
+  profileForm: FormGroup;
+
   //input array
   tags: String[] = [];
 
   constructor(
     public auth: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -54,11 +58,17 @@ export class EditProfileComponent implements OnInit {
       this.userService.getUser(this.id).subscribe((user) => {
         if(user != null && user['name'] !== "CastError")
         {
+
+          this.profileForm =this.fb.group({
+            biography:[''],
+            city:[''],
+            province:[''],
+            country:[''],
+          });
+
+          
           this.userObject = user;
-          this.biography = user.biography;
-          this.city = user.city;
-          this.province = user.province;
-          this.country = user.country;
+          this.profileForm.setValue({biography: user.biography, city: user.city, province: user.province, country: user.country});
           this.tags = user.hobbies;
         }
       });
@@ -66,11 +76,11 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  editProfile() {
-    this.userObject.biography = this.biography;
-    this.userObject.city = this.city;
-    this.userObject.province = this.province;
-    this.userObject.country = this.country;
+  onSubmit() {
+    this.userObject.biography = this.profileForm.value.biography;
+    this.userObject.city = this.profileForm.value.city;
+    this.userObject.province = this.profileForm.value.province;
+    this.userObject.country = this.profileForm.value.country;
     this.userObject.hobbies = this.tags;
 
     this.userService.patchUser(this.id, this.userObject).subscribe((user) => {
