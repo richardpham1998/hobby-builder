@@ -3,48 +3,40 @@
   <div *ngIf="userObject != null && event != null && userObject._id===event.user">
     <div class="card">
       <h1>Edit Event</h1>
-      <form (submit)="editEvent()" class="card-body">
+      <form [formGroup] = "eventForm" (submit)="onSubmit()" class="card-body">
         <div>
-          <h5 class="card-title">Title</h5>
-          <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title"
+          <h5 class="card-title">Title<a style="color:red">*</a></h5>
+          <input style="width: 100%;" class="card-text" type="text" formControlName="title" name="title"
             placeholder="Add Title here">
-          <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
         </div>
         <div>
-          <h5 class="card-title">Description</h5>
-          <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description"
+          <h5 class="card-title">Description<a style="color:red">*</a></h5>
+          <textarea style="width: 100%;" class="card-text" type="text" formControlName="description" name="description"
             placeholder="Add Description here"></textarea>
-          <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
         </div>
         <div>
-          <h5 class="card-title">Location</h5>
-          <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="location" name="location"
+          <h5 class="card-title">Location<a style="color:red">*</a></h5>
+          <textarea style="width: 100%;" class="card-text" type="text" formControlName="location" name="location"
             placeholder="Add Location here"></textarea>
-          <div class="alert alert-warning" role="alert" *ngIf="blankLocation==true">Location is blank.</div>
         </div>
+
 
         <div>
-          <h5 class="card-title">Event Date</h5>
-          <input type="datetime-local" [(ngModel)]="date_event" name="date_event" />
-          <div class="alert alert-warning" role="alert" *ngIf="blankDate==true">Date is blank.</div>
+          <h5 class="card-title">Event Date<a style="color:red">*</a></h5>
+          <input type="datetime-local" formControlName="date_event" name="date_event" />
         </div>
 
-        {{date_event}}
 
           <!-- Tag component -->
           <!-- checks if event data is rendered before loading tag component -->
-          <div *ngIf="title != null">
+          <div *ngIf="event != null">
             <app-tag-options [tags]="tags"></app-tag-options>
           </div>
 
-
-
-        <input type="hidden" [(ngModel)]="userId" name="userId"
-          ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
         <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
         <div>
           <input type="button" routerLink="/event/{{event._id}}" class="btn btn-primary btn-sm" value="Back">
-          <input type="submit" class="btn btn-primary btn-sm" value="Update">
+          <input type="submit" [disabled]="!eventForm.valid" class="btn btn-primary btn-sm" value="Update">
         </div>
 
       </form>

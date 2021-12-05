@@ -70,6 +70,8 @@ export class EditPostComponent implements OnInit {
 
           
           this.postForm.setValue({title: post.title, description: post.description});
+
+          this.tags = post.tags;
         }
       });
     });

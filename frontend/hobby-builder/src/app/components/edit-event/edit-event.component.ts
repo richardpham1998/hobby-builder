@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { Event } from 'src/app/models/event';
-import { Tag } from 'src/app/models/tag';
 import { User } from 'src/app/models/user';
 import { EventService } from 'src/app/services/event.service';
-import { TagService } from 'src/app/services/tag.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-event',
@@ -30,10 +29,10 @@ export class EditEventComponent implements OnInit {
 
   profileObject: any = null;
 
-  blankTitle: boolean = false;
-  blankDescription: boolean = false;
-  blankLocation: boolean = false;
   edited: boolean = false;
+
+  eventForm: FormGroup;
+
 
   //input array
   tags: String[] = [];
@@ -42,7 +41,8 @@ export class EditEventComponent implements OnInit {
     private eventService: EventService,
     public auth: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fb:FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -61,75 +61,46 @@ export class EditEventComponent implements OnInit {
 
       this.eventService.getEvent(this.id).subscribe((event) => {
         if (event != null) {
+
           this.event = event;
-          this.title = this.event.title;
-          this.author = this.event.author;
+
+          this.eventForm =this.fb.group({
+            title:['', Validators.required],
+            description:['', Validators.required],
+            location:['', Validators.required],
+            date_event:['', Validators.required],
+          });
+
+
+          var tempDate = new Date(event.date_event);
+
+          tempDate.setTime(tempDate.getTime() + -60000*tempDate.getTimezoneOffset());
+          
+
+          this.eventForm.setValue({title: event.title, description: event.description, location: event.location, date_event: tempDate.toISOString().slice(0,16)});
+      
           this.tags = this.event.tags;
-          this.description = this.event.description;
-          this.location = this.event.location;
-          this.date_event = this.event.date_event;
-          this.date_created = this.event.date_created;
-          this.date_modified = this.event.date_modified;
         }
       });
     });
   }
 
-  editEvent() {
+    onSubmit() {
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
     );
 
-    if (this.title != null) {
-      this.title.trim;
-    }
-
-    if (this.description != null) {
-      this.description.trim;
-    }
-
-    if (this.location != null) {
-      this.location.trim;
-    }
-
-    if (
-      this.title == null ||
-      this.title == '' ||
-      this.description == null ||
-      this.description == '' ||
-      this.location == null ||
-      this.location == ''
-    ) {
-      if (this.title == null || this.title == '') {
-        this.blankTitle = true;
-      } else {
-        this.blankTitle = false;
-      }
-      if (this.description == null || this.description == '') {
-        this.blankDescription = true;
-      } else {
-        this.blankDescription = false;
-      }
-      if (this.location == null || this.location == '') {
-        this.blankLocation = true;
-      } else {
-        this.blankLocation = false;
-      }
-
-      this.edited = false;
-    } else {
-      this.event.title = this.title;
-      this.event.description = this.description;
-      this.event.location = this.location;
-      this.event.date_event = this.date_event;
+    
+      this.event.title = this.eventForm.value.title;
+      this.event.description = this.eventForm.value.description;
+      this.event.location = this.eventForm.value.location;
+      this.event.date_event = this.eventForm.value.date_event;
 
       this.eventService.patchEvent(this.id, this.event).subscribe((event) => {
         this.edited = true;
       });
 
-      this.blankTitle = false;
-      this.blankDescription = false;
-    }
+    
   }
 }

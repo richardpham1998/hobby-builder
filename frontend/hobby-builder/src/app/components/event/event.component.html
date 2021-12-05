@@ -120,7 +120,7 @@
           <hr>
 
           <div>
-            <p>{{ event.date | date:"MM/dd/yyyy 'at' h:mma" }}</p>
+            <p>Event date: {{ event.date_event | date:"MM/dd/yyyy 'at' h:mma" }}</p>
           </div>
           <hr>
 
@@ -180,9 +180,7 @@
         <br>
         <div *ngIf="option==3">
           <div *ngIf="usersMayAttend.length ==0">
-            <div class="card-body" routerLink="/profile/{{attendee._id}}">
               <a>No results</a>
-            </div>
           </div>
           <div *ngIf="usersMayAttend.length != 0">
             <div *ngFor="let attendee of usersMayAttend" class="card">
