@@ -18,6 +18,7 @@ export class TagComponent implements OnInit {
   name: String = null;
 
   blankName: Boolean = false;
+  added: Boolean = false;
 
   userId: String = null;
   userObject: User = null;
@@ -67,17 +68,27 @@ export class TagComponent implements OnInit {
   }
 
   onSubmit() {
-    const newTag = {
-      name: this.tagForm.value.name,
-    };
+    if (!this.tagForm.valid)
+    {
+      this.blankName=true;
+      this.added=false;
+    } 
+    else{
+      this.blankName=false;
+      this.added=true;
 
-    this.tagService.addTag(newTag).subscribe((tag) => {
-      this.tags.push(tag);
-      this.tagService.getTags().subscribe((tags) => {
-        this.tags = tags;
-        this.tags.sort((a, b) => this.sortTags(a, b));
+      const newTag = {
+        name: this.tagForm.value.name,
+      };
+
+      this.tagService.addTag(newTag).subscribe((tag) => {
+        this.tags.push(tag);
+        this.tagService.getTags().subscribe((tags) => {
+          this.tags = tags;
+          this.tags.sort((a, b) => this.sortTags(a, b));
+        });
       });
-    });
+    }
   }
 
   deleteTag(id: any) {

@@ -24,7 +24,8 @@ export class ReportComponent implements OnInit {
 
   profileObject: any = null;
 
-  edited: boolean = false;
+  edited: Boolean = false;
+  blankContent: Boolean = false;
 
   commentId: String;
 
@@ -72,6 +73,14 @@ export class ReportComponent implements OnInit {
 
   onSubmit() {
 
+    if(!this.reportForm.valid)
+    {
+      this.edited=false;
+      this.blankContent=true;
+    }
+    else{
+
+      this.blankContent=false;
       this.edited= true;
 
       var link: String=""; // post, event, or profile
@@ -137,6 +146,6 @@ export class ReportComponent implements OnInit {
           }
         }
       }
-    
+    }
   }
 }

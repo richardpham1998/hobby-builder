@@ -35,6 +35,11 @@ export class AddEventComponent implements OnInit {
 
   added: boolean = false;
 
+  blankTitle:Boolean = false;
+  blankDescription:Boolean = false;
+  blankLocation:Boolean = false;
+  blankDate:Boolean = false;
+
   constructor(
     private eventService: EventService,
     public auth: AuthService,
@@ -66,6 +71,51 @@ export class AddEventComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.eventForm.valid)
+    {
+      if(this.eventForm.value.title === '')
+      {
+        this.blankTitle = true;
+      }
+      else
+      {
+        this.blankTitle=false;
+      }
+
+      if(this.eventForm.value.description === '')
+      {
+        this.blankDescription = true;
+      }
+      else{
+        this.blankDescription=false;
+      }
+
+      if(this.eventForm.value.location === '')
+      {
+        this.blankLocation = true;
+      }
+      else
+      {
+        this.blankLocation=false;
+      }
+
+      if(this.eventForm.value.date_event === '')
+      {
+        this.blankDate = true;
+      }
+      else
+      {
+        this.blankDate=false;
+      }
+    }
+    else
+    {
+
+      this.blankTitle=false;
+      this.blankDescription=false;
+      this.blankLocation=false;
+      this.blankDate=false;
+    
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
@@ -93,4 +143,5 @@ export class AddEventComponent implements OnInit {
     });
 
   }
+}
 }

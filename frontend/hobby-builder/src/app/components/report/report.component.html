@@ -11,6 +11,7 @@
             placeholder="Add Reason here"></textarea>
         </div>
 
+        <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Reason is blank.</div>
         <div class="alert alert-success" role="alert" *ngIf="edited==true">Report sent to admin team.</div>
 
         <a *ngIf="eventOrPost==0">
@@ -25,7 +26,7 @@
 
           <input type="button" routerLink="/profile/{{idOfContent}}" class="btn btn-primary btn-sm" value="Back">
         </a>
-        <input type="submit" [disabled]="!reportForm.valid" class="btn btn-primary btn-sm" value="Update">
+        <input type="submit" class="btn btn-primary btn-sm" value="Add">
 
       </form>
 

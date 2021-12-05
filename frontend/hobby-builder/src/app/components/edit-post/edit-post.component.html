@@ -8,11 +8,13 @@
           <h5 class="card-title">Title<a style="color:red">*</a></h5>
           <input style="width: 100%;" class="card-text" type="text" formControlName="title" name="title"
             placeholder="Add Title here">
+            <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
         </div>
         <div>
           <h5 class="card-title">Description<a style="color:red">*</a></h5>
           <textarea style="width: 100%;" class="card-text" type="text" formControlName="description" name="description"
             placeholder="Add Description here"></textarea>
+            <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
         </div>
 
           <!-- Tag component -->
@@ -24,7 +26,7 @@
         <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
         <div>
           <input type="button" routerLink="/post/{{post._id}}" class="btn btn-primary btn-sm" value="Back">
-          <input type="submit" [disabled]="!postForm.valid" class="btn btn-primary btn-sm" value="Update">
+          <input type="submit" class="btn btn-primary btn-sm" value="Update">
         </div>
 
       </form>

@@ -11,6 +11,7 @@
        </div>
        <input type="hidden" formControlName="userId" name="userId">
 
+       <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
        <div class="alert alert-success" role="alert" *ngIf="added==true">Added successfully.</div>
 
        <a *ngIf="eventOrPost==0">
@@ -22,7 +23,7 @@
        <a *ngIf="eventOrPost==2">
          <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
        </a>
-       <input type="submit" [disabled]="!commentForm.valid" class="btn btn-primary btn-sm" value="Add">
+       <input type="submit" class="btn btn-primary btn-sm" value="Add">
 
      </form>
    </div>

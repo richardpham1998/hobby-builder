@@ -29,7 +29,10 @@ export class AddPostComponent implements OnInit {
 
   added: boolean = false;
 
-  postForm: FormGroup
+  postForm: FormGroup;
+
+  blankTitle:Boolean = false;
+  blankDescription:Boolean = false;
 
 
   constructor(
@@ -64,6 +67,31 @@ export class AddPostComponent implements OnInit {
   }
 
   onSubmit() {
+
+    if(!this.postForm.valid)
+    {
+      if(this.postForm.value.title === '')
+      {
+        this.blankTitle = true;
+      }
+      else
+      {
+        this.blankTitle=false;
+      }
+
+      if(this.postForm.value.description === '')
+      {
+        this.blankDescription = true;
+      }
+      else{
+        this.blankDescription=false;
+      }
+    }
+    else
+    {
+
+      this.blankTitle=false;
+      this.blankDescription=false;
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
@@ -91,6 +119,7 @@ export class AddPostComponent implements OnInit {
     this.postService.getPosts().subscribe((posts) => (this.posts = posts));
 
   }
+}
 
   
 }

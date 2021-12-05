@@ -1,5 +1,7 @@
 <div class="bg-primary" height="200vh">
-  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+
+  <!-- <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group">
       <button (click)="updateNotif()" type="button" routerLink="/" class="btn btn-outline-light"><a
           class="font-weight-bold">HobbyBuilder</a></button>
@@ -49,5 +51,58 @@
 
       <app-logout-button *ngIf="(auth.isAuthenticated$ | async)"></app-logout-button>
     </div>
+  </div> -->
+
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group">
+      <button (click)="updateNotif()" type="button" routerLink="/" class="btn btn-outline-light"><a
+          class="font-weight-bold">HobbyBuilder</a></button>
+      <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button class="btn btn-outline-light" ngbDropdownToggle>Menu</button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <b>Post</b>
+          <button (click)="updateNotif()" routerLink="/add-post" ngbDropdownItem>Add Post</button>
+          <button (click)="updateNotif()" routerLink="/posts" ngbDropdownItem>View Posts</button>
+          <b>Event</b>
+          <button (click)="updateNotif()" routerLink="/add-event" ngbDropdownItem>Add Event</button>
+          <button (click)="updateNotif()" routerLink="/events" ngbDropdownItem>View Events</button>
+          <b *ngIf="(auth.isAuthenticated$ | async) && userObject.isAdmin">Tags</b>
+          <button *ngIf="(auth.isAuthenticated$ | async) && userObject.isAdmin" (click)="updateNotif()" routerLink="/tag" ngbDropdownItem>Modify Tags</button>
+        </div>
+      </div>
+      
+
+      <div *ngIf="(auth.isAuthenticated$ | async) && newNotifications == true">
+        <button (click)="updateNotif()" type="button" routerLink="/notifications" class="btn btn-outline-light btn-danger">
+          <img src="/assets/img/bell-fill.svg" alt="Notifications" width="100%" height="100%">
+        </button>
+      </div>
+
+      <div *ngIf="(auth.isAuthenticated$ | async) && newNotifications != true">
+        <button (click)="updateNotif()" type="button" routerLink="/notifications" class="btn btn-outline-light">
+          <img src="/assets/img/bell.svg" alt="Notifications" width="100%" height="100%">
+        </button>
+      </div>
+
+
+
+
+
+      <app-login-button *ngIf="(auth.isAuthenticated$ | async) == false" class="float-right"></app-login-button>
+
+
+
+      <a *ngIf="(auth.isAuthenticated$ | async) as user">
+        <button type="button" *ngIf="userObject != null" routerLink="/profile/{{userId}}"
+        value="Profile" class="btn btn-outline-light">
+        <a>Profile:<b>{{userObject.username}}</b></a>
+      </button>
+      </a>
+
+
+      <app-logout-button *ngIf="(auth.isAuthenticated$ | async)"></app-logout-button>
+    </div>
   </div>
+
+
 </div>

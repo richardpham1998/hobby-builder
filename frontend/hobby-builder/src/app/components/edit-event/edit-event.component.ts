@@ -33,6 +33,11 @@ export class EditEventComponent implements OnInit {
 
   eventForm: FormGroup;
 
+  blankTitle:Boolean = false;
+  blankDescription:Boolean = false;
+  blankLocation:Boolean = false;
+  blankDate:Boolean = false;
+
 
   //input array
   tags: String[] = [];
@@ -86,6 +91,51 @@ export class EditEventComponent implements OnInit {
   }
 
     onSubmit() {
+      if(!this.eventForm.valid)
+      {
+        if(this.eventForm.value.title === '')
+        {
+          this.blankTitle = true;
+        }
+        else
+        {
+          this.blankTitle=false;
+        }
+  
+        if(this.eventForm.value.description === '')
+        {
+          this.blankDescription = true;
+        }
+        else{
+          this.blankDescription=false;
+        }
+  
+        if(this.eventForm.value.location === '')
+        {
+          this.blankLocation = true;
+        }
+        else
+        {
+          this.blankLocation=false;
+        }
+  
+        if(this.eventForm.value.date_event === '')
+        {
+          this.blankDate = true;
+        }
+        else
+        {
+          this.blankDate=false;
+        }
+      }
+      else
+      {
+  
+        this.blankTitle=false;
+        this.blankDescription=false;
+        this.blankLocation=false;
+        this.blankDate=false;
+  
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
@@ -103,4 +153,5 @@ export class EditEventComponent implements OnInit {
 
     
   }
+}
 }

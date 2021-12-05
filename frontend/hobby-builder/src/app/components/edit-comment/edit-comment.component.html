@@ -11,6 +11,7 @@
                 placeholder="Edit Comment here"></textarea>
             </div>
 
+            <div class="alert alert-warning" role="alert" *ngIf="blankContent==true">Content is blank.</div>
             <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
 
             <a *ngIf="eventOrPost==0">
@@ -25,7 +26,7 @@
 
               <input type="button" routerLink="/profile/{{idToCommentOn}}" class="btn btn-primary btn-sm" value="Back">
             </a>
-            <input type="submit" [disabled]="!commentForm.valid" class="btn btn-primary btn-sm" value="Update">
+            <input type="submit" class="btn btn-primary btn-sm" value="Update">
 
           </form>
 

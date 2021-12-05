@@ -31,11 +31,14 @@ export class EditPostComponent implements OnInit {
   profileObject: any = null;
 
   edited: boolean = false;
-  
-  postForm : FormGroup;
+
+  postForm: FormGroup;
 
   //input array
   tags: String[] = [];
+
+  blankTitle: Boolean = false;
+  blankDescription: Boolean = false;
 
   constructor(
     private postService: PostService,
@@ -63,13 +66,15 @@ export class EditPostComponent implements OnInit {
         if (post != null) {
           this.post = post;
 
-          this.postForm =this.fb.group({
-            title:['', Validators.required],
-            description:['', Validators.required],
+          this.postForm = this.fb.group({
+            title: ['', Validators.required],
+            description: ['', Validators.required],
           });
 
-          
-          this.postForm.setValue({title: post.title, description: post.description});
+          this.postForm.setValue({
+            title: post.title,
+            description: post.description,
+          });
 
           this.tags = post.tags;
         }
@@ -78,10 +83,26 @@ export class EditPostComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userId = this.profileObject.sub.substring(
-      6,
-      this.profileObject.sub.length
-    );
+    if (!this.postForm.valid) {
+      if (this.postForm.value.title === '') {
+        this.blankTitle = true;
+      } else {
+        this.blankTitle = false;
+      }
+
+      if (this.postForm.value.description === '') {
+        this.blankDescription = true;
+      } else {
+        this.blankDescription = false;
+      }
+    } else {
+      this.blankTitle = false;
+      this.blankDescription = false;
+
+      this.userId = this.profileObject.sub.substring(
+        6,
+        this.profileObject.sub.length
+      );
 
       this.post.title = this.postForm.value.title;
       this.post.description = this.postForm.value.description;
@@ -89,7 +110,6 @@ export class EditPostComponent implements OnInit {
       this.postService.patchPost(this.id, this.post).subscribe((post) => {
         this.edited = true;
       });
-
-    
+    }
   }
 }

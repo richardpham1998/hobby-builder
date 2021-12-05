@@ -37,6 +37,8 @@ export class AddCommentComponent implements OnInit {
 
   commentId: String;
 
+  blankContent: Boolean = false;
+
   constructor(
     private commentService: CommentService,
     public auth: AuthService,
@@ -71,44 +73,49 @@ export class AddCommentComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //indicator to link to comment
-    var postId: String = null;
-    var eventId: String = null;
-    var profileId: String = null;
+    if (!this.commentForm.valid) {
+      this.added = false;
+      this.blankContent = true;
+    } else {
+      //indicator to link to comment
+      var postId: String = null;
+      var eventId: String = null;
+      var profileId: String = null;
 
-    //records details to store in notifications
-    var link: String = null;
-    var userToNotify: String = null;
+      //records details to store in notifications
+      var link: String = null;
+      var userToNotify: String = null;
 
-    //0
-    if (this.eventOrPost == 0) {
-      postId = this.idToCommentOn;
-      link = 'post';
+      //0
+      if (this.eventOrPost == 0) {
+        postId = this.idToCommentOn;
+        link = 'post';
 
-      this.postService.getPost(this.idToCommentOn).subscribe((post) => {
-        userToNotify = post.user;
-        this.completeComment(link, userToNotify, profileId, postId, eventId);
-      });
-    }
-    //1
-    else if (this.eventOrPost == 1) {
-      eventId = this.idToCommentOn;
-      link = 'event';
+        this.postService.getPost(this.idToCommentOn).subscribe((post) => {
+          userToNotify = post.user;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        });
+      }
+      //1
+      else if (this.eventOrPost == 1) {
+        eventId = this.idToCommentOn;
+        link = 'event';
 
-      this.eventService.getEvent(this.idToCommentOn).subscribe((event) => {
-        userToNotify = event.user;
-        this.completeComment(link, userToNotify, profileId, postId, eventId);
-      });
-    }
-    //2
-    else if (this.eventOrPost == 2) {
-      profileId = this.idToCommentOn;
-      link = 'profile';
+        this.eventService.getEvent(this.idToCommentOn).subscribe((event) => {
+          userToNotify = event.user;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        });
+      }
+      //2
+      else if (this.eventOrPost == 2) {
+        profileId = this.idToCommentOn;
+        link = 'profile';
 
-      this.userService.getUser(this.idToCommentOn).subscribe((user) => {
-        userToNotify = user._id;
-        this.completeComment(link, userToNotify, profileId, postId, eventId);
-      });
+        this.userService.getUser(this.idToCommentOn).subscribe((user) => {
+          userToNotify = user._id;
+          this.completeComment(link, userToNotify, profileId, postId, eventId);
+        });
+      }
     }
   }
 
@@ -152,7 +159,7 @@ export class AddCommentComponent implements OnInit {
       this.notificationService.addNotification(newNotification).subscribe();
     });
 
-
+    this.blankContent = false;
     this.added = true;
   }
 }

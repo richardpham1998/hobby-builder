@@ -32,7 +32,9 @@ export class EditCommentComponent implements OnInit {
 
   commentId: String;
 
-  commentForm : FormGroup;
+  commentForm: FormGroup;
+
+  blankContent: Boolean = false;
 
   constructor(
     private commentService: CommentService,
@@ -62,23 +64,31 @@ export class EditCommentComponent implements OnInit {
         .subscribe((user) => (this.userObject = user));
     });
 
-
     this.commentService.getComment(this.commentId).subscribe((comment) => {
-
-      this.commentForm =this.fb.group({
-        content:['', Validators.required],
+      this.commentForm = this.fb.group({
+        content: ['', Validators.required],
       });
 
       this.comment = comment;
-      this.commentForm.setValue({content: comment.content});
+      this.commentForm.setValue({ content: comment.content });
     });
-
-
   }
 
   onSubmit() {
-    this.comment.content = this.commentForm.value.content;
-    this.commentService.patchComment(this.commentId, this.comment).subscribe();
-    this.edited = true;
+    if (!this.commentForm.valid) {
+      if (this.commentForm.value.content === '') {
+        this.blankContent = true;
+      } else {
+        this.blankContent = false;
+      }
+    } else {
+      this.blankContent = false;
+
+      this.comment.content = this.commentForm.value.content;
+      this.commentService
+        .patchComment(this.commentId, this.comment)
+        .subscribe();
+      this.edited = true;
+    }
   }
 }
