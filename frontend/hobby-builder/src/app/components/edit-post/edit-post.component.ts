@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { PostService } from 'src/app/services/post.service';
 import { TagService } from 'src/app/services/tag.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-post',
@@ -29,9 +30,9 @@ export class EditPostComponent implements OnInit {
 
   profileObject: any = null;
 
-  blankTitle: boolean = false;
-  blankDescription: boolean = false;
   edited: boolean = false;
+  
+  postForm : FormGroup;
 
   //input array
   tags: String[] = [];
@@ -40,7 +41,8 @@ export class EditPostComponent implements OnInit {
     private postService: PostService,
     public auth: AuthService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -60,60 +62,32 @@ export class EditPostComponent implements OnInit {
       this.postService.getPost(this.id).subscribe((post) => {
         if (post != null) {
           this.post = post;
-          this.title = this.post.title;
-          this.author = this.post.author;
-          this.tags = this.post.tags;
-          this.description = this.post.description;
-          this.post_comments = this.post.post_comments;
-          this.date_created = this.post.date_created;
-          this.date_modified = this.post.date_modified;
+
+          this.postForm =this.fb.group({
+            title:['', Validators.required],
+            description:['', Validators.required],
+          });
+
+          
+          this.postForm.setValue({title: post.title, description: post.description});
         }
       });
     });
   }
 
-  editPost() {
+  onSubmit() {
     this.userId = this.profileObject.sub.substring(
       6,
       this.profileObject.sub.length
     );
 
-    if (this.title != null) {
-      this.title.trim;
-    }
-
-    if (this.description != null) {
-      this.description.trim;
-    }
-
-    if (
-      this.title == null ||
-      this.title == '' ||
-      this.description == null ||
-      this.description == ''
-    ) {
-      if (this.title == null || this.title == '') {
-        this.blankTitle = true;
-      } else {
-        this.blankTitle = false;
-      }
-      if (this.description == null || this.description == '') {
-        this.blankDescription = true;
-      } else {
-        this.blankDescription = false;
-      }
-
-      this.edited = false;
-    } else {
-      this.post.title = this.title;
-      this.post.description = this.description;
+      this.post.title = this.postForm.value.title;
+      this.post.description = this.postForm.value.description;
 
       this.postService.patchPost(this.id, this.post).subscribe((post) => {
         this.edited = true;
       });
 
-      this.blankTitle = false;
-      this.blankDescription = false;
-    }
+    
   }
 }

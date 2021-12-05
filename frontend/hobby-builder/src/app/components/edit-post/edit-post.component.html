@@ -3,18 +3,16 @@
   <div *ngIf="userObject != null && post != null && userObject._id===post.user">
     <div class="card">
       <h1>Edit Post</h1>
-      <form (submit)="editPost()" class="card-body">
+      <form [formGroup]="postForm" (ngSubmit) = "onSubmit()" class="card-body">
         <div>
-          <h5 class="card-title">Title</h5>
-          <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title"
+          <h5 class="card-title">Title<a style="color:red">*</a></h5>
+          <input style="width: 100%;" class="card-text" type="text" formControlName="title" name="title"
             placeholder="Add Title here">
-          <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
         </div>
         <div>
-          <h5 class="card-title">Description</h5>
-          <textarea style="width: 100%;" class="card-text" type="text" [(ngModel)]="description" name="description"
+          <h5 class="card-title">Description<a style="color:red">*</a></h5>
+          <textarea style="width: 100%;" class="card-text" type="text" formControlName="description" name="description"
             placeholder="Add Description here"></textarea>
-          <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
         </div>
 
           <!-- Tag component -->
@@ -23,13 +21,10 @@
             <app-tag-options [tags]="tags"></app-tag-options>
           </div>
 
-
-        <input type="hidden" [(ngModel)]="userId" name="userId"
-          ng-init="userId={{user.sub.substring(6,user.sub.length)}}" ng-value="userId">
         <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
         <div>
           <input type="button" routerLink="/post/{{post._id}}" class="btn btn-primary btn-sm" value="Back">
-          <input type="submit" class="btn btn-primary btn-sm" value="Update">
+          <input type="submit" [disabled]="!postForm.valid" class="btn btn-primary btn-sm" value="Update">
         </div>
 
       </form>
