@@ -60,20 +60,25 @@
       <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
         <button class="btn btn-outline-light" ngbDropdownToggle>Menu</button>
         <div class="dropdown-menu" ngbDropdownMenu>
+          <b *ngIf="(auth.isAuthenticated$ | async) && userObject != null">Profile</b>
+          <button *ngIf="(auth.isAuthenticated$ | async) && userObject != null" (click)="updateNotif()"
+            routerLink="/profile/{{userId}}" ngbDropdownItem>{{userObject.username}}</button>
           <b>Post</b>
           <button (click)="updateNotif()" routerLink="/add-post" ngbDropdownItem>Add Post</button>
           <button (click)="updateNotif()" routerLink="/posts" ngbDropdownItem>View Posts</button>
           <b>Event</b>
           <button (click)="updateNotif()" routerLink="/add-event" ngbDropdownItem>Add Event</button>
           <button (click)="updateNotif()" routerLink="/events" ngbDropdownItem>View Events</button>
-          <b *ngIf="(auth.isAuthenticated$ | async) && userObject.isAdmin">Tags</b>
-          <button *ngIf="(auth.isAuthenticated$ | async) && userObject.isAdmin" (click)="updateNotif()" routerLink="/tag" ngbDropdownItem>Modify Tags</button>
+          <b *ngIf="(auth.isAuthenticated$ | async) && userObject!= null && userObject.isAdmin">Tags</b>
+          <button *ngIf="(auth.isAuthenticated$ | async) && userObject!= null && userObject.isAdmin"
+            (click)="updateNotif()" routerLink="/tag" ngbDropdownItem>Modify Tags</button>
         </div>
       </div>
-      
+
 
       <div *ngIf="(auth.isAuthenticated$ | async) && newNotifications == true">
-        <button (click)="updateNotif()" type="button" routerLink="/notifications" class="btn btn-outline-light btn-danger">
+        <button (click)="updateNotif()" type="button" routerLink="/notifications"
+          class="btn btn-outline-light btn-danger">
           <img src="/assets/img/bell-fill.svg" alt="Notifications" width="100%" height="100%">
         </button>
       </div>
@@ -92,12 +97,7 @@
 
 
 
-      <a *ngIf="(auth.isAuthenticated$ | async) as user">
-        <button type="button" *ngIf="userObject != null" routerLink="/profile/{{userId}}"
-        value="Profile" class="btn btn-outline-light">
-        <a>Profile:<b>{{userObject.username}}</b></a>
-      </button>
-      </a>
+
 
 
       <app-logout-button *ngIf="(auth.isAuthenticated$ | async)"></app-logout-button>

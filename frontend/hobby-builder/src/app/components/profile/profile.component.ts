@@ -201,7 +201,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadHobbyNames() {
-    for (let i = 0; i < this.tags.length; i++) {
+    for (let i = 0; i < this.hobbies.length; i++) {
       this.tagService.getTag(this.hobbies[i]).subscribe((hobby) => {
         this.hobbyObject = hobby;
         if (this.hobbyObject == null) {

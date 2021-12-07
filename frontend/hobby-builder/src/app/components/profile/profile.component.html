@@ -71,9 +71,7 @@
 
             {{profile.username}}
 
-            <a *ngIf="profile.isAdmin" style="color: red">
-              (Admin)
-            </a>
+            <span *ngIf="profile.isAdmin" style="color: white" class="badge bg-success">Admin</span>
           </h1>
 
 
@@ -252,7 +250,7 @@
             <p>
               <a *ngIf="userId !== id">This user has</a>
               <a *ngIf="userId === id">You have</a>
-              {{hobbies.length}} hobbies listed
+              {{hobbies.length}} hobbies listed.
             </p>
 
 
