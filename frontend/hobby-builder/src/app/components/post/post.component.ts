@@ -191,17 +191,19 @@ export class PostComponent implements OnInit {
       var userToNotify: String = this.post.user; //id of owner of post, event or profile
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
-      const newNotification = {
-        text: this.userName + ' liked your ' + link + '.',
-        linkType: link,
-        user: userToNotify, //person who created the post/event/profile
-        idToLink: idToCommentOn, //post/event/profile id
-        date_created: new Date(),
-        date_modified: null,
-        newNotif: true,
-      };
+      if (this.userId != userToNotify) {
+        const newNotification = {
+          text: this.userName + ' liked your ' + link + '.',
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: idToCommentOn, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+          newNotif: true,
+        };
 
-      this.notificationService.addNotification(newNotification).subscribe();
+        this.notificationService.addNotification(newNotification).subscribe();
+      }
     }
     //unlike comment
     else {

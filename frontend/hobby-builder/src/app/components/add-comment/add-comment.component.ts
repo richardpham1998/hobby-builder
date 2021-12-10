@@ -131,32 +131,37 @@ export class AddCommentComponent implements OnInit {
       this.commentForm.value.content.trim;
     }
 
-    const newNotification = {
-      text: this.user.username + ' commented on your ' + link + '.',
-      linkType: link,
-      user: userToNotify, //person who created the post/event/profile
-      idToLink: this.idToCommentOn, //post/event/profile id
-      date_created: new Date(),
-      date_modified: null,
-      newNotif: true,
-    };
+    var newNotification;
 
-    const newComment = {
-      content: this.commentForm.value.content,
-      user: this.commentForm.value.userId,
-      author: this.user.username,
-      likes: this.likes,
-      email: this.profileObject.name,
-      profile: profileId,
-      post: postId,
-      event: eventId,
-      date_created: new Date(),
-      date_modified: null,
-    };
+    if (this.user._id != userToNotify) {
+      newNotification = {
+        text: this.user.username + ' commented on your ' + link + '.',
+        linkType: link,
+        user: userToNotify, //person who created the post/event/profile
+        idToLink: this.idToCommentOn, //post/event/profile id
+        date_created: new Date(),
+        date_modified: null,
+        newNotif: true,
+      };
+    }
+
+      const newComment = {
+        content: this.commentForm.value.content,
+        user: this.commentForm.value.userId,
+        author: this.user.username,
+        likes: this.likes,
+        email: this.profileObject.name,
+        profile: profileId,
+        post: postId,
+        event: eventId,
+        date_created: new Date(),
+        date_modified: null,
+      };
+    
 
     this.commentService.addComment(newComment).subscribe((comment) => {
       //create notification
-      this.notificationService.addNotification(newNotification).subscribe();
+      if (this.user._id != userToNotify) {this.notificationService.addNotification(newNotification).subscribe()};
     });
 
     this.blankContent = false;

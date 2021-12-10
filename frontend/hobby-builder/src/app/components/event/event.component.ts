@@ -202,19 +202,25 @@ export class EventComponent implements OnInit {
       var userToNotify: String = this.event.user; //id of owner of post, event or profile
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
-      const newNotification = {
-        text:
-          this.userName + ' is going to your ' + link + ': ' + this.event.title,
-        linkType: link,
-        user: userToNotify, //person who created the post/event/profile
-        idToLink: idToCommentOn, //post/event/profile id
-        date_created: new Date(),
-        date_modified: null,
-        newNotif: true,
-        isClosed: false,
-      };
+      if (this.userId != userToNotify) {
+        const newNotification = {
+          text:
+            this.userName +
+            ' is going to your ' +
+            link +
+            ': ' +
+            this.event.title,
+          linkType: link,
+          user: userToNotify, //person who created the post/event/profile
+          idToLink: idToCommentOn, //post/event/profile id
+          date_created: new Date(),
+          date_modified: null,
+          newNotif: true,
+          isClosed: false,
+        };
 
-      this.notificationService.addNotification(newNotification).subscribe();
+        this.notificationService.addNotification(newNotification).subscribe();
+      }
     }
     //remove user from category
     else {
@@ -252,6 +258,7 @@ export class EventComponent implements OnInit {
       var userToNotify: String = this.event.user; //id of owner of post, event or profile
       var idToCommentOn: String = this.id; //id of post, event, or profile
 
+      if (this.userId != userToNotify) {
       const newNotification = {
         text:
           this.userName + ' might go to your ' + link + ': ' + this.event.title,
@@ -263,7 +270,7 @@ export class EventComponent implements OnInit {
         newNotif: true,
       };
 
-      this.notificationService.addNotification(newNotification).subscribe();
+      this.notificationService.addNotification(newNotification).subscribe();}
     }
     //remove user from category
     else {
@@ -335,7 +342,7 @@ export class EventComponent implements OnInit {
       var link: String = 'event'; // post, event, or profile
       var userToNotify: String = this.event.user; //id of owner of post, event or profile
       var idToCommentOn: String = this.id; //id of post, event, or profile
-
+      if (this.userId != userToNotify) {
       const newNotification = {
         text: this.userName + ' liked your ' + link + '.',
         linkType: link,
@@ -347,7 +354,7 @@ export class EventComponent implements OnInit {
         isClosed: false,
       };
 
-      this.notificationService.addNotification(newNotification).subscribe();
+      this.notificationService.addNotification(newNotification).subscribe();}
     }
     //unlike comment
     else {
@@ -441,6 +448,7 @@ export class EventComponent implements OnInit {
         var userToNotify: String = this.event.user; //id of owner of post, event or profile
         var idToCommentOn: String = this.id; //id of post, event, or profile
 
+        if (this.userId != userToNotify) {
         const newNotification = {
           text: this.userName + ' liked your ' + link + '.',
           linkType: link,
@@ -452,7 +460,7 @@ export class EventComponent implements OnInit {
           isClosed: false,
         };
 
-        this.notificationService.addNotification(newNotification).subscribe();
+        this.notificationService.addNotification(newNotification).subscribe();}
       }
       //unlike comment
       else {

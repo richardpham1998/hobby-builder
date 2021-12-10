@@ -139,8 +139,6 @@ export class CommentComponent implements OnInit {
       //like comment
       if (!this.commentMap['1'].includes(this.userId)) {
         this.commentMap['1'].push(this.userId);
-
-        alert(this.commentToLike.user + ' ' + this.visitor._id);
         if (this.commentToLike.user !== this.visitor._id) {
           // post, event, or profile
           var link: String;

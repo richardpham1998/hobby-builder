@@ -70,6 +70,7 @@ export class AddPostComponent implements OnInit {
 
     if(!this.postForm.valid)
     {
+      this.added=false;
       if(this.postForm.value.title === '')
       {
         this.blankTitle = true;
