@@ -12,28 +12,33 @@ export class TagService {
 
   getTags(): Observable<Tag[]>
   {
-    return this.http.get<Tag[]>('http://localhost:3000/api/tags');
+    //return this.http.get<Tag[]>('http://localhost:3000/api/tags');
+    return this.http.get<Tag[]>('api/tags');
   }
 
   getTag(id: String): Observable<Tag>
   {
-    return this.http.get<Tag>('http://localhost:3000/api/tag/'+id);
+    //return this.http.get<Tag>('http://localhost:3000/api/tag/'+id);
+    return this.http.get<Tag>('api/tag/'+id);
   }
 
   addTag(newTag: Tag)
   {
     var headers = new HttpHeaders();
-    return this.http.post<Tag>('http://localhost:3000/api/tag',newTag, {headers:headers});
+    //return this.http.post<Tag>('http://localhost:3000/api/tag',newTag, {headers:headers});
+    return this.http.post<Tag>('api/tag',newTag, {headers:headers});
   }
 
   deleteTag(id: String)
   {
-    return this.http.delete<Tag>('http://localhost:3000/api/tag/'+id);
+    //return this.http.delete<Tag>('http://localhost:3000/api/tag/'+id);
+    return this.http.delete<Tag>('api/tag/'+id);
   }
 
   patchTag(id: String, newTag: Tag)
   {
     var headers = new HttpHeaders();
-    return this.http.patch<Tag>('http://localhost:3000/api/tag/'+id,newTag, {headers:headers});
+    //return this.http.patch<Tag>('http://localhost:3000/api/tag/'+id,newTag, {headers:headers});
+    return this.http.patch<Tag>('api/tag/'+id,newTag, {headers:headers});
   }
 }

@@ -12,29 +12,34 @@ export class NotificationService {
 
   getNotifications(): Observable<Notification[]>
   {
-    return this.http.get<Notification[]>('http://localhost:3000/api/notifications');
+    //return this.http.get<Notification[]>('http://localhost:3000/api/notifications');
+    return this.http.get<Notification[]>('api/notifications');
   }
 
   getNotification(id: String): Observable<Notification>
   {
-    return this.http.get<Notification>('http://localhost:3000/api/notification/'+id);
+    //return this.http.get<Notification>('http://localhost:3000/api/notification/'+id);
+    return this.http.get<Notification>('api/notification/'+id);
   }
 
   addNotification(newNotification: Notification)
   {
     var headers = new HttpHeaders();
-    return this.http.post<Notification>('http://localhost:3000/api/notification',newNotification, {headers:headers});
+    //return this.http.post<Notification>('http://localhost:3000/api/notification',newNotification, {headers:headers});
+    return this.http.post<Notification>('api/notification',newNotification, {headers:headers});
   }
 
   deleteNotification(id: String)
   {
-    return this.http.delete<Notification>('http://localhost:3000/api/notification/'+id);
+    //return this.http.delete<Notification>('http://localhost:3000/api/notification/'+id);
+    return this.http.delete<Notification>('api/notification/'+id);
   }
 
   patchNotification(id: String, newNotification: Notification)
   {
     var headers = new HttpHeaders();
-    return this.http.patch<Notification>('http://localhost:3000/api/notification/'+id,newNotification, {headers:headers});
+    //return this.http.patch<Notification>('http://localhost:3000/api/notification/'+id,newNotification, {headers:headers});
+    return this.http.patch<Notification>('api/notification/'+id,newNotification, {headers:headers});
   }
 
 }
