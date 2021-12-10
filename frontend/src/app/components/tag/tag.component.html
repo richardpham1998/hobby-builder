@@ -1,0 +1,39 @@
+<div class = "container" *ngIf="auth.user$ | async as user">
+    <div *ngIf="userObject != null && !userObject.isAdmin" class="card">
+        <div class="card-body">
+            The Tags page is only available to Admins of this website.
+        </div>
+    </div>
+    <div *ngIf="userObject != null && userObject.isAdmin" class="card">
+
+        <div class="card-body">
+            <form [formGroup]="tagForm" (ngSubmit) = "onSubmit()">
+                <div>
+                    <h5 class="card-title">Tag<a style="color:red">*</a></h5>
+                    <input style="width: 100%;" class="card-text" type="text" formControlName="name" name="name" placeholder="Add Tag here">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" value="Add">
+                    <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
+                </button>
+
+                <div class="alert alert-warning" role="alert" *ngIf="blankName==true">Tag name is blank.</div>
+
+                <div class="alert alert-success" role="alert" *ngIf="added==true">Tag added successfully.</div>
+            </form>
+            
+            <div *ngFor= "let tag of tags">
+
+                <span class="badge badge-secondary">
+                    <a *ngIf="tag != null">
+                        {{tag.name}}
+                    </a>
+                    <a *ngIf="tag == null">
+                        Invalid tag. Please remove this tag.
+                    </a> <span (click)="deleteTag(tag._id)" class="badge badge-secondary">X</span>
+                </span>
+
+            </div> 
+        </div>
+    </div>
+</div>
+

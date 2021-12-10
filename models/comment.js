@@ -6,6 +6,12 @@ const CommentSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    likes:
+    {
+        type: {"-1":[],"0":[],"1":[]},
+        required: true,
+        null: false,
+    },
     //collect id's
     user:
     {
@@ -13,7 +19,18 @@ const CommentSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    author:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
     event:
+    {
+        type: String,
+        default: null
+    },
+    profile:
     {
         type: String,
         default: null

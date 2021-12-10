@@ -6,6 +6,12 @@ const EventSchema = mongoose.Schema({
         required: true,
         null: false
     },
+    likes:
+    {
+        type: {"-1":[],"0":[],"1":[]},
+        required: true,
+        null: false,
+    },
     description:
     {
         type: String,
@@ -21,7 +27,19 @@ const EventSchema = mongoose.Schema({
     //collect id's
     attendees:
     {
-        type: [String],
+        type: {"-1":[],"0":[],"1":[]},
+        required: true,
+        null: false
+    },
+    user:
+    {
+        type: String,
+        required: true,
+        null: false
+    },
+    author:
+    {
+        type: String,
         required: true,
         null: false
     },
@@ -32,6 +50,12 @@ const EventSchema = mongoose.Schema({
         null: false
     },
     comments:
+    {
+        type: [String],
+        required: true,
+        null: false
+    },
+    tags:
     {
         type: [String],
         required: true,

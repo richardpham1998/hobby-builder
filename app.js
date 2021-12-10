@@ -9,9 +9,11 @@ const postRoute = require('./routes/post');
 const userRoute = require('./routes/user');
 const eventRoute = require('./routes/event');
 const commentRoute = require('./routes/comment');
-
+const tagRoute = require('./routes/tag');
+const notificationRoute = require('./routes/notification');
 
 mongoose.connect('mongodb://localhost:27017/hobby-builder');
+
 mongoose.connection.on('connected', () =>
 {
     console.log('Connected to database mongodb @ 27017');
@@ -24,7 +26,7 @@ mongoose.connection.on('error', (err=>
         }
     }));
 
-    const port = 3000;
+    const port = process.env.PORT || 8080; //3000;
     app.use(cors());
     app.use(bodyparser.json());
     app.use(express.static(path.join(__dirname, 'public')));
@@ -33,6 +35,8 @@ mongoose.connection.on('error', (err=>
     app.use('/api', userRoute);
     app.use('/api', eventRoute);
     app.use('/api', commentRoute);
+    app.use('/api', tagRoute);
+    app.use('/api', notificationRoute);
 
     app.listen(port,()=>
     {

@@ -1,0 +1,26 @@
+<div>
+    
+    <h5 class="card-title">Tags</h5>
+
+    <select name="tags" id="tags" [(ngModel)]="tagId" name="tagId">
+
+      <option selected="true" value="" disabled="disabled">Select Hobby</option>
+      <option *ngFor="let tag of tagOptions" value="{{tag._id}}">{{tag.name}}</option>
+
+    </select>
+    <button (click)="addHobby()" type="button" class="btn btn-primary btn-sm" value="Add">
+      <img src="/assets/img/plus-circle.svg" alt="Add" width="100%" height="100%">
+    </button>
+
+  </div>
+  <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your post</div>
+  <a *ngFor="let hbby of hobbyNames, index as i">
+    <span class="badge badge-secondary">
+      <a *ngIf="hbby != null">
+        {{hbby}}
+      </a>
+      <a *ngIf="hbby == null">
+        Invalid tag. Please remove this tag.
+      </a> <span (click)="deleteHobby(tags[i])" class="badge badge-secondary">X</span>
+    </span>
+  </a>

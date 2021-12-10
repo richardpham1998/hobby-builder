@@ -1,0 +1,88 @@
+<div class="container">
+
+  <div class="card">
+    <div class="card-body">
+      <h1>Welcome to HobbyBuilder!</h1>
+    </div>
+  </div>
+   <div class="card">
+    <div class="card-body"> 
+      <h5 class="card-title">Most Recent Posts</h5>
+      <div *ngIf="mostRecentPosts.length == 0">Nothing to show.</div>
+      <div *ngIf="mostRecentPosts.length != 0">
+        <div *ngFor="let post of mostRecentPosts" class="card">
+          <app-post-display [post]="post"></app-post-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body"> 
+      <h5 class="card-title">Most Recent Events</h5>
+      <div *ngIf="mostRecentEvents.length == 0">Nothing to show.</div>
+      <div *ngIf="mostRecentEvents.length != 0">
+        <div *ngFor="let event of mostRecentEvents" class="card">
+          <app-event-display [event]="event"></app-event-display>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="(auth.user$ | async) as user">
+
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Recommended Posts</h5>
+        <div *ngIf="recommendedPosts.length == 0">Nothing to show.</div>
+        <div *ngIf="recommendedPosts.length != 0">
+          <div *ngFor="let post of recommendedPosts" class="card">
+            <app-post-display [post]="post"></app-post-display>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Recommended Events</h5>
+        <div *ngIf="recommendedEvents.length == 0">Nothing to show.</div>
+        <div *ngIf="recommendedEvents.length != 0">
+          <div *ngFor="let event of recommendedEvents" class="card">
+            <app-event-display [event]="event"></app-event-display>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body"> 
+        <h5 class="card-title">Your Tracked Events</h5>
+        <div *ngIf="yourEvents.length == 0">Nothing to show.</div>
+        <div *ngIf="yourEvents.length != 0">
+          <div *ngFor="let event of yourEvents" class="card">
+            <app-event-display [event]="event"></app-event-display>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+    
+
+
+  </div>
+  <br>
+  <div *ngIf="!(auth.user$ | async)">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">To see more options, please log in.</h5>
+        <div class="btn-group bg-primary">
+          <app-login-button></app-login-button>
+        </div>
+      </div>
+    </div>
+  </div>

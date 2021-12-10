@@ -1,0 +1,60 @@
+<div class="container" *ngIf="auth.user$ | async as user">
+
+  <br>
+
+  <div class="card">
+    <h1>Search Post</h1>
+    <form (submit)="search()" class="card-body">
+      <div>
+        <div>
+          <h5 class="card-title">Title</h5>
+          <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="title" name="title"
+            placeholder="Search">
+        </div>
+
+        <div>
+          <br>
+
+          <h5 class="card-title">Author</h5>
+          <input style="width: 100%;" class="card-text" type="text" [(ngModel)]="author" name="author"
+            placeholder="Author">
+
+        </div>
+
+        <div>
+          <br>
+
+          <app-tag-options [tags]="tags"></app-tag-options>
+
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your post</div>
+        <a *ngFor="let hbby of hobbyNames, index as i">
+          <span class="badge badge-secondary">
+            <a *ngIf="hbby != null">
+              {{hbby}}
+            </a>
+            <a *ngIf="hbby == null">
+              Invalid tag. Please remove this tag.
+            </a> <span (click)="deleteHobby(tags[i])" class="badge badge-secondary">X</span>
+          </span>
+        </a>
+        <br>
+
+        <input type="submit" class="btn btn-primary btn-sm" value="Search">
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="postsCopy.length ==0" class="card">
+    <div class="class-body">
+      <a>No posts to show.</a>
+    </div>
+
+  </div>
+
+  <div *ngIf="postsCopy.length>0">
+    <div *ngFor="let post of postsCopy" class="card">
+      <app-post-display [post]="post"></app-post-display>
+    </div>
+  </div>

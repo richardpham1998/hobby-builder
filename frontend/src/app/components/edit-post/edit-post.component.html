@@ -1,0 +1,47 @@
+<div class="container" *ngIf="auth.user$ | async as user">
+  <br>
+  <div *ngIf="userObject != null && post != null && userObject._id===post.user">
+    <div class="card">
+      <h1>Edit Post</h1>
+      <form [formGroup]="postForm" (ngSubmit) = "onSubmit()" class="card-body">
+        <div>
+          <h5 class="card-title">Title<a style="color:red">*</a></h5>
+          <input style="width: 100%;" class="card-text" type="text" formControlName="title" name="title"
+            placeholder="Add Title here">
+            <div class="alert alert-warning" role="alert" *ngIf="blankTitle==true">Title is blank.</div>
+        </div>
+        <div>
+          <h5 class="card-title">Description<a style="color:red">*</a></h5>
+          <textarea style="width: 100%;" class="card-text" type="text" formControlName="description" name="description"
+            placeholder="Add Description here"></textarea>
+            <div class="alert alert-warning" role="alert" *ngIf="blankDescription==true">Description is blank.</div>
+        </div>
+
+          <!-- Tag component -->
+          <!-- checks if post data is rendered before loading tag component -->
+          <div *ngIf="post != null">
+            <app-tag-options [tags]="tags"></app-tag-options>
+          </div>
+
+        <div class="alert alert-success" role="alert" *ngIf="edited==true">Changed successfully.</div>
+        <div>
+          <input type="button" routerLink="/post/{{post._id}}" class="btn btn-primary btn-sm" value="Back">
+          <input type="submit" class="btn btn-primary btn-sm" value="Update">
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div *ngIf=" userObject != null && post != null &&  userObject._id!==post.user">
+    <div class="card">
+      <div class="card-body">User is not authorized to modify this post.</div>
+      <input type="button" routerLink="/post/{{post._id}}" class="btn btn-primary btn-sm" value="Back">
+    </div>
+  </div>
+
+  <div *ngIf=" userObject == null || post == null">
+    <div class="card">
+      <div class="card-body">Post does not exist.</div>
+    </div>
+  </div>
+</div>

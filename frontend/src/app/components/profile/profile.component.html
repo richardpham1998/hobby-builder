@@ -1,0 +1,300 @@
+<div *ngIf="(auth.user$ | async) as user" class="container">
+  <div *ngIf="profile == null" class="card">
+    <div class="card-body">
+      <a>Profile does not exist</a>
+    </div>
+  </div>
+  <div *ngIf="profile != null">
+
+
+
+    <ng-template #userContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-account">Delete Account</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a>Are you sure you want to delete this account?</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">No</button>
+      </div>
+    </ng-template>
+
+    <ng-template #commentContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-comment">Delete Comment</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a>Are you sure you want to delete this comment?</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">No</button>
+      </div>
+    </ng-template>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+
+
+          <div>
+
+            <button type="button" routerLink="/report/2/{{id}}/." value="Report"
+              class="btn btn-danger btn-sm float-right">
+              <img src="/assets/img/flag.svg" alt="Report" width="100%" height="100%">
+            </button>
+
+            <a *ngIf="visitorObject != null && (userId === id || visitorObject.isAdmin == true)">
+              <button type="button" (click)="deleteUserOption(userContent,id)" value="Delete"
+                class="btn btn-danger btn-sm float-right">
+                <img src="/assets/img/trash.svg" alt="Delete" width="100%" height="100%">
+              </button>
+            </a>
+
+            <a *ngIf="userId === id">
+              <button type="button" routerLink="/edit-profile/{{id}}" value="Edit"
+                class="btn btn-primary btn-sm float-right">
+                <img src="/assets/img/pencil-square.svg" alt="Edit" width="100%" height="100%">
+              </button>
+            </a>
+          </div>
+          <h1 class="card-title">
+            <a *ngIf="userId === id"> Welcome, </a>
+
+            {{profile.username}}
+
+            <span *ngIf="profile.isAdmin" style="color: white" class="badge bg-success">Admin</span>
+          </h1>
+
+
+          <a *ngIf="visitorObject != null && profile != null && visitorObject._id !== profile._id">
+            <a
+              *ngIf="!visitorObject.friends['1'].includes(profile._id) && !visitorObject.friends['2'].includes(profile._id) && !visitorObject.friends['3'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="addFriend()">Add Friend</button>
+            </a>
+            <a *ngIf="visitorObject.friends['1'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="cancelFriend()">Friend Request Pending. Click to Cancel</button>
+            </a>
+            <a *ngIf="visitorObject.friends['2'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="acceptFriend()">Accept Friend Request</button>
+              <button class="btn btn-primary" (click)="cancelFriend()">Reject Friend Request</button>
+            </a>
+            <a *ngIf="visitorObject.friends['3'].includes(profile._id)">
+              <button class="btn btn-primary" (click)="cancelFriend()">Friends. Click to Remove Friend</button>
+            </a>
+          </a>
+
+
+          <ul class="nav nav-tabs">
+            <li *ngIf="option==1" class="nav-item">
+              <a class="nav-link active" aria-current="page">Wall</a>
+            </li>
+            <li *ngIf="option!=1" class="nav-item">
+              <a class="nav-link" (click)="setOption(1)">Wall</a>
+            </li>
+            <li *ngIf="option==2" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Info</a>
+            </li>
+            <li *ngIf="option!=2" class="nav-item">
+              <a class="nav-link" (click)="setOption(2)">User Info</a>
+            </li>
+            <li *ngIf="option==3" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Posts</a>
+            </li>
+            <li *ngIf="option!=3" class="nav-item">
+              <a class="nav-link" (click)="setOption(3)">User Posts</a>
+            </li>
+            <li *ngIf="option==4" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Events</a>
+            </li>
+            <li *ngIf="option!=4" class="nav-item">
+              <a class="nav-link" (click)="setOption(4)">User Events</a>
+            </li>
+            <li *ngIf="option==5" class="nav-item">
+              <a class="nav-link active" aria-current="page">User Comments</a>
+            </li>
+            <li *ngIf="option!=5" class="nav-item">
+              <a class="nav-link" (click)="setOption(5)">User Comments</a>
+            </li>
+            <li *ngIf="option==6" class="nav-item">
+              <a class="nav-link active" aria-current="page">Tracked Events</a>
+            </li>
+            <li *ngIf="option!=6" class="nav-item">
+              <a class="nav-link" (click)="setOption(6)">Tracked Events</a>
+            </li>
+            <li *ngIf="option==7" class="nav-item">
+              <a class="nav-link active" aria-current="page">Friends</a>
+            </li>
+            <li *ngIf="option!=7" class="nav-item">
+              <a class="nav-link" (click)="setOption(7)">Friends</a>
+            </li>
+          </ul>
+
+          <div *ngIf="option==7">
+
+            <div *ngIf="friendsOfUser.length==0" class="card">
+              <div class="card-body">
+                No friends found
+              </div>
+            </div>
+
+            <div *ngIf="friendsOfUser.length > 0">
+              <div *ngFor="let friend of friendsOfUser" class="card">
+                <div class="card-body" routerLink="/profile/{{friend._id}}">
+                  {{friend.username}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="option==6">
+
+            <div *ngIf="eventsUserTracked.length==0" class="card">
+              <div class="card-body">
+                No events found
+              </div>
+            </div>
+
+            <div *ngIf="eventsUserTracked.length > 0">
+              <div *ngFor="let event of eventsUserAttending" class="card">
+                <app-event-display [event]="event"></app-event-display>
+              </div>
+            </div>
+          </div>
+
+
+          <div *ngIf="option==5">
+
+            <div *ngIf="commentsFromUser.length==0" class="card">
+              <div class="card-body">
+                No comments found
+              </div>
+            </div>
+
+            <div *ngIf="commentsFromUser.length > 0">
+              <div *ngFor="let comment of commentsFromUser" class="card">
+
+                <app-comment-display [comment]="comment"></app-comment-display>
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="option==4">
+            <div *ngIf="eventsFromUser.length==0" class="card">
+              <div class="card-body">
+                No events found
+              </div>
+            </div>
+
+            <div *ngIf="eventsFromUser.length > 0">
+              <div *ngFor="let event of eventsFromUser" class="card">
+                <app-event-display [event]="event"></app-event-display>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="option==3">
+            <div *ngIf="postsFromUser.length==0" class="card">
+              <div class="card-body">
+                No posts found
+              </div>
+            </div>
+
+            <div *ngIf="postsFromUser.length > 0">
+              <div *ngFor="let post of postsFromUser" class="card">
+
+                <app-post-display [post]="post"></app-post-display>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="option==2">
+
+            <div>
+              <h5 class="card-title">Email:</h5>
+              <a style="width: 100%;" class="card-text" type="text">{{profile.email}}</a>
+              <hr>
+            </div>
+            <div>
+              <h5 class="card-title">Biography:</h5>
+              <a style="width: 100%;" class="card-text" type="text">{{profile.biography}}</a>
+              <hr>
+            </div>
+            <div>
+              <h5 class="card-title">City:</h5>
+              <a style="width: 100%;" class="card-text" type="text">{{profile.city}}</a>
+              <hr>
+            </div>
+            <div>
+              <h5 class="card-title">Province/State:</h5>
+              <a style="width: 100%;" class="card-text" type="text">{{profile.province}}</a>
+              <hr>
+            </div>
+            <div>
+              <h5 class="card-title">Country:</h5>
+              <a style="width: 100%;" class="card-text" type="text">{{profile.country}}</a>
+              <hr>
+            </div>
+
+
+            <p>
+              <a *ngIf="userId !== id">This user has</a>
+              <a *ngIf="userId === id">You have</a>
+              {{hobbies.length}} hobbies listed.
+            </p>
+
+
+            <div class="alert alert-warning" role="alert" *ngIf="hobbyExists">Hobby already exists in your profile</div>
+
+            <div *ngFor="let hbby of hobbyNames">
+
+              <span class="badge badge-secondary">
+                <a *ngIf="hbby != null">
+                  {{hbby}}
+                </a>
+                <a *ngIf="hbby == null">
+                  Invalid tag. Please remove this tag.
+                </a>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="option==1" class="container">
+          <h1>Comments</h1>
+          <input *ngIf="!addCommentOption" type="button" routerLink="/add-comment/2/{{id}}" value="Add Comment"
+            class="btn btn-primary btn-sm">
+
+          <div *ngIf="commentList.length==0">
+            <a>No comments to show </a>
+          </div>
+          <div *ngIf="commentList.length>0">
+            <div *ngFor="let comment of commentList, index as i">
+              <hr>
+
+              <app-comment [comment]="comment" [comments]="comments" [(commentList)]="commentList" type="2"
+                [typeId]="id" [owner]="id" (refresh)="refresh($event)"></app-comment>
+
+            </div>
+          </div>
+
+
+        </div>
+
+        <br>
+
+      </div>
+
+    </div>
+  </div>

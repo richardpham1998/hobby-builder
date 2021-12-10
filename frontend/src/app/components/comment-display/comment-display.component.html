@@ -1,0 +1,58 @@
+<div class="btn">
+
+    <div *ngIf="comment.post != null"  [routerLink]="['/post', comment.post]">
+      <div class="card-body">
+        POST
+        <div>
+          {{comment.content}}
+          <div>
+            <a>
+              Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+                routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+            </a>
+            <a *ngIf="comment.date_modified != null">
+              (Edited)
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="comment.event != null" [routerLink]="['/event', comment.event]">
+      <div class="card-body">
+        EVENT
+        <div>
+          {{comment.content}}
+          <div>
+            <a>
+              Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+                routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+            </a>
+            <a *ngIf="comment.date_modified != null">
+              (Edited)
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="comment.profile != null" [routerLink]="['/profile', comment.profile]">
+      <div class="card-body">
+        PROFILE
+        <div>
+          {{comment.content}}
+          <div>
+            <a>
+              Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
+                routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
+            </a>
+            <a *ngIf="comment.date_modified != null">
+              (Edited)
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>

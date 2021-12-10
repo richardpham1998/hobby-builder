@@ -1,0 +1,10 @@
+<div>
+  <h5 class="card-title">Tags</h5>
+</div>
+<a *ngFor="let hbby of hobbyNames, index as i">
+  <span class="badge badge-secondary">
+    <a *ngIf="hbby != null">
+      {{hbby}}
+    </a>
+  </span>
+</a>

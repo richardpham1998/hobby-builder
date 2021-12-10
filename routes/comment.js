@@ -19,6 +19,9 @@ router.post('/comment', (req,res,next)=>
     let newComment = new Comment({
         content: req.body.content,
         user: req.body.user,
+        likes: {"-1":[],"0":[],"1":[]},
+        author: req.body.author,
+        profile: req.body.profile,
         event: req.body.event,
         post: req.body.post,
         date_created: Date.now(),
@@ -60,8 +63,11 @@ router.patch('/comment/:id', (req,res,user)=>
     Comment.updateOne({_id: req.params.id}, 
         {
         "content": req.body.content,
+        "likes": req.body.likes,
         "user": req.body.user,
+        "profile": req.body.profile,
         "event": req.body.event,
+        "author": req.body.author,
         "post": req.body.post,
         "date_modified": Date.now(),
     }, function(err, result)
@@ -70,9 +76,9 @@ router.patch('/comment/:id', (req,res,user)=>
         {
             res.json(err);
         }
-        else if(req.body.content == null || req.body.user == null)
+        else if(req.body.content == null || req.body.user == null || req.body.author == null)
         {
-            res.json({msg: 'Unable to patch Event. Data is invalid', status: 404});
+            res.json({msg: 'Unable to patch Comment. Data is invalid', status: 404});
         }
         else{
             res.json(result);

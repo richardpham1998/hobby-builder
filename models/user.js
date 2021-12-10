@@ -1,11 +1,31 @@
 const mongoose = require('mongoose');
 const UserSchema = mongoose.Schema({
 
-    user_name:
+    username:
     {
         type:String,
         required:true,
         null: false
+    },
+    biography:
+    {
+        type:String,
+        required:false
+    },
+    city:
+    {
+        type:String,
+        required:false
+    },
+    province:
+    {
+        type:String,
+        required:false
+    },
+    country:
+    {
+        type:String,
+        required:false
     },
     //store id's of comments
     comments:
@@ -43,7 +63,13 @@ const UserSchema = mongoose.Schema({
         type:[String],
         required: true,
         null: false
-    }
+    },
+    friends:
+    {
+        type: {"0":[],"1":[], "2": [], "3": []},
+        required: true,
+        null: false,
+    },
 
 });
 

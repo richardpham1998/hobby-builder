@@ -1,0 +1,13 @@
+<div class="btn" width="100%" routerLink="/post/{{post._id}}">
+  <div class="card-body" width="100%" style="text-align: center">
+    <a>
+      <h5>{{ post.title }}</h5>
+    </a>
+    <a>
+      by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+    </a>
+    <a *ngIf="post.date_modified != null" class="font-weight-bold">
+      (Edited)
+    </a>
+  </div>
+</div>

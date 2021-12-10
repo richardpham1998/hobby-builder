@@ -18,13 +18,18 @@ router.post('/user',(req,res,next)=>
 {
     let newUser = new User(
         {
-            user_name: req.body.user_name,
+            username: req.body.username,
             comments: req.body.comments,
+            biography: req.body.biography,
+            city: req.body.city,
+            province: req.body.province,
+            country: req.body.country,
             events_created: req.body.events_created,
             events_hosting: req.body.events_hosting,
             events_attending: req.body.events_attending,
             posts: req.body.posts,
-            hobbies: req.body.hobbies
+            hobbies: req.body.hobbies,
+            friends: {"0":[],"1":[], "2": [], "3": []}
         }
     )
 
@@ -68,9 +73,25 @@ router.patch('/user/:id',(req,res,next)=>
         }
         else{
             resultObject = result;
-            if(req.body.user_name != null)
+            if(req.body.username != null)
             {
-                resultObject.user_name = req.body.user_name;
+                resultObject.username = req.body.username;
+            }
+            if(req.body.biography != null)
+            {
+                resultObject.biography = req.body.biography;
+            }
+            if(req.body.city != null)
+            {
+                resultObject.city = req.body.city;
+            }
+            if(req.body.province != null)
+            {
+                resultObject.province = req.body.province;
+            }
+            if(req.body.country != null)
+            {
+                resultObject.country = req.body.country;
             }
             if(req.body.comments != null)
             {
@@ -97,15 +118,22 @@ router.patch('/user/:id',(req,res,next)=>
                 resultObject.hobbies = req.body.hobbies;
             }
 
+            resultObject.friends = req.body.friends;
+
             
         User.updateOne({_id: req.params.id},
-            {   "user_name": resultObject.user_name,
+            {   "username": resultObject.username,
                 "comments": resultObject.comments,
+                "biography": resultObject.biography,
+                "city": resultObject.city,
+                "province": resultObject.province,
+                "country": resultObject.country,
                 "events_created": resultObject.events_created,
                 "events_hosting": resultObject.events_hosting,
                 "events_attending": resultObject.events_attending,
                 "posts": resultObject.posts,
-                "hobbies": resultObject.hobbies
+                "hobbies": resultObject.hobbies,
+                "friends": resultObject.friends
             }, 
             function(err, result1)
             {
