@@ -12,8 +12,7 @@ const commentRoute = require('./routes/comment');
 const tagRoute = require('./routes/tag');
 const notificationRoute = require('./routes/notification');
 
-mongoose.connect('mongodb+srv://dc89:LSJFFI0K4UR37NHm@cluster0.ambsw.mongodb.net/db-name?authSource=admin&replicaSet=atlas-7cka62-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true');
-//mongoose.connect('mongodb://localhost:27017/hobby-builder');
+mongoose.connect('mongodb://localhost:27017/hobby-builder');
 
 mongoose.connection.on('connected', () =>
 {
