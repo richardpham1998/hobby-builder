@@ -53,8 +53,40 @@
 
   </div>
 
+
   <div *ngIf="postsCopy.length>0">
-    <div *ngFor="let post of postsCopy" class="card">
-      <app-post-display [post]="post"></app-post-display>
+
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind" [post]="postsCopy[ind]"></app-post-display>
     </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+1" [post]="postsCopy[ind+1]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+2" [post]="postsCopy[ind+2]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+3" [post]="postsCopy[ind+3]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+4" [post]="postsCopy[ind+4]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+5" [post]="postsCopy[ind+5]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+6" [post]="postsCopy[ind+6]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+7" [post]="postsCopy[ind+7]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+8" [post]="postsCopy[ind+8]"></app-post-display>
+    </div>
+    <div class="card">
+      <app-post-display *ngIf="postsCopy.length > ind+9" [post]="postsCopy[ind+9]"></app-post-display>
+    </div>
+
+    <button (click)="prev()" class="btn btn-primary">Previous</button>
+    <button (click)="next()" class="btn btn-primary">Next</button>
   </div>

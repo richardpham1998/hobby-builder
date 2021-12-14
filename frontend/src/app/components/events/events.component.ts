@@ -24,6 +24,8 @@ export class EventsComponent implements OnInit {
 
   tags: String[] = [];
 
+  ind : number = 0;
+
 
 
   constructor(
@@ -95,6 +97,22 @@ export class EventsComponent implements OnInit {
       if (remove == 1) {
         this.eventsCopy.splice(i, 1);
       }
+    }
+  }
+
+  prev()
+  {
+    if(this.ind > 0)
+    {
+      this.ind = this.ind - 10;
+    }
+  }
+
+  next()
+  {
+    if(this.ind+10 < this.eventsCopy.length)
+    {
+      this.ind = this.ind + 10;
     }
   }
 }

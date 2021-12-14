@@ -70,6 +70,13 @@ export class ProfileComponent implements OnInit {
   eventsUserTracked: Event[] = [];
   friendsOfUser: User[] = [];
 
+  //for prev and next functionality
+  ind1 : number = 0;
+  ind2 : number = 0;
+  ind3 : number = 0;
+  ind4 : number = 0;
+  ind5 : number = 0;
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -565,5 +572,85 @@ export class ProfileComponent implements OnInit {
     this.notificationService.addNotification(newNotification).subscribe();
 
     this.loadArrays();
+  }
+
+  prev1()
+  {
+    if(this.ind1 > 0)
+    {
+      this.ind1 = this.ind1 - 10;
+    }
+  }
+
+  next1()
+  {
+    if(this.ind1 +10< this.postsFromUser.length)
+    {
+      this.ind1 = this.ind1 + 10;
+    }
+  }
+
+  prev2()
+  {
+    if(this.ind2 > 0)
+    {
+      this.ind2 = this.ind2 - 10;
+    }
+  }
+
+  next2()
+  {
+    if(this.ind2+10 < this.eventsFromUser.length)
+    {
+      this.ind2 = this.ind2 + 10;
+    }
+  }
+
+  prev3()
+  {
+    if(this.ind3 > 0)
+    {
+      this.ind3 = this.ind3 - 10;
+    }
+  }
+
+  next3()
+  {
+    if(this.ind3+10  < this.commentsFromUser.length)
+    {
+      this.ind3 = this.ind3 + 10;
+    }
+  }
+
+  prev4()
+  {
+    if(this.ind4 > 0)
+    {
+      this.ind4 = this.ind4 - 10;
+    }
+  }
+
+  next4()
+  {
+    if(this.ind4 +10 < this.eventsUserTracked.length)
+    {
+      this.ind4 = this.ind4 + 10;
+    }
+  }
+
+  prev5()
+  {
+    if(this.ind5 > 0)
+    {
+      this.ind5 = this.ind5 - 10;
+    }
+  }
+
+  next5()
+  {
+    if(this.ind5 +10 < this.friendsOfUser.length)
+    {
+      this.ind5 = this.ind5 + 10;
+    }
   }
 }
