@@ -188,6 +188,8 @@ export class ProfileComponent implements OnInit {
           this.eventsUserTracked.push(events[i]);
         }
       }
+
+      this.eventsUserTracked.sort((a,b)=>this.sortTrackedEvents(a,b));
     });
 
     this.commentService.getComments().subscribe((comments) => {
@@ -265,6 +267,52 @@ export class ProfileComponent implements OnInit {
     } else if (a.name < b.name) {
       return -1;
     } else {
+      return 0;
+    }
+  }
+
+  //sort tracked events by number of days left
+  sortTrackedEvents(a: Event, b: Event) {
+
+    var tempDate = new Date(a.date_event);
+    tempDate.setTime(tempDate.getTime() + -60000*tempDate.getTimezoneOffset());
+
+    var aTime = tempDate.getTime()
+
+    tempDate = new Date(b.date_event);
+    tempDate.setTime(tempDate.getTime() + -60000*tempDate.getTimezoneOffset());
+
+    var bTime = tempDate.getTime();
+
+    var aTrack: number = aTime-(new Date()).getTime();
+    var bTrack: number = bTime- (new Date()).getTime();
+
+    if(aTrack >0 && bTrack < 0)
+    {
+      return -1;
+    }
+    else if(bTrack >0 && aTrack < 0)
+    {
+      return 1;
+    }
+    if(aTrack > 0 && bTrack > 0)
+    {
+      if (aTrack < bTrack) {
+        return -1;
+      } else if (aTrack > bTrack) {
+        return 1;
+      } 
+    }
+    if(aTrack <= 0 && bTrack <= 0)
+    {
+      if (aTrack < bTrack) {
+        return 1;
+      } else if (aTrack > bTrack) {
+        return -1;
+      } 
+    }
+
+    else {
       return 0;
     }
   }

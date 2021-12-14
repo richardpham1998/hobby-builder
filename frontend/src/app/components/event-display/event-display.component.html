@@ -6,6 +6,12 @@
       <div>
         by {{event.author}} {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
       </div>
+
+      <div *ngIf="trackDays == true">
+        <a *ngIf="numDays > 0" style="color: green"> <b>{{(numDays/86400000).toFixed(0)}} days left</b></a>
+        <a *ngIf="numDays <= 0" style="color: orange"> <b>Event has occurred</b></a>
+      </div>
+
       <div *ngIf="event.date_modified != null" class="font-weight-bold">
         (Edited)
       </div>

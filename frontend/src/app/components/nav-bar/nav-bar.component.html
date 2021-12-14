@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <div *ngIf="(auth.isAuthenticated$ | async)" class="btn-group" ngbDropdown role="group"
+      <div *ngIf="(auth.isAuthenticated$ | async) && userObject != null" class="btn-group" ngbDropdown role="group"
       aria-label="Button group with nested dropdown">
       <button class="btn btn-outline-light" ngbDropdownToggle>User: <b>{{userObject.username}}</b></button>
       <div class="dropdown-menu" ngbDropdownMenu>
@@ -86,7 +86,7 @@
       </div>
 
 
-      <div *ngIf="(auth.isAuthenticated$ | async)" class="btn-group" ngbDropdown role="group"
+      <div *ngIf="(auth.isAuthenticated$ | async) && userObject != null" class="btn-group" ngbDropdown role="group"
         aria-label="Button group with nested dropdown">
         <button *ngIf="newNotifications == true" class="btn btn-outline-light btn-danger" ngbDropdownToggle>
           <img src="/assets/img/bell-fill.svg" alt="Notifications">
