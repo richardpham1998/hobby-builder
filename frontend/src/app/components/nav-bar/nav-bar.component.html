@@ -53,16 +53,17 @@
     </div>
   </div> -->
 
+
   <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group">
       <button (click)="updateNotif()" type="button" routerLink="/" class="btn btn-outline-light"><a
           class="font-weight-bold">HobbyBuilder</a></button>
-      <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+
+
+      <div *ngIf="(auth.isAuthenticated$ | async)" class="btn-group" ngbDropdown role="group"
+        aria-label="Button group with nested dropdown">
         <button class="btn btn-outline-light" ngbDropdownToggle>Menu</button>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <b *ngIf="(auth.isAuthenticated$ | async) && userObject != null">Profile</b>
-          <button *ngIf="(auth.isAuthenticated$ | async) && userObject != null" (click)="updateNotif()"
-            routerLink="/profile/{{userId}}" ngbDropdownItem>{{userObject.username}}</button>
           <b>Post</b>
           <button (click)="updateNotif()" routerLink="/add-post" ngbDropdownItem>Add Post</button>
           <button (click)="updateNotif()" routerLink="/posts" ngbDropdownItem>View Posts</button>
@@ -75,34 +76,79 @@
         </div>
       </div>
 
-
-      <div *ngIf="(auth.isAuthenticated$ | async) && newNotifications == true">
-        <button (click)="updateNotif()" type="button" routerLink="/notifications"
-          class="btn btn-outline-light btn-danger">
-          <img src="/assets/img/bell-fill.svg" alt="Notifications" width="100%" height="100%">
-        </button>
-      </div>
-
-      <div *ngIf="(auth.isAuthenticated$ | async) && newNotifications != true">
-        <button (click)="updateNotif()" type="button" routerLink="/notifications" class="btn btn-outline-light">
-          <img src="/assets/img/bell.svg" alt="Notifications" width="100%" height="100%">
-        </button>
+      <div *ngIf="(auth.isAuthenticated$ | async)" class="btn-group" ngbDropdown role="group"
+      aria-label="Button group with nested dropdown">
+      <button class="btn btn-outline-light" ngbDropdownToggle>User: <b>{{userObject.username}}</b></button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="updateNotif()" routerLink="/profile/{{userId}}" ngbDropdownItem>Profile Page</button>
+        <button (click)="updateNotif()" routerLink="/edit-profile/{{userId}}" ngbDropdownItem>Edit Profile</button>
+        <app-logout-button *ngIf="(auth.isAuthenticated$ | async)"></app-logout-button>
       </div>
 
 
+      <div *ngIf="(auth.isAuthenticated$ | async)" class="btn-group" ngbDropdown role="group"
+        aria-label="Button group with nested dropdown">
+        <button *ngIf="newNotifications == true" class="btn btn-outline-light btn-danger" ngbDropdownToggle>
+          <img src="/assets/img/bell-fill.svg" alt="Notifications">
+        </button>
+        <button *ngIf="newNotifications != true" class="btn btn-outline-light" ngbDropdownToggle>
+          <img src="/assets/img/bell.svg" alt="Notifications">
+        </button>
+
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <div *ngIf="0 >= notifications.length">
+            <button ngbDropdownItem disabled>No notifications.</button>
+          </div>
+          <div *ngIf="notifications.length > 0">
+            <button (click)="clearAll()" class="btn btn-danger" ngbDropdownItem>Clear All</button>
+            <div *ngFor="let notification of notifications">
+              <div *ngIf="notification.newNotif == true">
+                <div class="btn" style="background-color: #e7e7e7" ngbDropdownItem>
+                  <button type="button" class="close" aria-label="Close" (click)="deleteNotification(notification._id)">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="card-body" (click)="turnOld(notification._id, notification)"
+                    routerLink="/{{notification.linkType}}/{{notification.idToLink}}">
+                    <div>
+                      {{ notification.text }}
+                    </div>
+                    <div>
+                      {{ notification.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="notification.newNotif == false">
+                <div class="btn" routerLink="/{{notification.linkType}}/{{notification.idToLink}}" ngbDropdownItem>
+                  <button type="button" class="close" aria-label="Close" (click)="deleteNotification(notification._id)">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="card-body">
+                    <div>
+                      {{ notification.text }}
+                    </div>
+                    <div>
+                      {{ notification.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
 
 
-      <app-login-button *ngIf="(auth.isAuthenticated$ | async) == false" class="float-right"></app-login-button>
 
 
 
 
 
-
-      <app-logout-button *ngIf="(auth.isAuthenticated$ | async)"></app-logout-button>
+      </div>
     </div>
+
+
   </div>
-
-
-</div>

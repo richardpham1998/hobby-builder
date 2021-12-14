@@ -33,6 +33,7 @@ export class TagOptionsComponent implements OnInit {
     this.tagService.getTags().subscribe(tags=>
       {
         this.tagOptions=tags;
+        this.tagOptions.sort((a, b) => this.sortTags(a, b));
         this.loadHobbyNames();
       }
       );
