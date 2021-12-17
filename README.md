@@ -62,7 +62,7 @@ Users will sign up or login with the required information. Auth0 was used for th
 
 ### Home Page
 ![Home After Login](Screenshots/Home_After_Login.png)
-
+![Recommended Posts](Screenshots/Recommended_Posts.png)
 
 Once logged in, the users can see the most recent posts and events. Users will also notice “Recommended Posts” and “Recommended Events”, which will be updated when users update the hobby tags in their profile.
 
