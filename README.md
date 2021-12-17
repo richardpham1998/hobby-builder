@@ -30,7 +30,7 @@ Personal Project created by Richard Pham.
 	- [Edit Event](https://github.com/richardpham1998/hobby-builder#edit-event)
 	- [Delete Event](https://github.com/richardpham1998/hobby-builder#delete-event)
 	- [Add Friend](https://github.com/richardpham1998/hobby-builder#add-friend)
-- [Unfriend](https://github.com/richardpham1998/hobby-builder#unfriend)
+	- [Unfriend](https://github.com/richardpham1998/hobby-builder#unfriend)
 	- [View Profile](https://github.com/richardpham1998/hobby-builder#view-profile)
 	- [Edit Profile](https://github.com/richardpham1998/hobby-builder#edit-profile)
 	- [Delete Profile](https://github.com/richardpham1998/hobby-builder#delete-profile)
