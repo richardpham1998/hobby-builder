@@ -3,7 +3,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from '../../services/event.service';
 import { Event } from '../../models/event';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({

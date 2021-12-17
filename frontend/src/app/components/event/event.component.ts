@@ -4,13 +4,13 @@ import { Comment } from '../../models/comment';
 import { Tag } from '../../models/tag';
 import { EventService } from '../../services/event.service';
 import { AuthService } from '@auth0/auth0-angular';
-import { CommentService } from 'src/app/services/comment.service';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
 import { ActivatedRoute } from '@angular/router';
-import { TagService } from 'src/app/services/tag.service';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
-import { NotificationService } from 'src/app/services/notification.service';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
+import { NotificationService } from '../../../../../frontend/src/app/services/notification.service';
 
 @Component({
   selector: 'app-event',

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Post } from 'src/app/models/post';
-import { Comment } from 'src/app/models/comment';
-import { CommentService } from 'src/app/services/comment.service';
-import { PostService } from 'src/app/services/post.service';
-import { Tag } from 'src/app/models/tag';
-import { TagService } from 'src/app/services/tag.service';
+import { Post } from '../../../../../frontend/src/app/models/post';
+import { Comment } from '../../../../../frontend/src/app/models/comment';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
+import { Tag } from '../../../../../frontend/src/app/models/tag';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
 
 @Component({
   selector: 'app-posts',
@@ -62,7 +62,7 @@ export class PostsComponent implements OnInit {
         if (
           this.posts[i].title.toLowerCase().includes(this.title.toLowerCase())
         ) {
-          this.postsCopy[i] = this.posts[i];
+          this.postsCopy.push(this.posts[i]);
         }
       }
     }

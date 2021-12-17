@@ -3,18 +3,18 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { TagService } from 'src/app/services/tag.service';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
 import { User } from '../../models/user';
 import { Tag } from '../../models/tag';
 import { UserService } from '../../services/user.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CommentService } from 'src/app/services/comment.service';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
 import { Comment } from '../../models/comment';
-import { NotificationService } from 'src/app/services/notification.service';
-import { Post } from 'src/app/models/post';
-import { PostService } from 'src/app/services/post.service';
-import { Event } from 'src/app/models/event';
-import { EventService } from 'src/app/services/event.service';
+import { NotificationService } from '../../../../../frontend/src/app/services/notification.service';
+import { Post } from '../../../../../frontend/src/app/models/post';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
+import { Event } from '../../../../../frontend/src/app/models/event';
+import { EventService } from '../../../../../frontend/src/app/services/event.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -58,6 +58,7 @@ export class ProfileComponent implements OnInit {
   commentList: Comment[] = [];
   commentToLike: Comment;
   commentMap: { '-1': String[]; '0': String[]; '1': String[] };
+
 
   //modal components
   closeResult = '';
@@ -225,14 +226,29 @@ export class ProfileComponent implements OnInit {
 
   //delete user
   deleteUser(id: String) {
-    this.userService.deleteUser(id).subscribe();
 
-    for (var i = this.comments.length - 1; i >= 0; i--) {
-      if (this.comments[i].profile == id) {
-        this.commentService.deleteComment(this.comments[i]._id).subscribe();
-        this.comments.splice(i, 1);
+    for (var i = this.commentsFromUser.length - 1; i >= 0; i--) {
+      if (this.commentsFromUser[i].user == id) {
+        this.commentService.deleteComment(this.commentsFromUser[i]._id).subscribe();
+        this.commentsFromUser.splice(i, 1);
       }
     }
+
+    for (var i = this.postsFromUser.length - 1; i >= 0; i--) {
+      if (this.postsFromUser[i].user == id) {
+        this.postService.deletePost(this.postsFromUser[i]._id).subscribe();
+        this.postsFromUser.splice(i, 1);
+      }
+    }
+
+    for (var i = this.eventsFromUser.length - 1; i >= 0; i--) {
+      if (this.eventsFromUser[i].user == id) {
+        this.eventService.deleteEvent(this.eventsFromUser[i]._id).subscribe();
+        this.eventsFromUser.splice(i, 1);
+      }
+    }
+
+    this.userService.deleteUser(id).subscribe();
   }
 
   //Comment functionalities
@@ -430,7 +446,12 @@ export class ProfileComponent implements OnInit {
         (result) => {
           this.closeResult = `Closed with: ${result}`;
           this.deleteUser(id);
-          this.auth.logout({ returnTo: this.doc.location.origin });
+
+          if(this.visitorObject._id == id)
+          {
+            this.auth.logout({ returnTo: this.doc.location.origin });
+          }
+          
         },
         (reason) => {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

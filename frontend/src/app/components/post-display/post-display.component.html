@@ -6,8 +6,5 @@
     <a>
       by {{post.author}} {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }}
     </a>
-    <a *ngIf="post.date_modified != null" class="font-weight-bold">
-      (Edited)
-    </a>
   </div>
 </div>

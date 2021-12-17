@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Tag } from 'src/app/models/tag';
-import { EventService } from 'src/app/services/event.service';
-import { TagService } from 'src/app/services/tag.service';
+import { Tag } from '../../../../../frontend/src/app/models/tag';
+import { EventService } from '../../../../../frontend/src/app/services/event.service';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
 import {Event} from '../../models/event';
 
 @Component({
@@ -62,7 +62,7 @@ export class EventsComponent implements OnInit {
         if (
           this.events[i].title.toLowerCase().includes(this.title.toLowerCase())
         ) {
-          this.eventsCopy[i] = this.events[i];
+          this.eventsCopy.push(this.events[i]);
         }
       }
     }

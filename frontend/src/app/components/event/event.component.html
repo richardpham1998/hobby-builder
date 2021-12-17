@@ -101,9 +101,6 @@
           <div>
             Created {{ event.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
               routerLink="/profile/{{event.user}}">{{event.author}}</a>
-            <a *ngIf="event.date_modified != null" class="font-weight-bold">
-              (Edited)
-            </a>
           </div>
 
           <hr>

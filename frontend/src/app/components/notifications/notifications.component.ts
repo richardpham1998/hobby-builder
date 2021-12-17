@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Notification } from 'src/app/models/notification';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { Notification } from '../../../../../frontend/src/app/models/notification';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 
 import {NotificationService} from '../../services/notification.service';
 

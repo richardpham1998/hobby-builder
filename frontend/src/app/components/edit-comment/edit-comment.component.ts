@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Comment } from 'src/app/models/comment';
-import { User } from 'src/app/models/user';
-import { CommentService } from 'src/app/services/comment.service';
-import { UserService } from 'src/app/services/user.service';
+import { Comment } from '../../../../../frontend/src/app/models/comment';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({

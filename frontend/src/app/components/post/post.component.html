@@ -86,9 +86,6 @@
           <div>
             Created {{ post.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
               routerLink="/profile/{{post.user}}">{{post.author}}</a>
-            <a *ngIf="post.date_modified != null" class="font-weight-bold">
-              (Edited)
-            </a>
           </div>
 
           <hr>

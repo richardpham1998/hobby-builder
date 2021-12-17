@@ -68,9 +68,6 @@
           Created {{ comment.date_created | date:"MM/dd/yyyy 'at' h:mma" }} by <a
             routerLink="/profile/{{comment.user}}">{{comment.author}}</a>
         </a>
-        <a *ngIf="comment.date_modified != null">
-          (Edited)
-        </a>
       </div>
     </div>
   </div>

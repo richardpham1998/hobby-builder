@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { User } from 'src/app/models/user';
-import { NotificationService } from 'src/app/services/notification.service';
-import { Notification } from 'src/app/models/notification';
-import { UserService } from 'src/app/services/user.service';
+import { DOCUMENT } from '@angular/common';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { NotificationService } from '../../../../../frontend/src/app/services/notification.service';
+import { Notification } from '../../../../../frontend/src/app/models/notification';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,10 +26,20 @@ export class NavBarComponent implements OnInit {
   newNotifications: Boolean = false;
 
 
-  constructor(public auth : AuthService, private userService : UserService, private notificationService: NotificationService) { }
+  constructor(public auth : AuthService, private userService : UserService, private notificationService: NotificationService, @Inject(DOCUMENT) private doc) { }
 
   ngOnInit(): void {
 
+    this.updateNotif();
+
+
+
+    
+
+  }
+
+  updateNotif()
+  {
     this.auth.user$.subscribe((profile)=>{
       this.profileObject = profile;
 
@@ -45,20 +57,18 @@ export class NavBarComponent implements OnInit {
         this.userService.getUser(this.userId).subscribe(user=>
           {
             this.userObject=user;
+            if(this.userObject==undefined)
+            {
+         
+                alert("Your account has been deleted.");
+                this.auth.logout({ returnTo: this.doc.location.origin });
+      
+            }
+            this.getNotifications();
           })
 
-         this.getNotifications();
+      }});
 
-      }
-
-
-    });
-
-  }
-
-  updateNotif()
-  {
-    this.getNotifications();
   }
 
   

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Post } from 'src/app/models/post';
-import { PostService } from 'src/app/services/post.service';
+import { Post } from '../../../../../frontend/src/app/models/post';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({

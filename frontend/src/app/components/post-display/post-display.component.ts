@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Post } from 'src/app/models/post';
+import { Post } from '../../../../../frontend/src/app/models/post';
 
 @Component({
   selector: 'app-post-display',

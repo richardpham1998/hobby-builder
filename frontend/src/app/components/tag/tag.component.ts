@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TagService } from '../../services/tag.service';
 import { Tag } from '../../models/tag';
 import { User } from '../../models/user';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { AuthService } from '@auth0/auth0-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 

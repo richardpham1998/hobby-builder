@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Event } from 'src/app/models/event';
-import { Post } from 'src/app/models/post';
-import { User } from 'src/app/models/user';
-import { EventService } from 'src/app/services/event.service';
-import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service';
+import { Event } from '../../../../../frontend/src/app/models/event';
+import { Post } from '../../../../../frontend/src/app/models/post';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { EventService } from '../../../../../frontend/src/app/services/event.service';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 
 @Component({
   selector: 'app-home',

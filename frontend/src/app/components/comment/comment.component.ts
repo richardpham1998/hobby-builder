@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { CommentService } from 'src/app/services/comment.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { UserService } from 'src/app/services/user.service';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
+import { NotificationService } from '../../../../../frontend/src/app/services/notification.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { Comment } from '../../models/comment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'src/app/models/user';
+import { User } from '../../../../../frontend/src/app/models/user';
 
 @Component({
   selector: 'app-comment',

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { User } from 'src/app/models/user';
-import { CommentService } from 'src/app/services/comment.service';
-import { EventService } from 'src/app/services/event.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { PostService } from 'src/app/services/post.service';
-import { UserService } from 'src/app/services/user.service';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { CommentService } from '../../../../../frontend/src/app/services/comment.service';
+import { EventService } from '../../../../../frontend/src/app/services/event.service';
+import { NotificationService } from '../../../../../frontend/src/app/services/notification.service';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({

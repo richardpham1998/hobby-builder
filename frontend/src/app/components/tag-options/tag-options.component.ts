@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Tag } from 'src/app/models/tag';
-import { TagService } from 'src/app/services/tag.service';
-import { UserService } from 'src/app/services/user.service';
+import { Tag } from '../../../../../frontend/src/app/models/tag';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 
 @Component({
   selector: 'app-tag-options',

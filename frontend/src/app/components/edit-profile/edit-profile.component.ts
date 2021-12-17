@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { Tag } from 'src/app/models/tag';
-import { User } from 'src/app/models/user';
-import { PostService } from 'src/app/services/post.service';
-import { TagService } from 'src/app/services/tag.service';
-import { UserService } from 'src/app/services/user.service';
+import { Tag } from '../../../../../frontend/src/app/models/tag';
+import { User } from '../../../../../frontend/src/app/models/user';
+import { PostService } from '../../../../../frontend/src/app/services/post.service';
+import { TagService } from '../../../../../frontend/src/app/services/tag.service';
+import { UserService } from '../../../../../frontend/src/app/services/user.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
