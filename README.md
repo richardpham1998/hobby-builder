@@ -58,7 +58,7 @@ When users first enter the website, no features will be available to the users. 
 ### Sign Up
 ### Log In
 ![Login](Screenshots/Login_Page.png)
-Users will sign up or login with the required information.
+Users will sign up or login with the required information. Auth0 was used for the sign up and login functionalities.
 
 ### Home Page
 ![Home After Login](Screenshots/Home_After_Login.png)
