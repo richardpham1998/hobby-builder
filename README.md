@@ -38,7 +38,7 @@ Personal Project created by Richard Pham.
 	- [Admin Delete](https://github.com/richardpham1998/hobby-builder#admin-delete)
 
 
-- [Links to Application](https://github.com/richardpham1998/hobby-builder#link-to-application)
+- [Link to Application](https://github.com/richardpham1998/hobby-builder#link-to-application)
 - [Prerequisites for Set-up](https://github.com/richardpham1998/hobby-builder#prerequisites-for-set-up)
 - [How to Run the Project](https://github.com/richardpham1998/hobby-builder#how-to-run-the-project)
 - [Database Schema](https://github.com/richardpham1998/hobby-builder#database-schema)
@@ -70,7 +70,7 @@ Once logged in, the users can see the most recent posts and events. Users will a
 ![Menu options 1](Screenshots/Menu_Options1.png)
 
 
-The menu includes options to add and search for posts. It has similar features for events. 
+The menu includes options to add and search for posts. It has similar features for events. The "Modify Tags" option is restricted to Admins only.
 
 ![Menu options 2](Screenshots/Menu_Options2.png)
 
