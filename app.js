@@ -12,7 +12,8 @@ const commentRoute = require('./routes/comment');
 const tagRoute = require('./routes/tag');
 const notificationRoute = require('./routes/notification');
 
-mongoose.connect('mongodb://localhost:27017/hobby-builder');
+mongoose.connect(process.env.MONGODB_URI);
+//mongoose.connect('mongodb://localhost:27017/hobby-builder');
 
 mongoose.connection.on('connected', () =>
 {

@@ -25,6 +25,8 @@ export class PostsComponent implements OnInit {
 
   tags: String[] = [];
 
+  ind : number = 0;
+
   constructor(
     private postService: PostService,
     public auth: AuthService
@@ -39,6 +41,7 @@ export class PostsComponent implements OnInit {
         this.postsCopy[i] = this.posts[this.posts.length - 1 - i];
       }
     });
+
 
 
     this.auth.user$.subscribe((profile) => (this.profileObject = profile));
@@ -95,6 +98,22 @@ export class PostsComponent implements OnInit {
       if (remove == 1) {
         this.postsCopy.splice(i, 1);
       }
+    }
+  }
+
+  prev()
+  {
+    if(this.ind > 0)
+    {
+      this.ind = this.ind - 10;
+    }
+  }
+
+  next()
+  {
+    if(this.ind +10< this.postsCopy.length)
+    {
+      this.ind = this.ind + 10;
     }
   }
 }

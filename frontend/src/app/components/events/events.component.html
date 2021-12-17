@@ -31,16 +31,44 @@
       </form>
     </div>
   
-    <div *ngIf="eventsCopy.length ==0" class="card">
-      <div class="card-body">
-        <a>No events to show.</a>
+    <div *ngIf="eventsCopy.length >0">
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind" [event]="eventsCopy[ind]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+1" [event]="eventsCopy[ind+1]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+2" [event]="eventsCopy[ind+2]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+3" [event]="eventsCopy[ind+3]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+4" [event]="eventsCopy[ind+4]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+5" [event]="eventsCopy[ind+5]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+6" [event]="eventsCopy[ind+6]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+7" [event]="eventsCopy[ind+7]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+8" [event]="eventsCopy[ind+8]"></app-event-display>
+      </div>
+      <div class="card">
+        <app-event-display *ngIf="eventsCopy.length > ind+9" [event]="eventsCopy[ind+9]"></app-event-display>
       </div>
 
-    </div>
+    <button (click)="prev()" class="btn btn-primary">Previous</button>
+    <button (click)="next()" class="btn btn-primary">Next</button>
   
-    <div *ngIf="eventsCopy.length>0">
-      <div *ngFor="let event of eventsCopy" class="card">
-        <app-event-display [event]="event"></app-event-display>
-      </div>
+    </div>
+
+    <div *ngIf="eventsCopy.length==0">
+      No events found.
     </div>
   

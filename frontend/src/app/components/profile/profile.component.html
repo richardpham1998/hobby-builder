@@ -147,11 +147,40 @@
             </div>
 
             <div *ngIf="friendsOfUser.length > 0">
-              <div *ngFor="let friend of friendsOfUser" class="card">
-                <div class="card-body" routerLink="/profile/{{friend._id}}">
-                  {{friend.username}}
-                </div>
+              <div *ngIf="friendsOfUser.length > ind5" class="card-body" routerLink="/profile/{{friendsOfUser[ind5]._id}}">
+                {{friendsOfUser[ind5].username}}
               </div>
+              <div *ngIf="friendsOfUser.length > ind5+1" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+1]._id}}">
+                {{friendsOfUser[ind5+1].username}}
+              </div>
+              <div *ngIf="friendsOfUser.length > ind5+2"  class="card-body" routerLink="/profile/{{friendsOfUser[ind5+2]._id}}">
+                {{friendsOfUser[ind5+2].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+3" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+3]._id}}">
+                {{friendsOfUser[ind5+3].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+4" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+4]._id}}">
+                {{friendsOfUser[ind5+4].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+5" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+5]._id}}">
+                {{friendsOfUser[ind5+5].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+6" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+6]._id}}">
+                {{friendsOfUser[ind5+6].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+7" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+7]._id}}">
+                {{friendsOfUser[ind5+7].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+8" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+8]._id}}">
+                {{friendsOfUser[ind5+8].username}}
+              </div>
+              <div  *ngIf="friendsOfUser.length > ind5+9" class="card-body" routerLink="/profile/{{friendsOfUser[ind5+9]._id}}">
+                {{friendsOfUser[ind5+9].username}}
+              </div>
+
+              <button (click)="prev5()" class="btn btn-primary">Previous</button>
+              <button (click)="next5()" class="btn btn-primary">Next</button>
+
             </div>
           </div>
           <div *ngIf="option==6">
@@ -163,9 +192,39 @@
             </div>
 
             <div *ngIf="eventsUserTracked.length > 0">
-              <div *ngFor="let event of eventsUserAttending" class="card">
-                <app-event-display [event]="event"></app-event-display>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4" [trackDays]="true" [event]="eventsUserTracked[ind4]"></app-event-display>
               </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+1" [trackDays]="true" [event]="eventsUserTracked[ind4+1]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+2" [trackDays]="true" [event]="eventsUserTracked[ind4+2]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+3" [trackDays]="true" [event]="eventsUserTracked[ind4+3]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+4" [trackDays]="true" [event]="eventsUserTracked[ind4+4]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+5" [trackDays]="true" [event]="eventsUserTracked[ind4+5]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+6" [trackDays]="true" [event]="eventsUserTracked[ind4+6]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+7" [trackDays]="true" [event]="eventsUserTracked[ind4+7]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+8" [trackDays]="true" [event]="eventsUserTracked[ind4+8]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsUserTracked.length > ind4+9" [trackDays]="true" [event]="eventsUserTracked[ind4+9]"></app-event-display>
+              </div>
+        
+            <button (click)="prev4()" class="btn btn-primary">Previous</button>
+            <button (click)="next4()" class="btn btn-primary">Next</button>
             </div>
           </div>
 
@@ -179,11 +238,42 @@
             </div>
 
             <div *ngIf="commentsFromUser.length > 0">
-              <div *ngFor="let comment of commentsFromUser" class="card">
 
-                <app-comment-display [comment]="comment"></app-comment-display>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3" [comment]="commentsFromUser[ind3]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+1" [comment]="commentsFromUser[ind3+1]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+2" [comment]="commentsFromUser[ind3+2]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+3" [comment]="commentsFromUser[ind3+3]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+4" [comment]="commentsFromUser[ind3+4]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+5" [comment]="commentsFromUser[ind3+5]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+6" [comment]="commentsFromUser[ind3+6]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+7" [comment]="commentsFromUser[ind3+7]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+8" [comment]="commentsFromUser[ind3+8]"></app-comment-display>
+                </div>
+                <div class="card">
+                  <app-comment-display *ngIf="commentsFromUser.length > ind3+9" [comment]="commentsFromUser[ind3+9]"></app-comment-display>
+                </div>
 
-              </div>
+
+
+                <button (click)="prev3()" class="btn btn-primary">Previous</button>
+                <button (click)="next3()" class="btn btn-primary">Next</button>
             </div>
           </div>
 
@@ -195,9 +285,39 @@
             </div>
 
             <div *ngIf="eventsFromUser.length > 0">
-              <div *ngFor="let event of eventsFromUser" class="card">
-                <app-event-display [event]="event"></app-event-display>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2" [event]="eventsFromUser[ind2]"></app-event-display>
               </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+1" [event]="eventsFromUser[ind2+1]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+2" [event]="eventsFromUser[ind2+2]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+3" [event]="eventsFromUser[ind2+3]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+4" [event]="eventsFromUser[ind2+4]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+5" [event]="eventsFromUser[ind2+5]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+6" [event]="eventsFromUser[ind2+6]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+7" [event]="eventsFromUser[ind2+7]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+8" [event]="eventsFromUser[ind2+8]"></app-event-display>
+              </div>
+              <div class="card">
+                <app-event-display *ngIf="eventsFromUser.length > ind2+9" [event]="eventsFromUser[ind2+9]"></app-event-display>
+              </div>
+        
+            <button (click)="prev2()" class="btn btn-primary">Previous</button>
+            <button (click)="next2()" class="btn btn-primary">Next</button>
             </div>
           </div>
 
@@ -209,11 +329,40 @@
             </div>
 
             <div *ngIf="postsFromUser.length > 0">
-              <div *ngFor="let post of postsFromUser" class="card">
 
-                <app-post-display [post]="post"></app-post-display>
-
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1" [post]="postsFromUser[ind1]"></app-post-display>
               </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+1" [post]="postsFromUser[ind1+1]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+2" [post]="postsFromUser[ind1+2]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+3" [post]="postsFromUser[ind1+3]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+4" [post]="postsFromUser[ind1+4]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+5" [post]="postsFromUser[ind1+5]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+6" [post]="postsFromUser[ind1+6]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+7" [post]="postsFromUser[ind1+7]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+8" [post]="postsFromUser[ind1+8]"></app-post-display>
+              </div>
+              <div class="card">
+                <app-post-display *ngIf="postsFromUser.length > ind1+9" [post]="postsFromUser[ind1+9]"></app-post-display>
+              </div>
+        
+            <button (click)="prev1()" class="btn btn-primary">Previous</button>
+            <button (click)="next1()" class="btn btn-primary">Next</button>
             </div>
 
           </div>
