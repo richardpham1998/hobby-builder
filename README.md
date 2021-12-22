@@ -6,6 +6,9 @@ Personal Project created by Richard Pham.
 ### Table of Contents
 
 - [Project Introduction](https://github.com/richardpham1998/hobby-builder#introduction)
+- [Link to Application](https://github.com/richardpham1998/hobby-builder#link-to-application)
+- [Prerequisites for Set-up](https://github.com/richardpham1998/hobby-builder#prerequisites-for-set-up)
+- [How to Run the Project](https://github.com/richardpham1998/hobby-builder#how-to-run-the-project)
 - [Features](https://github.com/richardpham1998/hobby-builder#features)
 	- [Sign Up](https://github.com/richardpham1998/hobby-builder#sign-up)
 	- [Log In](https://github.com/richardpham1998/hobby-builder#log-in)
@@ -37,10 +40,6 @@ Personal Project created by Richard Pham.
 	- [Admin Add Tag](https://github.com/richardpham1998/hobby-builder#admin-add-tag)
 	- [Admin Delete](https://github.com/richardpham1998/hobby-builder#admin-delete)
 
-
-- [Link to Application](https://github.com/richardpham1998/hobby-builder#link-to-application)
-- [Prerequisites for Set-up](https://github.com/richardpham1998/hobby-builder#prerequisites-for-set-up)
-- [How to Run the Project](https://github.com/richardpham1998/hobby-builder#how-to-run-the-project)
 - [Database Schema](https://github.com/richardpham1998/hobby-builder#database-schema)
 - [API Endpoints](https://github.com/richardpham1998/hobby-builder#api-endpoints)
 
@@ -48,6 +47,45 @@ Personal Project created by Richard Pham.
 ### Introduction
 
 HobbyBuilder is a web application that allows users to develop their hobbies and interact with others that share common interests. When users sign up, they can add a list of hobbies that they are interested in. The application will show posts and events that are available for everyone as well as those that are relevant to the user’s interests. Users can interact with these posts and events by commenting, liking, and reporting content to administrators. Users can view information from other users’ profiles and become friends with them. Administrators can delete user content and add hobby tags for everyone’s use. HobbyBuilder is a platform for users that are trying to pursue a hobby and need help from a community with similar interests. 
+
+### Link to Application
+
+https://hobby-builder.herokuapp.com/
+
+
+### Prerequisites for Set-up
+
+To run this project locally, you will need the latest version of MongoDB Community Server installed on your system. This is so your application can connect to the backend. Here is the link:
+
+https://www.mongodb.com/try/download/community
+
+You will also need to download Node.js to run the backend application:
+
+https://nodejs.org/en/download/
+
+You will need Angular to run the frontend application:
+https://angular.io/guide/setup-local
+
+
+### How to Run the Project
+
+In the app.js file, you may need to edit the MongoDB connection URL.
+In frontend/src/app/services, edit the service.ts files so that localhost:3000 is being used. After making these changes, type "ng build" to reflect these changes in the "public" folder.
+
+To run the entire application:
+
+Inside the main folder, type “npm install”. Once installation is completed, type “npm start”.
+
+You can also run the backend and frontend applications separately.
+
+To run the backend application:
+Inside the main folder, type “npm install”. Once installation is completed, type “nodemon”.
+
+To run the frontend application:
+Inside the main folder, go to “frontend” and type “npm install”. Once installation is completed, type “ng serve”.
+
+To update the frontend, make your desired changes. In the frontend folder, type “ng build”. Changes will be reflected in the “public” folder under the main folder.
+
 
 ### Features
 
@@ -261,45 +299,6 @@ Admins have certain features that regular users do not have. Admins can add tags
 ![Admin Delete](Screenshots/Admin_Delete.png)
 
 Admins can delete other users’ content, such as posts, events, and profiles.
-
-### Link to Application
-
-https://aqueous-crag-94503.herokuapp.com/
-
-
-### Prerequisites for Set-up
-
-To run this project locally, you will need the latest version of MongoDB Community Server installed on your system. This is so your application can connect to the backend. Here is the link:
-
-https://www.mongodb.com/try/download/community
-
-You will also need to download Node.js to run the backend application:
-
-https://nodejs.org/en/download/
-
-You will need Angular to run the frontend application:
-https://angular.io/guide/setup-local
-
-
-### How to Run the Project
-
-In the app.js file, you may need to edit the MongoDB connection URL.
-In frontend/src/app/services, edit the service.ts files so that localhost:3000 is being used.
-
-To run the entire application:
-
-Inside the main folder, type “npm install”. Once installation is completed, type “npm start”.
-
-You can also run the backend and frontend applications separately.
-
-To run the backend application:
-Inside the main folder, type “npm install”. Once installation is completed, type “nodemon”.
-
-To run the frontend application:
-Inside the main folder, go to “frontend” and type “npm install”. Once installation is completed, type “ng serve”.
-
-To update the frontend, make your desired changes. In the frontend folder, type “ng build”. Changes will be reflected in the “public” folder under the main folder.
-
 
 
 ### Database Schema
