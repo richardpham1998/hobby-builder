@@ -78,10 +78,10 @@ Inside the main folder, type “npm install”. Once installation is completed, 
 You can also run the backend and frontend applications separately.
 
 To run the backend application:
-Inside the main folder, type “npm install”. Once installation is completed, type “nodemon”.
+Inside the main folder, type “npm install”. If nodemon has not been installed, do so as well. Once installation is completed, type “nodemon”.
 
 To run the frontend application:
-Inside the main folder, go to “frontend” and type “npm install”. Once installation is completed, type “ng serve”.
+Inside the main folder, go to “frontend” and type "npm install --legacy-peer-deps". Once installation is completed, type “ng serve”.
 
 To update the frontend, make your desired changes. In the frontend folder, type “ng build”. Changes will be reflected in the “public” folder under the main folder.
 
