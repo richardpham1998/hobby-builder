@@ -20,7 +20,6 @@ Personal Project created by Richard Pham.
 	- [Search Post](https://github.com/richardpham1998/hobby-builder#search-post)
 	- [Like Or Dislike](https://github.com/richardpham1998/hobby-builder#like-or-dislike)
 	- [Add Comment](https://github.com/richardpham1998/hobby-builder#add-comment)
-	- [Log In](https://github.com/richardpham1998/hobby-builder#log-in)
 	- [Like Or Dislike Comment](https://github.com/richardpham1998/hobby-builder#like-or-dislike-comment)
 	- [Edit Comment](https://github.com/richardpham1998/hobby-builder#edit-comment)
 	- [Delete Comment](https://github.com/richardpham1998/hobby-builder#delete-comment)
