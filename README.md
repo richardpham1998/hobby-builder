@@ -62,8 +62,12 @@ You will also need to download Node.js to run the backend application:
 
 https://nodejs.org/en/download/
 
+Node v16.13.1 was used for this project.
+
 You will need Angular to run the frontend application:
 https://angular.io/guide/setup-local
+
+Angular 10.0.8 was used for this project.
 
 
 ### How to Run the Project
